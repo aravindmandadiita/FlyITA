@@ -1,0 +1,59 @@
+﻿<%@ Page Title="International Travel" Language="C#" MasterPageFile="~/_Main.Master" AutoEventWireup="true" CodeBehind="international.aspx.cs" Inherits="FlyITA.international" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="CustomHeaders" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="Main" runat="server">
+    <h1>International Travel<br />
+  <small>Traveling  Outside the United States</small></h1>
+<div class="row-light">
+  <div class="single-col-text">
+    <p class="intro"><a name="passport"></a>Preparing for business travel is an essential  step in the travel planning process. Travel warnings, information on passports  and visas, destination details, and other important information could make the  difference between a successful trip and a frustrating one. Please review the  information below to help ensure a smoother international travel experience:</p>
+    <blockquote>
+      <h3>Passports/Visas</h3>
+      <ul>
+        <li>The  U.S. Department of State&rsquo;s website provides information and forms required for  new passport applications and passport renewals. Please visit <a target="_blank" href="http://www.travel.state.gov">www.travel.state.gov</a>. </li>
+        <li>For  visa requirements for your specific destination, visit the <a target="_blank" href="https://travel.state.gov/content/visas/en/general/americans-traveling-abroad.html">Americans Traveling  Abroad page</a> under U.S. Visa. </li>
+        <li>If  you need assistance obtaining a visa, we recommend using a visa service, such  as CIBT. Information can be obtained by calling (800) 929-2428 or by visiting <a target="_blank" href="http://www.CIBT.com">www.CIBT.com</a>. You may log in on the  website using our account number: 42198.</li>
+      </ul>
+      <h3>Baggage Limitations</h3>
+      <p>Baggage limitations can vary depending on the  airline and the destination. Please visit the airlines&rsquo; websites for more  information on weight and size restrictions. Baggage limitations on  inner-continental flights are more restrictive than trans-Pacific and  trans-Atlantic flights. Please call our office for more specific information.</p>
+      <p><a target="_blank" href="http://www.aa.com">www.aa.com</a>      <a target="_blank" href="http://www.delta.com">www.delta.com</a>   <a target="_blank" href="http://www.united.com">www.united.com</a>   </p>
+      <h3>Vaccinations</h3>
+      <p>Vaccinations are required in various parts of  the world. Please contact your personal physician and your county health  department for up-to-date requirements.</p>
+      <h3>Medical Coverage</h3>
+      <p>Please verify that you have medical insurance  coverage before traveling overseas. We can refer you to a travel insurance  provider if you need coverage. The insurance must be purchased at the time you  make your travel arrangements.</p>
+      <h3>Airport Check-In Guidelines</h3>
+      <p>The airlines request  that you check in at least two hours before your international flight. If you  will be making a connection between two different airlines, please be sure that  your baggage is checked in and tagged to accompany you all the way to your  final destination.</p>
+      <h3>Flight Reconfirmation</h3>
+      <p><a name="car"></a>Many major airlines do not require that you  reconfirm your <strong>trans-Pacific</strong> and <strong>trans-Atlantic </strong>flights. However, it is  a good idea to call our office or the airline 24 hours before your departure to  verify that there have not been any last minute schedule changes. It is  imperative that you do reconfirm your <strong>inner-continental</strong> flights. Please call the airline when you reach your international destination  to reconfirm your next flight. If you cannot find the airline&rsquo;s local telephone  number in the phonebook, please ask your hotel concierge staff for assistance.</p>
+      <h3>Renting a  Car</h3>
+      <p>Many major credit card companies offer  international auto insurance coverage if you use their card to reserve and pay  for your rental car. Please contact your credit card company to verify your  coverage. Also, some personal auto insurance policies provide international  coverage. Please call you insurance agent to verify your coverage. Otherwise,  insurance is available at the time you book your rental car. Due to local laws,  some countries require that you purchase auto insurance coverage through the  rental car companies. </p>
+      <p><a name="security"></a>Most countries allow you to drive using your  state-issued driver&rsquo;s license. However, there are a few countries that require  an international driver&rsquo;s license, which can be obtained through AAA. <br>
+        Rental requirements and driving information for  specific countries are available at <a target="_blank" href="http://www.autoeurope.com">www.autoeurope.com</a>. </p>
+      <h3>Security Issues</h3>
+      <p>Security is imperative when traveling overseas.  The U.S. Department of State gives the following guidelines:</p>
+      <ul>
+        <li>Leave  a detailed itinerary and the number of your passport or other citizenship  documents with a friend or relative in the United States. </li>
+        <li>Carry  your photo identification and the name of a person to contact with you in the  event of serious illness or other emergency. </li>
+        <li>Keep  photocopies of your travel documents (passport, identification, airline  confirmation, hotel confirmation, etc.) and a list of your traveler&rsquo;s checks  with you in a separate location from the originals and leave copies with  someone at home. </li>
+        <li>Leave  things like unnecessary credit cards and expensive jewelry at home. </li>
+        <li>Use  a money belt or concealed pouch for your passport, cash and other valuables. </li>
+      </ul>
+      <p><em>For additional security  information and travel guidelines, please visit</em> <a target="_blank" href="http://www.travel.state.gov">www.travel.state.gov</a> <em>and</em> <a target="_blank" href="http://www.tsa.gov">www.tsa.gov</a>. </p>
+      <h3>Reference  Guides</h3>
+      <p><a name="cc"></a>Travel guides, which are available at local  libraries and bookstores, contain information about weather, time zones,  sightseeing, local traditions, tipping, currency exchange and other travel  details. Information is also available online at the following websites:</p>
+      <p><a target="_blank" href="http://www.mapquest.com">www.mapquest.com</a>   <a target="_blank" href="http://www.fodors.com">www.fodors.com</a>   <a target="_blank" href="http://www.viamichelin.com">www.viamichelin.com</a>   <a target="_blank" href="http://www.weather.com">www.weather.com</a>   <a target="_blank" href="http://www.oanda.com">www.oanda.com</a>       </p>
+      <h3>Credit Cards and Currency</h3>
+      <p>Before leaving the country, notify your credit  card company that you will be traveling and using your card overseas. Some  credit card companies will block usage if they detect a charge that is out of  the ordinary, which may prevent you from using your card during your trip.  Alternatively, they require you to make a long distance call to verify that you  are in fact the person using your card. </p>
+      <p>Call your credit card and debit card companies  to verify the charges they impose for ATM withdraws and international  purchases. This will determine which card you will use for various  transactions. </p>
+      <p><a name="cell"></a>Currency exchange rates and easy reference  guides are available at <a target="_blank" href="http://www.oanda.com">www.oanda.com</a> and <a target="_blank" href="http://www.xe.com">www.xe.com</a>. As a general rule,  you will get a better exchange rate if you convert your money at a bank branch in  the city of your destination than if you convert your money at the airport when  you arrive.</p>
+      <h3>Cell Phones</h3>
+      <p>Domestic cell phones do not always work  overseas. You will have to contact your cell phone carrier to verify if  international service can be added to your phone and what the cost would be to  add it. If you are interested in renting an international cell phone, you can  visit <a target="_blank" href="http://www.autoeurope.com">www.autoeurope.com</a>.</p>
+      <h3>Electricity</h3>
+      <p>Due to different electric currents, American electrical  appliances do not work overseas without an adaptor. Adaptors can be purchased  at luggage and hardware stores.</p>
+      <h3>Website References</h3>
+      <p><a target="_blank" href="http://www.flyita.com">www.flyita.com</a>   <a target="_blank" href="http://www.state.gov">www.state.gov</a>   <a target="_blank" href="http://www.travel.state.gov">www.travel.state.gov</a>   <a target="_blank" href="http://www.tsa.gov">www.tsa.gov</a></p>
+    </blockquote>
+  </div>
+</div>
+
+</asp:Content>

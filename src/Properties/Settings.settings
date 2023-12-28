@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FlyITA.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="WebReg_C_CDI_CardProcessService" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://int.itavault.int/CardProcessService.svc</Value>
+    </Setting>
+    <Setting Name="WebReg_C_LT_CardProcessService_CardProcessService" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://int.itavault.int/CardProcessService.svc</Value>
+    </Setting>
+    <Setting Name="WebReg_C_LT_CardTokenService_CardTokenService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://int.itavault.int/CardTokenService.svc</Value>
+    </Setting>
+    <Setting Name="WebReg_C_IDI_CardProcessService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://int.itavault.int/CardProcessService.svc</Value>
+    </Setting>
+    <Setting Name="WebReg_C_CA_CardProcessService_CardProcessService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://test.itavault.int/CardProcessService.svc</Value>
+    </Setting>
+    <Setting Name="WebReg_C_CardProcessService_CardProcessService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://www.itavault.int/CardProcessService.svc</Value>
+    </Setting>
+    <Setting Name="WebReg_C_CDT_CardProcessService_CardProcessService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://int.itavault.int/CardProcessService.svc</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

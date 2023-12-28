@@ -1,0 +1,41 @@
+﻿<%@ Page Title="Privacy and Security Policies" Language="C#" MasterPageFile="~/_Main.Master" AutoEventWireup="true" CodeBehind="privacy.aspx.cs" Inherits="FlyITA.privacy" ValidateRequest="false" %>
+<asp:Content ID="Content2" ContentPlaceHolderID="CustomHeaders" runat="server">
+</asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="Main" runat="server">
+    <h1>Privacy/Security Policies <br /><small>Your Information is Protected</small></h1>
+    <div class="row-light">
+    <div class="single-col-text">
+            <p><strong>ITA Group, Inc.</strong> has a strong commitment to respecting your concerns about privacy.</p>
+            <p>We understand you may have questions about whether and how we collect and use information. We have prepared
+                this statement to inform you of the privacy principles governing this website.</p>
+            <h2>Non-Individually Identifiable Information Collected Automatically</h2>
+            <p>In some cases, we may collect information about you that is not  individually identifiable. Examples of this
+                type of information include the  type of Internet browser you are using or the type of computer operating
+                system  you are using.</p>
+            <h2>About Cookies</h2>
+            <p>Many websites, including this site, use cookie technology to help  users navigate efficiently. When you make
+                selections or set preferences on our  site, our site will send a request to your web browser to record some
+                (but not  all) of your selections in a &quot;cookie&quot; file. The cookie is a small  text file that
+                resides on your hard drive. From time-to-time, our site will  request the cookie from your browser so that
+                we can retrieve the stored information  and you do not have to make the same selections over and over
+                again.</p>
+            <p>We never use cookies to store personal information, such as  passwords or credit card numbers, nor can the
+                information we store in the  cookie ever be read by any website other than ours.</p>
+            <p><strong>Note:</strong> <em>With most browsers, a user can set the  preferences to show a warning each time
+                a cookie request is received. You can  also usually set the browser not to accept cookies at all. However, doing so  will require you to enter similar data each time you visit this site.</em></p>
+            <h2>Security Policy</h2>
+            <p>When you are asked for confidential account information, we will  require that a secure &quot;session&quot;
+                first be established using Secure  Socket Layer (SSL). Before this data is transmitted, our site will first  establish a secure &quot;session&quot; using SSL. This technology encodes  information as it is being sent over the Internet between your computer and our  secure servers, helping to ensure that the information remains confidential.</p>
+            <p>You will know when a secure &quot;session&quot; is taking place, because  your browser will display an
+                indicator of whether your session is secure or  not. For example, a broken key symbol may appear in the
+                bottom bar to indicate  you are visiting an insecure site; an unbroken key will indicate a secure site.
+                You should see an unbroken key during each visit to this site.</p>
+            <h2>Amendments</h2>
+            <p>ITA Group, Inc. may amend this policy from time to time.</p>
+            <h2>Contact Us with Any Questions or Comments</h2>
+            <p>We welcome your questions and comments about privacy. Please email us at
+                <a href="mailto:travelrequest@itagroup.com">travelrequest@itagroup.com</a>.</p>
+    </div>
+        </div>
+</asp:Content>
+

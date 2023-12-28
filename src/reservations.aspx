@@ -1,0 +1,38 @@
+﻿<%@ Page Title="Booking Information" Language="C#" MasterPageFile="~/_Main.Master" AutoEventWireup="true" CodeBehind="reservations.aspx.cs" Inherits="FlyITA.reservations" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="CustomHeaders" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="Main" runat="server">
+<h1>Booking Information<br />
+<small>How to Book Travel</small></h1>
+
+<div class="row-light">
+<div class="single-col-text">
+<h3>Call  International Travel Associate (ITA)<br />(515) 326-3851 or (800) 732-9402</h3>
+<ul>
+  <li>This  booking option is available to all travelers and travel coordinators.</li>
+  <li>You  will reach our call center and the first available travel consultant will  assist you.</li>
+  <li>Identify  yourself and your company to the travel consultant.</li>
+  <li>If  the traveler does not have a profile on file with ITA, you will need to provide  the traveler&rsquo;s name as it appears on the driver&rsquo;s license, birth date and  gender. </li>
+  <li>Depending  on your company&rsquo;s travel policy, you may also need to provide a contact phone  number, mailing address, email address, frequent flyer numbers, seat  preferences and a form of payment.</li>
+  <li>If  you travel more than three times per year and you would like to have a profile  on file with ITA, please complete the <a href="Travelerprofileinformation.aspx">traveler profile form</a>. Within two business  days, your profile will be added to our files, providing access to the online  booking option detailed below.</li>
+</ul>
+
+<h3>Book online</h3>
+<ul>
+  <li>If  your company allows online booking, you should have a company-specific link for  the booking tool. This option is available to travelers and travel coordinators  with profiles on file with ITA. <br>
+    If you do not have a profile, please complete the <a href="Travelerprofileinformation.aspx">traveler profile form</a>. </li>
+  <li>Please  keep in mind that if you are a travel coordinator booking on behalf of a  traveler and the traveler does not have a profile, you will need to call our  office or book the traveler as a guest traveler. </li>
+  <li>Sign  in using your user ID and password.</li>
+  <li>Online  assistance is also available by clicking the Help link.</li>
+  <li>If  you encounter any difficulties, please call ITA at (515) 326-3851 or (800)  732-9402 for assistance.</li>
+</ul>
+<h3>Email travel requests to <a href="mailto:travelrequest@itagroup.com">travelrequest@itagroup.com</a></h3>
+<ul>
+  <li>This  option is available to all travelers and travel coordinators.</li>
+  <li>Requests  are processed immediately by the first available agent.</li>
+</ul>
+<p>After  booking, you will receive an itinerary via email once your reservation is  ticketed. It is very important that the itinerary is checked completely for  accuracy. Any discrepancies must be reported to ITA the next business day  following ticketing.  </p>
+</div>
+</div>
+
+</asp:Content>

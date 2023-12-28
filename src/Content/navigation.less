@@ -1,0 +1,510 @@
+﻿/*-------------------------------------------------------------------------------------------*/
+/* HEADER  (contains logo and global navigation)             ||---------------------------- */
+/*-----------------------------------------------------------------------------------------*/
+.header {
+    padding: 0;
+    margin:0;
+    position: relative;
+    width: 100%;
+    z-index: 2000;
+    position: absolute;
+    background-color: rgba(255,255,255,0);
+    border-bottom: none;
+    box-shadow:none;
+    transition: all 0.25s ease 0s;
+    -webkit-transition-: all 0.25s ease 0s;
+    -webkit-transition: all 0.25s ease 0s;
+    -moz-transition: all 0.25s ease 0s;
+    -o-transition: all 0.25s ease 0s;
+    .container {
+        position: relative;
+    }
+    .logo {
+        float: left;
+        display: inline-block;
+        position: relative;
+        width: 300px;
+        margin-top:20px;
+        img {
+            position: absolute;
+            width: 100%;
+            display: block;
+        }
+    }
+    .logo img.l-white,
+    .logo img.l-color,
+    &.sticky .logo img.l-white,
+    &.sticky .logo img.l-color
+    {
+        opacity: 0;
+    }
+    /************
+        leave all set to 0 to toggle header bkg
+    ************/
+    .logo img.l-white,
+    &.sticky .logo img.l-color
+    {
+        opacity: 1;
+    }
+    .navigation ul,
+    .navigation ul li,
+    .navigation ul li a {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        list-style: none;
+        line-height: 1;
+        display: block;
+        position: relative;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .navigation {
+        padding: 0;
+        border: 0;
+        line-height: 1;
+        display: block;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        position: static;
+        float: right;
+        margin-left: 30px;
+    ul {
+        li{
+            float: left;
+            a{
+                padding: 41px 16px;
+                font-size: 12px;
+                font-weight:600;
+                letter-spacing: 2px;
+                text-decoration: none;
+                text-transform: uppercase;
+                transition: all 0.25s ease 0s;
+                -webkit-transition: all 0.25s ease 0s;
+                -moz-transition: all 0.25s ease 0s;
+                -o-transition: all 0.25s ease 0s;
+                outline:none;
+                color: #fff;
+                &:hover{color: @brand-tertiary;}
+                &.menu-register{
+                    color:@brand-secondary;
+                    &:hover{color: @brand-tertiary;}
+                }
+            }
+            ul {
+                position: absolute;
+                left: -9999px;
+                opacity: 0;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                background:rgba(32,32,32,0.95);
+                -webkit-transition: all 0.4s ease;
+                -moz-transition: all 0.4s ease;
+                -ms-transition: all 0.4s ease;
+                -o-transition: all 0.4s ease;
+                transition: all 0.4s ease;
+                top: 130%;
+                visibility: hidden;
+                li{
+                    a{
+                        padding: 10px 20px;
+                        color:#fff;
+                        letter-spacing: 1px;
+                        font-weight:500;
+                        font-size:12px;
+                        outline:none;
+                        padding: 10px 20px;
+                        width: 225px;
+                        font-size: 12px;
+                        text-decoration: none;
+                        color: #fff;
+                        -webkit-transition: color .2s ease;
+                        -moz-transition: color .2s ease;
+                        -ms-transition: color .2s ease;
+                        -o-transition: color .2s ease;
+                        transition: color .2s ease;
+                        &:hover {
+                            background-color:@brand-tertiary;
+                            color:#fff;}
+                    }
+                }
+            }
+            &:hover{
+                ul{
+                    left: auto;
+                    opacity: 1;
+                    top: 100%;
+                    visibility: visible;
+                }
+            }
+        }
+        &:after {
+            content: ".";
+            display: block;
+            clear: both;
+            visibility: hidden;
+            line-height: 0;
+            height: 0;
+        }
+    }
+    #menu-button {
+        display: none;
+    }
+    &:after{
+        content: ".";
+        display: block;
+        clear: both;
+        visibility: hidden;
+        line-height: 0;
+        height: 0;
+    }
+    &.align-right{
+         ul{
+             li {
+                float: right;
+                ul{
+                    text-align: right;
+                }
+                &:hover{
+                    ul {
+                        right: 0;
+                    }
+                }
+            }
+         }
+    }
+    &.align-center{
+
+        ul {
+            font-size: 0;
+            text-align: center;
+            li {
+                display: inline-block;
+                float: none;
+                ul {
+                    text-align: left;
+                }
+            }
+        }
+    }
+}/*end navigation*/
+    &.sticky{
+        background-color: rgba(255, 255, 255, 1);
+        box-shadow: 0 5px 28px rgba(0,0,0,.15);
+        -moz-box-shadow: 0 5px 28px rgba(0,0,0,.15);
+        -webkit-box-shadow: 0 5px 28px rgba(0,0,0,.15);
+        -o-box-shadow: 0 5px 28px rgba(0,0,0,.15);
+        position: fixed;
+        border-bottom: 1px solid #eee;
+        min-height: 70px;
+        .logo {
+            width: 300px;
+            margin-top: 4px;
+        }
+        .navigation{
+            ul{
+                li{
+                    a {
+                        padding: 26px 16px;
+                        color: @brand-primary;
+                        &:hover{color: @brand-tertiary;}
+                        &.menu-register{
+                            color:@brand-secondary;
+                            &:hover{color: @brand-tertiary;}
+                        }
+                    }
+                    ul{
+                        li{
+                            a{
+                                padding: 10px 20px;
+                                color:#fff;
+                                letter-spacing: 1px;
+                                font-weight:500;
+                                font-size:12px;
+                                outline:none;
+                                padding: 10px 20px;
+                                width: 225px;
+                                font-size: 12px;
+                                text-decoration: none;
+                                color: #fff;
+                                -webkit-transition: color .2s ease;
+                                -moz-transition: color .2s ease;
+                                -ms-transition: color .2s ease;
+                                -o-transition: color .2s ease;
+                                transition: color .2s ease;
+                                &:hover {
+                                    background-color:@brand-tertiary;
+                                    color:#fff;}
+                            }
+                        }
+                    }
+                }
+            }
+        }/*end navigation*/
+      }
+}
+
+/*------------------ uncomment these if you need the white bar to appear all of the time.
+* .header { background:#fff !important; }
+.navigation > ul > li > a { color:#323232 !important; } ---- toggle header bkg */
+@media all and (max-width: 991px){
+    .header, .header.sticky{
+        .navigation {
+            width: auto;
+            margin-left: 0;
+            li:hover > ul {
+                top: auto;
+            }
+            #menu-button {
+                display: inline-block;
+                padding:12px 0 16px 0;
+                margin-left: 15px;
+                //color: #323232;
+                cursor: pointer;
+                font-size: 12px;
+                text-transform: uppercase;
+                z-index:2;
+                float:left;
+                .mobile-menu-icon{
+                    height: 25px;
+                    display: block;
+                    font-size: 17px;
+                    line-height: 24px;
+                    background-color:#eee;
+                    padding:0 8px 2px 8px;
+                    border:1px solid @brand-primary;
+                    border-radius:3px;
+                    color:@brand-primary;
+                    &:hover{color:@brand-tertiary;}
+                }
+            }
+            ul {
+                display: none;
+                left: 0;
+                width: 100%;
+                background:#fff;
+                overflow:auto;
+                position:fixed;
+                top:64px;
+                z-index:2;
+                height:calc(100% - 64px);
+                li {
+                    width: 100%;
+                    height: auto;
+                    border-top: 1px solid #eee;
+                    float: none;
+                    display: block;
+                    max-width:750px;
+                    margin-left:auto;
+                    margin-right:auto;
+
+                    .submenu-button {
+                        position: absolute;
+                        z-index: 10;
+                        right: 0;
+                        top: 0;
+                        display: block;
+                        border-left: 1px solid #eee;
+                        height: 52px;
+                        width: 52px;
+                        cursor: pointer;
+                        &::after {
+                            content: '';
+                            position: absolute;
+                            top: 21px;
+                            left: 26px;
+                            display: block;
+                            width: 1px;
+                            height: 11px;
+                            background: #323232;
+                            z-index: 99;
+                        }
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            left: 21px;
+                            top: 26px;
+                            display: block;
+                            width: 11px;
+                            height: 1px;
+                            background: #323232;
+                            z-index: 99;
+                        }
+                        .submenu-button.submenu-opened:after {
+                            display: none;
+                        }
+                    }
+                    a, .btn-menu{
+                        width: 100%;
+                        padding: 20px 16px !important;
+                        color:#323232;
+                        &:hover {
+                            color:@brand-tertiary !important;
+                            background-color:transparent;
+                        }
+                    }
+                    &.nav-has-sub > a::after {
+                        display: none;
+                    }
+                    &li:hover > ul > li {
+                        width: 100%;
+                        height: auto;
+                        border-top: 1px solid #eee;
+                    }
+                    ul.nav-dropdown{
+                        padding-top: 0;
+                        padding-bottom: 0;
+                        background: #f7f7f7;
+                        opacity: 1;
+                        visibility: visible;
+                        position: relative;
+                        left: 0;
+                        right: auto;
+                        width: 100%;
+                        margin: 0;
+                        li{
+                            width: 100%;
+                            height: auto;
+                            border-top: 1px solid #eee;
+                            &:hover{color: #fff;}
+                            a{
+                                width: 100%;
+                                padding: 20px 20px 20px 30px;
+                                font-size: 12px;
+                                color: #323232;
+                                background: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@media all and (max-width: 768px){
+.header, .header.sticky{
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    -o-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    padding-left:1%;
+    min-height:70px;
+    .logo {
+        max-width: 260px;
+        margin-top:8px;
+        img.l-color {
+            opacity: 1;
+        }
+        img.l-white {
+            display: none;
+            opacity: 0;
+        }
+    }
+  } /*end header*/
+}
+
+/* ----------------------------------*/
+/* Scroll Down Animated Arrow */
+/* ----------------------------------*/
+.intro-scroll-down {
+    position: absolute;
+    z-index: 1;
+    bottom: 30px;
+    left: 50%;
+    margin-left: -30px;
+     a {
+        position: relative;
+        display: block;
+        -moz-animation: bounce 2s infinite;
+        -webkit-animation: bounce 2s infinite;
+        animation: bounce 2s infinite;
+        &.scroll-down {
+            color:@brand-tertiary;
+            .fa {
+                font-size:4em;
+            }
+        }
+        &:hover {
+            color:@brand-primary;
+        }
+    }
+}
+@-moz-keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -moz-transform: translateY(0);
+    transform: translateY(0);
+  }
+  40% {
+    -moz-transform: translateY(-30px);
+    transform: translateY(-30px);
+  }
+  60% {
+    -moz-transform: translateY(-15px);
+    transform: translateY(-15px);
+  }
+}
+@-webkit-keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-30px);
+    transform: translateY(-30px);
+  }
+  60% {
+    -webkit-transform: translateY(-15px);
+    transform: translateY(-15px);
+  }
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  40% {
+    -moz-transform: translateY(-30px);
+    -ms-transform: translateY(-30px);
+    -webkit-transform: translateY(-30px);
+    transform: translateY(-30px);
+  }
+  60% {
+    -moz-transform: translateY(-15px);
+    -ms-transform: translateY(-15px);
+    -webkit-transform: translateY(-15px);
+    transform: translateY(-15px);
+  }
+}
+
+/* ----------------------------------*/
+/* Scroll Top Arrow */
+/* ----------------------------------*/
+.scroll-top {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    text-align: center;
+    font-size: 20px;
+    background: #323232;
+    background: #555;
+    color: #fff;
+    z-index: 99;
+    display: none;
+    transition: none;
+    -o-transition: none;
+    -moz-transition: none;
+    -webkit-transition: none;
+    &:hover {
+        background: @brand-secondary;
+        text-decoration: none;
+        color: #fff;
+    }
+}

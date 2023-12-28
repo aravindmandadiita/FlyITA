@@ -1,0 +1,1 @@
+"\\appserver\ita_apps\TS_Utilities\Deployment\WebReg\WebReg.vbs" /source:test /target:prod /itaprognbr:2????? /build:"\\appserver\ita_apps\TS_Utilities\Deployment\WebReg\Deploy.build" /clean:N /DOCOPYDLL:Y /VANITYPATH:
