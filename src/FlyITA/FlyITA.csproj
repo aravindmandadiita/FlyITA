@@ -501,28 +501,24 @@
   <ItemGroup>
     <Compile Include="aboutita.aspx.cs">
       <DependentUpon>aboutita.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="aboutita.aspx.designer.cs">
       <DependentUpon>aboutita.aspx</DependentUpon>
     </Compile>
     <Compile Include="Accessdenied.aspx.cs">
       <DependentUpon>Accessdenied.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Accessdenied.aspx.designer.cs">
       <DependentUpon>Accessdenied.aspx</DependentUpon>
     </Compile>
     <Compile Include="AchPayment.aspx.cs">
       <DependentUpon>AchPayment.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="AchPayment.aspx.designer.cs">
       <DependentUpon>AchPayment.aspx</DependentUpon>
     </Compile>
     <Compile Include="closed.aspx.cs">
       <DependentUpon>closed.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="closed.aspx.designer.cs">
       <DependentUpon>closed.aspx</DependentUpon>
@@ -530,28 +526,24 @@
     <Compile Include="closedMVP.cs" />
     <Compile Include="international.aspx.cs">
       <DependentUpon>international.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="international.aspx.designer.cs">
       <DependentUpon>international.aspx</DependentUpon>
     </Compile>
     <Compile Include="programs.aspx.cs">
       <DependentUpon>programs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="programs.aspx.designer.cs">
       <DependentUpon>programs.aspx</DependentUpon>
     </Compile>
     <Compile Include="reservations.aspx.cs">
       <DependentUpon>reservations.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="reservations.aspx.designer.cs">
       <DependentUpon>reservations.aspx</DependentUpon>
     </Compile>
     <Compile Include="resources.aspx.cs">
       <DependentUpon>resources.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="resources.aspx.designer.cs">
       <DependentUpon>resources.aspx</DependentUpon>
@@ -561,7 +553,6 @@
     </Compile>
     <Compile Include="ImageListing.aspx.cs">
       <DependentUpon>ImageListing.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ImageListing.aspx.designer.cs">
       <DependentUpon>ImageListing.aspx</DependentUpon>
@@ -631,7 +622,6 @@
     </Compile>
     <Compile Include="error.aspx.cs">
       <DependentUpon>error.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="error.aspx.designer.cs">
       <DependentUpon>error.aspx</DependentUpon>
@@ -641,7 +631,6 @@
     </Compile>
     <Compile Include="GuestProfileInformation.aspx.cs">
       <DependentUpon>GuestProfileInformation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="GuestProfileInformation.aspx.designer.cs">
       <DependentUpon>GuestProfileInformation.aspx</DependentUpon>
@@ -649,7 +638,6 @@
     <Compile Include="GuestProfileInformationMVP.cs" />
     <Compile Include="helpsite.aspx.cs">
       <DependentUpon>helpsite.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="helpsite.aspx.designer.cs">
       <DependentUpon>helpsite.aspx</DependentUpon>
@@ -664,24 +652,19 @@
     <Compile Include="ICustomFieldControlCs.cs" />
     <Compile Include="logout.aspx.cs">
       <DependentUpon>logout.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="logout.aspx.designer.cs">
       <DependentUpon>logout.aspx</DependentUpon>
     </Compile>
-    <Compile Include="PageBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="PageBase.cs" />
     <Compile Include="privacy.aspx.cs">
       <DependentUpon>privacy.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="privacy.aspx.designer.cs">
       <DependentUpon>privacy.aspx</DependentUpon>
     </Compile>
     <Compile Include="ThankYou.aspx.cs">
       <DependentUpon>ThankYou.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ThankYou.aspx.designer.cs">
       <DependentUpon>ThankYou.aspx</DependentUpon>
@@ -701,7 +684,6 @@
     </Compile>
     <Compile Include="travelinfo.aspx.cs">
       <DependentUpon>travelinfo.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="travelinfo.aspx.designer.cs">
       <DependentUpon>travelinfo.aspx</DependentUpon>

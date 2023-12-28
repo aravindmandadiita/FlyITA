@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyITA", "FlyITA.csproj", "{AE26BF3D-4DED-42CD-A1B6-8CAD51CA8B96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyITA", "FlyITA\FlyITA.csproj", "{AE26BF3D-4DED-42CD-A1B6-8CAD51CA8B96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
