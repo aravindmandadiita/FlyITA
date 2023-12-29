@@ -450,11 +450,11 @@
     <Content Include="Content\theme.css.map">
       <DependentUpon>theme.css</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\Fly ITA - TEST.pubxml">
+    <None Include="Properties\PublishProfiles\FlyITA-TEST.pubxml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Properties\PublishProfiles\FlyITA - Prod.pubxml" />
-    <None Include="Properties\PublishProfiles\FlyITA -DEV.pubxml" />
+    <None Include="Properties\PublishProfiles\FlyITA-Prod.pubxml" />
+    <None Include="Properties\PublishProfiles\FlyITA-DEV.pubxml" />
     <Content Include="SecureFlightInformation.json" />
     <Content Include="scripts\chutzpah.json" />
     <None Include="ThirdPartyLibs\AjaxControlToolkit.dll" />
