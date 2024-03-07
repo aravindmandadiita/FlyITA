@@ -62,7 +62,7 @@
         <section id="info-links" class="row-light">
             <div class="container">
                 <div class="col-xs-12 col-md-4">
-                    <h3 class="icon1">Flight check-in & Mileage Programs</h3>
+                    <h3 class="icon1">Flight check-in<br />& Mileage Programs</h3>
                     <div class="icon-content">
                         <p>Select an airline to check in with:</p>
                         <ul>
@@ -79,14 +79,14 @@
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-4">
-                    <h3 class="icon2">Travel Updates & Alerts</h3>
+                    <h3 class="icon2">Travel Updates<br />& Alerts</h3>
                     <div class="icon-content">
                         <p><a href="https://www.viewtrip.com/VTHome.aspx" target="_blank">ViewTrip</a> - ViewTrip  is monitored 24/7 to keep you current on what&rsquo;s happening in your destination  city as well as your home city.</p>
                         <p><a href="https://weather.com/" target="_blank">Weather.com</a> - Visit weather.com to find weather information for anywhere in the world.</p>
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-4">
-                    <h3 class="icon3">Traveling Internationally</h3>
+                    <h3 class="icon3">Traveling<br />Internationally</h3>
                     <div class="icon-content">
                         <ul>
                             <li><a href="international.aspx#passport">Passports/Visas</a></li>
