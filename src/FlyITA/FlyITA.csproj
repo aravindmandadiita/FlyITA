@@ -286,14 +286,6 @@
     <Content Include="Content\variables.less" />
     <Content Include="navigation.ashx" />
     <Content Include="Content\navigation.less" />
-    <Content Include="Diagnostics\DumpProg.aspx" />
-    <Content Include="Diagnostics\DumpUser.aspx" />
-    <Content Include="Diagnostics\Default.aspx" />
-    <Content Include="Diagnostics\PartyEventsInfo.aspx" />
-    <Content Include="Diagnostics\PersonMatch.aspx" />
-    <Content Include="Diagnostics\PreviewEmail.aspx" />
-    <Content Include="Diagnostics\Session.aspx" />
-    <Content Include="Diagnostics\TestError.aspx" />
     <Content Include="EISLibs\ITAErrorLogging.dll" />
     <Content Include="EISLibs\ITAErrorLogging.pdb" />
     <Content Include="error.aspx" />
@@ -435,62 +427,6 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\DumpProg.aspx.cs">
-      <DependentUpon>DumpProg.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\DumpProg.aspx.designer.cs">
-      <DependentUpon>DumpProg.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\DumpUser.aspx.cs">
-      <DependentUpon>DumpUser.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\DumpUser.aspx.designer.cs">
-      <DependentUpon>DumpUser.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\PartyEventsInfo.aspx.cs">
-      <DependentUpon>PartyEventsInfo.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\PartyEventsInfo.aspx.designer.cs">
-      <DependentUpon>PartyEventsInfo.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\PersonMatch.aspx.cs">
-      <DependentUpon>PersonMatch.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\PersonMatch.aspx.designer.cs">
-      <DependentUpon>PersonMatch.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\PreviewEmail.aspx.cs">
-      <DependentUpon>PreviewEmail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\PreviewEmail.aspx.designer.cs">
-      <DependentUpon>PreviewEmail.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\Session.aspx.cs">
-      <DependentUpon>Session.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\Session.aspx.designer.cs">
-      <DependentUpon>Session.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Diagnostics\TestError.aspx.cs">
-      <DependentUpon>TestError.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Diagnostics\TestError.aspx.designer.cs">
-      <DependentUpon>TestError.aspx</DependentUpon>
     </Compile>
     <Compile Include="error.aspx.cs">
       <DependentUpon>error.aspx</DependentUpon>
