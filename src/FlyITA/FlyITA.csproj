@@ -636,7 +636,6 @@
     </Compile>
     <Compile Include="Utilities\PageConfiguration.cs" />
     <Compile Include="Utilities\PresenterBaseCs.cs" />
-    <Compile Include="Utilities\ReportServerCredentials.cs" />
     <Compile Include="Utilities\SAMLConstants.cs" />
     <Compile Include="Utilities\UserDefinedEnums.cs" />
     <Compile Include="Utilities\UtilitiesCs.cs" />
