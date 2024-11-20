@@ -224,16 +224,10 @@
     <Content Include="reservations.aspx" />
     <Content Include="resources.aspx" />
     <Content Include="scripts\banners.js" />
-    <Content Include="scripts\frameworks\bootstrap-datetimepicker.js" />
-    <Content Include="scripts\frameworks\bootstrap-datetimepicker.min.js" />
     <Content Include="scripts\confirm.spec.js" />
     <Content Include="scripts\frameworks\contact-form.js" />
     <Content Include="scripts\frameworks\jquery-ui.min.js" />
     <Content Include="scripts\frameworks\map.js" />
-    <Content Include="scripts\frameworks\moment-with-locales.js" />
-    <Content Include="scripts\frameworks\moment-with-locales.min.js" />
-    <Content Include="scripts\frameworks\moment.js" />
-    <Content Include="scripts\frameworks\moment.min.js" />
     <Content Include="scripts\frameworks\navigation.js" />
     <Content Include="scripts\frameworks\theme.js" />
     <Content Include="scripts\home.js" />

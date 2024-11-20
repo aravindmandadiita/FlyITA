@@ -34,7 +34,7 @@
     <link id="registrationstyles" runat="server" rel="stylesheet" type="text/css" />
 
     <!-- javascript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js" ></script>
     <script src="scripts/frameworks/modernizr-2.8.2.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
     <!--[if lte IE 8]>
