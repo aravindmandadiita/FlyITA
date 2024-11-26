@@ -283,7 +283,6 @@
     <Content Include="scripts\frameworks\modernizr-2.8.2.js" />
     <Content Include="scripts\guestinformation.js" />
     <Content Include="scripts\formvalidation.js" />
-    <Content Include="scripts\frameworks\flowplayer.min.js" />
     <Content Include="scripts\main.js" />
     <Content Include="Content\print.css" />
     <Content Include="fonts\fontawesome-webfont.eot" />

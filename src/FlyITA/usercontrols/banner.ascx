@@ -6,7 +6,7 @@
             <div class="flexslider fullscreen-carousel">
                 <ul class="slides">
                     <li>
-                        <img id="internal-banner" alt="" />
+                        <img src="../images/banner-bkg.jpg" alt="" />
                     </li>
                 </ul>
             </div>
@@ -32,7 +32,7 @@
             <div class="flexslider fullscreen-carousel hero-slider-1 parallax parallax-section1">
                 <ul class="slides">
                     <li>
-                        <img id="image1" alt="" />
+                        <img src="../images/gallery/01.jpg" alt="" />
                         <div class="overlay-hero">
                             <div class="container caption-hero light-color">
                                 <div class="inner-caption">
@@ -53,5 +53,3 @@
     <div id="scroll-to-point" class="hidden-xs"></div>
     <!-- End Intro Section -->
 </div>
-
-<script src="scripts/banners.js"></script>
