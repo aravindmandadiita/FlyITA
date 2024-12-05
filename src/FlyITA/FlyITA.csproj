@@ -198,9 +198,6 @@
     <Content Include="EISLibs\ITALib.pdb" />
     <Content Include="EISLibs\PCentralLib.dll" />
     <Content Include="EISLibs\PCentralLib.pdb" />
-    <Content Include="fonts\fontawesome-webfont.svg" />
-    <Content Include="fonts\ionicons.svg" />
-    <Content Include="fonts\meteocons-webfont.svg" />
     <Content Include="ImageListing.aspx" />
     <Content Include="images\banner-bkg.jpg" />
     <Content Include="images\favicon.ico" />
@@ -227,7 +224,6 @@
     <Content Include="scripts\confirm.spec.js" />
     <Content Include="scripts\frameworks\contact-form.js" />
     <Content Include="scripts\frameworks\jquery-ui.min.js" />
-    <Content Include="scripts\frameworks\map.js" />
     <Content Include="scripts\frameworks\navigation.js" />
     <Content Include="scripts\frameworks\theme.js" />
     <Content Include="scripts\home.js" />
@@ -279,22 +275,11 @@
     <Content Include="Travelerprofileinformation.aspx" />
     <Content Include="scripts\confirm.js" />
     <Content Include="scripts\fileupload.js" />
-    <Content Include="scripts\frameworks\jquery.dataTables.min.js" />
     <Content Include="scripts\frameworks\modernizr-2.8.2.js" />
     <Content Include="scripts\guestinformation.js" />
     <Content Include="scripts\formvalidation.js" />
     <Content Include="scripts\main.js" />
     <Content Include="Content\print.css" />
-    <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="fonts\fontawesome-webfont.ttf" />
-    <Content Include="fonts\fontawesome-webfont.woff" />
-    <Content Include="fonts\FontAwesome.otf" />
-    <Content Include="fonts\meteocons-webfont.eot" />
-    <Content Include="fonts\meteocons-webfont.ttf" />
-    <Content Include="fonts\meteocons-webfont.woff" />
-    <Content Include="fonts\ionicons.eot" />
-    <Content Include="fonts\ionicons.ttf" />
-    <Content Include="fonts\ionicons.woff" />
     <Content Include="Content\theme.css.map">
       <DependentUpon>theme.css</DependentUpon>
     </Content>
