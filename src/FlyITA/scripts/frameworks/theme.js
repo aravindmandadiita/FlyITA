@@ -1,5 +1,5 @@
 
-(function ($) {
+$(function () {
     "use strict";
 
     $(window).load(function () {
@@ -38,8 +38,7 @@
 
         })
     };
-
-})(jQuery);
+});
 
 
 // ---------------------------------------------------------------------------------------------------------------------------->
@@ -140,7 +139,7 @@ function scrollCallbackEle() {
 // SHORTCODE ELEMENTS  ||-----------
 // ---------------------------------------------------------------------------------------------------------------------------->
 
-shortcodeElements();
+
 function shortcodeElements() {
 
 
@@ -184,10 +183,10 @@ function shortcodeElements() {
     };
 
     //Parallax plugin Js Function element
-    $.stellar({
-        horizontalScrolling: false,
-        verticalOffset: 500
-    });
+    //$.stellar({
+    //    horizontalScrolling: false,
+    //    verticalOffset: 500
+    //});
 };
 
 
