@@ -2,13 +2,8 @@
 @import "jquery-ui.css";
 @import "plugin/animate.css";
 @import "plugin/flexslider.css";
-@import "plugin/owl.carousel.css";
-@import "plugin/mediaelementplayer.css";
-@import "plugin/colorbox.css";
-@import "plugin/jquery.fs.tipper.css";
-@import "style.css";
-@import "ionicons.css";
  */
+@import "style.css";
 
 html {
   font-family: sans-serif;

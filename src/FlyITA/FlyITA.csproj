@@ -189,8 +189,6 @@
     <Content Include="configuration\TravelerProfiler.html" />
     <Content Include="configuration\VacationTravelRequest.html" />
     <Content Include="Content\boxsizing.htc" />
-    <Content Include="Content\jquery-ui.css" />
-    <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\style.css" />
     <Content Include="EISLibs\ITALib.dll" />
@@ -221,11 +219,9 @@
     <Content Include="resources.aspx" />
     <Content Include="scripts\banners.js" />
     <Content Include="scripts\confirm.spec.js" />
-    <Content Include="scripts\frameworks\jquery-ui.min.js" />
     <Content Include="scripts\frameworks\navigation.js" />
     <Content Include="scripts\frameworks\theme.js" />
     <Content Include="scripts\home.js" />
-    <Content Include="scripts\frameworks\wow.min.js" />
     <Content Include="scripts\main.spec.js" />
     <Content Include="scripts\formvalidation.spec.js" />
     <Content Include="scripts\guestinformation.spec.js" />
