@@ -226,9 +226,9 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>--%>
     <script src="scripts/frameworks/navigation.js" type="text/javascript"></script>
-    <script src="scripts/frameworks/jquery.stellar.min.js" type="text/javascript"></script>
-    <script src="scripts/frameworks/jquery.viewportchecker.js" type="text/javascript"></script>
-    <script src="scripts/frameworks/wow.min.js" type="text/javascript"></script>
+    <%--<script src="scripts/frameworks/jquery.stellar.min.js" type="text/javascript"></script>--%>
+    <%--<script src="scripts/frameworks/jquery.viewportchecker.js" type="text/javascript"></script>--%>
+    <%--<script src="scripts/frameworks/wow.min.js" type="text/javascript"></script>--%>
     <script src="scripts/frameworks/moment.min.js"></script>
     <%--<script src="scripts/frameworks/bootstrap-datetimepicker.min.js"></script>--%>
     <script src="scripts/frameworks/theme.js" type="text/javascript"></script>
