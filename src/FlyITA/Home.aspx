@@ -30,16 +30,16 @@
     <div id="homepage" class="clearfix">
         <section id="itinerary" class="row-dark">
             <div class="container">
-                <div class="col-xs-12 col-md-4">
+                <div class="col-md-4">
                     <h3>View Itinerary & Flight Status</h3>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-3">
+                <div class="col-sm-6 col-md-3">
                     <asp:TextBox ID="txtReservationNum" required="required" runat="server" placeholder="Enter Reservation Number"></asp:TextBox>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-3">
+                <div class="col-sm-6 col-md-3">
                     <asp:TextBox ID="txtTravelerFirstName" required="required" runat="server" placeholder="Enter Traveler Last Name"></asp:TextBox>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-md-2">
+                <div class="col-sm-6 col-md-2">
                     <a class="btn btn-md btn-primary" href="#" id="viewItinerary" onclick="viewItinerarydetails()" runat="server">View Itinerary</a>
                 </div>
             </div>
@@ -61,7 +61,7 @@
         </section>
         <section id="info-links" class="row-light">
             <div class="container">
-                <div class="col-xs-12 col-md-4">
+                <div class="col-md-4">
                     <h3 class="icon1">Flight check-in<br />& Mileage Programs</h3>
                     <div class="icon-content">
                         <p>Select an airline to check in with:</p>
@@ -78,14 +78,14 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-xs-12 col-md-4">
+                <div class="col-md-4">
                     <h3 class="icon2">Travel Updates<br />& Alerts</h3>
                     <div class="icon-content">
                         <p><a href="https://www.viewtrip.com/VTHome.aspx" target="_blank">ViewTrip</a> - ViewTrip  is monitored 24/7 to keep you current on what&rsquo;s happening in your destination  city as well as your home city.</p>
                         <p><a href="https://weather.com/" target="_blank">Weather.com</a> - Visit weather.com to find weather information for anywhere in the world.</p>
                     </div>
                 </div>
-                <div class="col-xs-12 col-md-4">
+                <div class="col-md-4">
                     <h3 class="icon3">Traveling<br />Internationally</h3>
                     <div class="icon-content">
                         <ul>

@@ -189,10 +189,9 @@
     <Content Include="configuration\TravelerProfiler.html" />
     <Content Include="configuration\VacationTravelRequest.html" />
     <Content Include="Content\boxsizing.htc" />
-    <Content Include="Content\font-wx.css" />
-    <Content Include="Content\ionicons.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery.dataTables.css" />
+    <Content Include="Content\main.css" />
     <Content Include="Content\style.css" />
     <Content Include="EISLibs\ITALib.dll" />
     <Content Include="EISLibs\ITALib.pdb" />
@@ -222,7 +221,6 @@
     <Content Include="resources.aspx" />
     <Content Include="scripts\banners.js" />
     <Content Include="scripts\confirm.spec.js" />
-    <Content Include="scripts\frameworks\contact-form.js" />
     <Content Include="scripts\frameworks\jquery-ui.min.js" />
     <Content Include="scripts\frameworks\navigation.js" />
     <Content Include="scripts\frameworks\theme.js" />
@@ -241,26 +239,11 @@
     <Content Include="scripts\jasmine\jasmine.js" />
     <Content Include="scripts\jasmine\WebFormsMocks.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\theme.css">
-      <DependentUpon>theme.less</DependentUpon>
-    </Content>
-    <Content Include="Content\theme.min.css">
-      <DependentUpon>theme.less</DependentUpon>
-    </Content>
-    <Content Include="Content\variables.css">
-      <DependentUpon>variables.less</DependentUpon>
-    </Content>
-    <Content Include="Content\variables.min.css">
-      <DependentUpon>variables.less</DependentUpon>
-    </Content>
     <Content Include="Default.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\theme.less" />
-    <Content Include="Content\variables.less" />
     <Content Include="navigation.ashx" />
-    <Content Include="Content\navigation.less" />
     <Content Include="EISLibs\ITAErrorLogging.dll" />
     <Content Include="EISLibs\ITAErrorLogging.pdb" />
     <Content Include="error.aspx" />
@@ -280,9 +263,6 @@
     <Content Include="scripts\formvalidation.js" />
     <Content Include="scripts\main.js" />
     <Content Include="Content\print.css" />
-    <Content Include="Content\theme.css.map">
-      <DependentUpon>theme.css</DependentUpon>
-    </Content>
     <None Include="Properties\PublishProfiles\FlyITA-TEST.pubxml">
       <SubType>Designer</SubType>
     </None>
