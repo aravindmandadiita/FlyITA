@@ -189,6 +189,8 @@
     <Content Include="configuration\TravelerProfiler.html" />
     <Content Include="configuration\VacationTravelRequest.html" />
     <Content Include="Content\boxsizing.htc" />
+    <Content Include="Content\datetimepicker\bootstrap-datetimepicker-build.min.css" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\style.css" />
     <Content Include="EISLibs\ITALib.dll" />
@@ -219,6 +221,8 @@
     <Content Include="resources.aspx" />
     <Content Include="scripts\banners.js" />
     <Content Include="scripts\confirm.spec.js" />
+    <Content Include="scripts\frameworks\bootstrap-datetimepicker.min.js" />
+    <Content Include="scripts\frameworks\jquery-ui.min.js" />
     <Content Include="scripts\frameworks\navigation.js" />
     <Content Include="scripts\frameworks\theme.js" />
     <Content Include="scripts\home.js" />
