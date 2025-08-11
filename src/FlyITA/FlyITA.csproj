@@ -191,8 +191,8 @@
     <Content Include="Content\boxsizing.htc" />
     <Content Include="Content\datetimepicker\bootstrap-datetimepicker-build.min.css" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\theme.css" />
     <Content Include="Content\main.css" />
-    <Content Include="Content\style.css" />
     <Content Include="EISLibs\ITALib.dll" />
     <Content Include="EISLibs\ITALib.pdb" />
     <Content Include="EISLibs\PCentralLib.dll" />
