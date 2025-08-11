@@ -3,13 +3,7 @@
  <!-- Intro Section -->
         <section class="hero hidden-xs">
             <!-- Hero Slider Section -->
-            <div class="flexslider fullscreen-carousel">
-                <ul class="slides">
-                    <li>
-                        <img src="../images/banner-bkg.jpg" alt="" />
-                    </li>
-                </ul>
-            </div>
+            <div class="page-banner" style="background-image:url(../images/banner-bkg.jpg);background-size:cover;"></div>
             <!-- End Hero Slider Section -->
         </section>
         <div class="clearfix"></div>
@@ -29,24 +23,20 @@
             <!--  End Intro Scroll Down -->
 
             <!-- Hero Slider Section -->
-            <div class="flexslider fullscreen-carousel hero-slider-1 parallax parallax-section1">
-                <ul class="slides">
-                    <li>
-                        <img src="../images/gallery/01.jpg" alt="" />
-                        <div class="overlay-hero">
-                            <div class="container caption-hero light-color">
-                                <div class="inner-caption">
-                                    <h1>You're Traveling<br class="hidden-xs" /> in Good Company</h1>
-                                    <h4 class="h4slide">With over 50 years of Full Service Travel Management</h4>
-                                    <br />
-                                    <div>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalItinerary">View Itinerary and Flight Status</button>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="home-hero parallax parallax-section1"  style="background-image:url(../images/gallery/01.jpg);background-size:cover;">
+            <div class="overlay-hero">
+                <div class="container caption-hero light-color">
+                    <div class="inner-caption">
+                        <h1>You're Traveling<br class="hidden-xs" /> in Good Company</h1>
+                        <h4 class="h4slide">With over 50 years of Full Service Travel Management</h4>
+                        <br />
+                        <div>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalItinerary">View Itinerary and Flight Status</button>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                </div>
+            </div>
+
             </div>
             <!-- End Hero Slider Section -->
         </section>

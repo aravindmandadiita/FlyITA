@@ -25,7 +25,7 @@ $(function () {
         header();
         scroll();
         winResize();
-        scrollCallbackEle();
+        //scrollCallbackEle();
         shortcodeElements();
 
     };
@@ -116,24 +116,24 @@ function header() {
 // ---------------------------------------------------------------------------------------------------------------------------->
 // SCROLL CALLBACK FUNCTION  ||-----------
 // ---------------------------------------------------------------------------------------------------------------------------->
-function scrollCallbackEle() {
-    //scroll Callback Element
-    $('.load-ele-fade').viewportChecker({
-        classToAdd: 'visible animated fadeIn',
-        offset: 100,
-        callbackFunction: function (elem, action) {
-        }
-    });
-    //scroll Animate Element
-    wow = new WOW({
-        boxClass: 'wow',
-        animateClass: 'animated',
-        offset: 0,
-        mobile: false,
-        live: true
-    })
-    wow.init();
-};
+//function scrollCallbackEle() {
+//    //scroll Callback Element
+//    $('.load-ele-fade').viewportChecker({
+//        classToAdd: 'visible animated fadeIn',
+//        offset: 100,
+//        callbackFunction: function (elem, action) {
+//        }
+//    });
+//    //scroll Animate Element
+//    wow = new WOW({
+//        boxClass: 'wow',
+//        animateClass: 'animated',
+//        offset: 0,
+//        mobile: false,
+//        live: true
+//    })
+//    wow.init();
+//};
 
 // ---------------------------------------------------------------------------------------------------------------------------->
 // SHORTCODE ELEMENTS  ||-----------
