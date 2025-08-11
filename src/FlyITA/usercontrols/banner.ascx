@@ -3,7 +3,7 @@
  <!-- Intro Section -->
         <section class="hero hidden-xs">
             <!-- Hero Slider Section -->
-            <div class="page-banner" style="background-image:url(../images/banner-bkg.jpg);background-size:cover;"></div>
+            <div class="page-banner"></div>
             <!-- End Hero Slider Section -->
         </section>
         <div class="clearfix"></div>
@@ -23,9 +23,9 @@
             <!--  End Intro Scroll Down -->
 
             <!-- Hero Slider Section -->
-            <div class="home-hero parallax parallax-section1"  style="background-image:url(../images/gallery/01.jpg);background-size:cover;">
+            <div class="home-hero parallax parallax-section1">
             <div class="overlay-hero">
-                <div class="container caption-hero light-color">
+                <div class="container caption-hero">
                     <div class="inner-caption">
                         <h1>You're Traveling<br class="hidden-xs" /> in Good Company</h1>
                         <h4 class="h4slide">With over 50 years of Full Service Travel Management</h4>

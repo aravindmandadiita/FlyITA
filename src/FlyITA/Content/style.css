@@ -1,84 +1,75 @@
 ﻿
-/****************** overlay styles *************************
-    These are not generally used, but can come in handy on the home page to add a light or dark overlay on the slideshow.
-    ****/
-
-
-.light-color h1, .light-color h2, .light-color h3, .light-color h4, .light-color h5, .light-color h6, .light-color p, .light-color, .light-color .container-icon {
-    color: #fff;
-}
-
-.dark-color h1, .dark-color h2, .dark-color h3, .dark-color h4, .dark-color h5, .dark-color h6, .dark-color p, .dark-color, .dark-color .container-icon {
-    color: #323232;
-}
-
-.dark-bg {
-    background: #323232;
-    color: #fff;
-}
-
-    .dark-bg h1, .dark-bg h2, .dark-bg h3, .dark-bg h4, .dark-bg h5, .dark-bg h6, .dark-bg p, .dark-bg .link, .dark-bg .container-icon, .dark-bg .page-icon-top {
-        color: #fff;
-    }
-    .dark-bg .link:hover, .link:hover {
-        color:#b0df01;
-    }
-
-.gray-bg {
-    background: #f7f7f7;
-    color: #323232;
-}
-
-    .gray-bg h1, .gray-bg h2, .gray-bg h3, .gray-bg h4, .gray-bg h5, .gray-bg h6, .gray-bg .container-icon {
-        color: #323232;
-    }
-
-.overlay-static-dark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    color: #fff;
-    height: 100%;
-    z-index: 2;
-    background-color: rgba(32,32,32,0.4);
-    display: -webkit-flex;
-    display: flex;
-}
-
-.overlay-dark, .overlay-dark80, .overlay-light, .overlay-light80 {
-    position: relative;
-    z-index: 1;
-}
-
-    .overlay-dark:before, .overlay-dark80:before, .overlay-light:before, .overlay-light80:before {
-        left: 0;
-        top: 0;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        content: "";
-        z-index: -1;
-    }
-
-    .overlay-dark:before {
-        background-color: rgba(32,32,32,0.4);
-    }
-
-    .overlay-dark80:before {
-        background-color: rgba(32,32,32,0.8);
-    }
-
-    .overlay-light:before {
-        background-color: rgba(255,255,255,0.4);
-    }
-
-    .overlay-light80:before {
-        background-color: rgba(255,255,255,0.8);
-    }
-
-.content-slider, .o-flow-hidden {
+/* ============================================================================================================================*/
+/* Banner ---------------------*/
+/* ============================================================================================================================*/
+.hero {
     overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.page-banner,
+.home-hero {
+    overflow: hidden;
+    position: relative;
+    background-color: #555;
+    background-image: url(https://www.flyita.com/images/banner-bkg.jpg);
+    background-size: cover;
+    height: 100%;
+    max-width: none;
+    width: auto;
+    height: 60vh;
+}
+.home-hero {
+    background-image: url(https://www.flyita.com/images/gallery/01.jpg);
+    background-size: cover;
+    height: 96vh;
+}
+
+.caption-hero h1 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+@media (max-width: 991px) {
+
+.caption-hero h1 {
+        font-size: 25px;
+    }
+
+}
+
+@media (max-width: 767px) {
+
+ .caption-hero h1 {
+        font-size: 20px;
+        margin: 0;
+    }
+
+.caption-hero h5 {
+        margin: 0;
+        font-size: 12px;
+    }
+
+.caption-hero .separator {
+        margin-left: auto;
+        margin-right: auto;
+    }
+ .text-left {
+        text-align: center;
+    }
+ .hero {
+        padding-top: 64px;
+    }
+
+}
+
+@media (max-width: 480px) {
+ .caption-hero .inner-caption {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 }
 
 
@@ -136,348 +127,6 @@
 /* =============================================================================================================================*/
 .parallax {
     position: relative;
-}
-
-
-/* ============================================================================================================================*/
-/* Slider ---------------------*/
-/* ============================================================================================================================*/
-
-/* -------------------------------------*/
-/* Full Screen slider---------*/
-/* -------------------------------------*/
-.hero {
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-}
-
-.fullscreen-carousel {
-    overflow: hidden;
-    position: relative;
-}
-
-
-
-    .fullscreen-carousel .slides li {
-        overflow: hidden;
-        position: relative;
-        height: 100%;
-    }
-/*
-.fullscreen-carousel .slides li img {
-height: 100%;
-max-width: none;
-width: auto;
-}*/
-
-    .fullscreen-carousel .overlay-hero {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        text-align: center;
-    }
-
-        .fullscreen-carousel .overlay-hero .caption-hero {
-            display: inline-table;
-            height: 100%;
-            margin: 0 auto;
-            position: relative;
-            padding: 0px;
-            margin: 0px;
-        }
-
-            .fullscreen-carousel .overlay-hero .caption-hero .inner-caption {
-                display: table-cell;
-                margin: auto;
-                vertical-align: middle;
-                padding-left: 25px;
-                padding-right: 25px;
-            }
-
-.caption-hero h1 {
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-
-/* Full Width Slider */
-.fullwidth-slider {
-    position:relative;
-    overflow:hidden;
-}
-
-.fullwidth-slider .item {
-    height:650px;
-    position:relative;
-    width:100%;
-}
-
-
-/* Fullscreen Slider Next Prev Arrow*/
-
-
-.fullscreen-carousel .flex-direction-nav a {
-    position: absolute;
-    top: 50%;
-    display: inline-block;
-    margin-top: -30px;
-    background: #fff;
-    color: #252525;
-    width: 51px;
-    height: 51px;
-    text-align: center;
-    font-family: 'FontAwesome';
-    color: #323232;
-    transition: all 0.25s ease 0s;
-    -moz-transition: all 0.25s ease 0s;
-    -webkit-transition: all 0.25s ease 0s;
-    -o-transition: all 0.25s ease 0s;
-    font-size: 21px;
-    line-height: 51px;
-}
-
-    .fullscreen-carousel .flex-direction-nav a:hover {
-        color: #b0df01;
-    }
-
-.flexslider.fullscreen-carousel:hover .flex-prev {
-    left: 0px;
-    opacity: 1;
-}
-
-.fullscreen-carousel .flex-direction-nav .flex-prev {
-    left: -51px;
-    background-position: center left;
-}
-
-    .fullscreen-carousel .flex-direction-nav .flex-prev:before {
-        content: "";
-        display: inline-block;
-    }
-
-.flexslider.fullscreen-carousel:hover .flex-next {
-    right: 0px;
-    opacity: 1;
-}
-
-.fullscreen-carousel .flex-direction-nav .flex-next {
-    right: -51px;
-    background-position: center right;
-}
-
-    .fullscreen-carousel .flex-direction-nav .flex-next:before {
-        content: "";
-        display: inline-block;
-    }
-
-@media (max-width: 991px) {
-
-    /* Fullscreen Slider */
-    .fullscreen-carousel .slides li img {
-        width: 100%;
-        height: 100%;
-    }
-
-    .fullscreen-carousel .caption-hero h1 {
-        font-size: 25px;
-    }
-
-    .fullscreen-carousel .overlay-hero .caption-hero {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-}
-
-@media (max-width: 767px) {
-
-    /* Fullscreen Slider */
-    .fullscreen-carousel .caption-hero h1 {
-        font-size: 20px;
-        margin: 0;
-    }
-
-    .fullscreen-carousel .caption-hero h5 {
-        margin: 0;
-        font-size: 12px;
-    }
-
-    .fullscreen-carousel .caption-hero .separator {
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .fullscreen-carousel .text-left {
-        text-align: center;
-    }
-
-    .fullscreen-carousel.hero-slider-2 .slides li {
-        height: 400px;
-    }
-
-    .full-intro .hero {
-        padding-top: 64px;
-    }
-
-    .hero {
-        padding: 0px;
-    }
-}
-
-@media (max-width: 480px) {
-    .fullscreen-carousel .overlay-hero .caption-hero .inner-caption {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-}
-
-/* -------------------------------------*/
-/* Carousel-Theme (Slider Elements - Bullets, Pagination, etc..) ---------*/
-/* -------------------------------------*/
-.owl-buttons {
-    position: static;
-}
-
-.owl-carousel.white .owl-controls .owl-page span {
-    background: none repeat scroll 0 0 #fff;
-}
-
-.owl-carousel.white .owl-controls .owl-page.active span {
-    background: rgba(0, 0, 0, 0);
-    border: 2px solid #fff;
-}
-
-.nf-carousel-theme {
-}
-
-    .nf-carousel-theme .owl-controls .owl-pagination {
-        position: absolute;
-        z-index: 2;
-        left: 0;
-        text-align: center;
-        width: 100%;
-        margin-top: 15px;
-    }
-
-    .nf-carousel-theme .owl-controls .owl-buttons .owl-prev,
-    .nf-carousel-theme .owl-controls .owl-buttons .owl-next {
-        width: 31px;
-        height: 31px;
-        line-height: 31px;
-        font-size: 16px;
-        margin-top: -15px;
-    }
-
-    .content-carousel .owl-controls .owl-buttons .owl-prev,
-    .content-carousel .owl-controls .owl-buttons .owl-next,
-    .image-slider .owl-controls .owl-buttons .owl-prev,
-    .image-slider .owl-controls .owl-buttons .owl-next,
-    .fullwidth-slider .owl-controls .owl-buttons .owl-prev,
-    .fullwidth-slider .owl-controls .owl-buttons .owl-next,
-    .nf-carousel-theme .owl-controls .owl-buttons .owl-prev,
-    .nf-carousel-theme .owl-controls .owl-buttons .owl-next {
-        background: rgba(245,245,245,0.8);
-        color: #252525;
-        display: block;
-        top: 50%;
-        transition: all 0.25s ease 0s;
-        -o-transition: all 0.25s ease 0s;
-        -moz-transition: all 0.25s ease 0s;
-        -webkit-transition: all 0.25s ease 0s;
-        z-index: 3;
-        position: absolute;
-        text-align: center;
-    }
-
-        .content-carousel .owl-controls .owl-buttons .owl-prev:hover,
-        .content-carousel .owl-controls .owl-buttons .owl-next:hover,
-        .image-slider .owl-controls .owl-buttons .owl-prev:hover,
-        .image-slider .owl-controls .owl-buttons .owl-next:hover,
-        .fullwidth-slider .owl-controls .owl-buttons .owl-prev:hover,
-        .fullwidth-slider .owl-controls .owl-buttons .owl-next:hover,
-        .nf-carousel-theme .owl-controls .owl-buttons .owl-prev:hover,
-        .nf-carousel-theme .owl-controls .owl-buttons .owl-next:hover {
-            /*background: #fff;*/
-            color: #b0df01;
-        }
-
-    .content-carousel .owl-controls .owl-buttons .owl-next,
-    .image-slider .owl-controls .owl-buttons .owl-next,
-    .fullwidth-slider .owl-controls .owl-buttons .owl-next,
-    .nf-carousel-theme .owl-controls .owl-buttons .owl-next {
-        right: 0;
-    }
-
-    .nf-carousel-theme .owl-controls .owl-buttons .owl-prev {
-        left: 0;
-        margin-left: -51px;
-        opacity: 0;
-    }
-
-    .nf-carousel-theme .owl-controls .owl-buttons .owl-next {
-        right: 0;
-        margin-right: -51px;
-        opacity: 0;
-    }
-
-    .content-carousel:hover .owl-controls .owl-buttons .owl-prev,
-    .content-carousel:hover .owl-controls .owl-buttons .owl-next,
-    .image-slider:hover .owl-controls .owl-buttons .owl-prev,
-    .image-slider:hover .owl-controls .owl-buttons .owl-next,
-    .fullwidth-slider:hover .owl-controls .owl-buttons .owl-prev,
-    .fullwidth-slider:hover .owl-controls .owl-buttons .owl-next,
-    .nf-carousel-theme:hover .owl-controls .owl-buttons .owl-prev,
-    .nf-carousel-theme:hover .owl-controls .owl-buttons .owl-next {
-        margin-right: 0;
-        margin-left: 0;
-        opacity: 1;
-    }
-
-
-/* -------------------------------------*/
-/* Single Item slider (Images & Constant Slider) ---------*/
-/* -------------------------------------*/
-.content-carousel .owl-controls .owl-pagination,
-.image-slider .owl-controls .owl-pagination,
-.fullwidth-slider .owl-controls .owl-pagination,
-.item1-carousel .owl-controls .owl-pagination {
-    position: absolute;
-    bottom: 0;
-    z-index: 2;
-    bottom: 15px;
-    left: 0;
-    text-align: center;
-    width: 100%;
-}
-
-.content-carousel .owl-controls .owl-buttons .owl-prev,
-.content-carousel .owl-controls .owl-buttons .owl-next,
-.image-slider .owl-controls .owl-buttons .owl-prev,
-.image-slider .owl-controls .owl-buttons .owl-next,
-.fullwidth-slider .owl-controls .owl-buttons .owl-prev,
-.fullwidth-slider .owl-controls .owl-buttons .owl-next {
-    width: 51px;
-    height: 51px;
-    line-height: 51px;
-    font-size: 21px;
-    margin-top: -25px;
-}
-
-.content-carousel .owl-controls .owl-buttons .owl-prev,
-.image-slider .owl-controls .owl-buttons .owl-prev,
-.fullwidth-slider .owl-controls .owl-buttons .owl-prev {
-    left: 0;
-    margin-left: -51px;
-    opacity: 0;
-}
-
-.content-carousel .owl-controls .owl-buttons .owl-next,
-.image-slider .owl-controls .owl-buttons .owl-next,
-.fullwidth-slider .owl-controls .owl-buttons .owl-next {
-    right: 0;
-    margin-right: -51px;
-    opacity: 0;
 }
 
 /*===========================================================================================*/
