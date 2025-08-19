@@ -72,14 +72,6 @@
     </script>
 </head>
 <body class="full-intro">
-    <!-- Pre-loader -->
-    <section id="preloader">
-        <div class="loader" id="loader">
-            <div class="loader-img"></div>
-        </div>
-    </section>
-    <!-- End Pre-loader -->
-
     <form id="form1" runat="server">
         <div id="wrapper">
             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
@@ -199,7 +191,7 @@
 
     <!-- JS -->    
     <%--to be removed:--%>
-<script src="scripts/frameworks/jquery-ui.min.js" type="text/javascript"></script>    
+<%--<script src="scripts/frameworks/jquery-ui.min.js" type="text/javascript"></script>   --%> 
 <%--<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>--%>
 
 
