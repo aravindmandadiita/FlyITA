@@ -21,7 +21,7 @@
             <div class="home-hero parallax parallax-section1">
                 <div class="container caption-hero">
                     <h1>You're Traveling<br class="hidden-xs" /> in Good Company</h1>
-                    <h4 class="h4slide">With over 50 years of Full Service Travel Management</h4>
+                    <h2>With over 50 years of Full Service Travel Management</h2>
                     <p><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalItinerary">View Itinerary and Flight Status</button></p>
                 </div>
             </div>

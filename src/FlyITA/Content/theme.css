@@ -8517,9 +8517,7 @@ h1 small,
   letter-spacing: 1px;
   border-radius: 3px;
 }
-#wrapper .inner-caption h1 {
-  margin-top: 0;
-}
+
 h2,
 h2 > a,
 .h2 {
@@ -8539,17 +8537,6 @@ h3,
 }
 h5 {
   margin-top: 20px;
-}
-h4.light {
-  font-weight: normal;
-  font-style: italic;
-  color: #999999;
-}
-.inner-caption h1 {
-  margin-bottom: 10px !important;
-}
-h4.h4slide {
-  margin-top: 0;
 }
 h2 + h3 {
   margin-top: 0;
@@ -8694,9 +8681,9 @@ body #wrapper #banner-home {
 body #wrapper #banner-site {
   display: block;
 }
-body #wrapper #banner-site .flexslider .slides > li {
+/*body #wrapper #banner-site .flexslider .slides > li {
   display: block;
-}
+}*/
 body #wrapper #banner-register {
   display: none;
 }
@@ -9079,7 +9066,7 @@ body .cancel-button {
 /* Preloader ------------------------- */
 /*===========================================================================================*/
 
-#preloader {
+/*#preloader {
     position: fixed;
     top: 0;
     left: 0;
@@ -9105,5 +9092,5 @@ body .cancel-button {
             width: 60px;
             height: 60px;
             display: block;
-        }
+        }*/
 
