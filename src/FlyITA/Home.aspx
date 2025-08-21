@@ -29,7 +29,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="Main" runat="Server">
     <div id="homepage" class="clearfix">
         <section id="itinerary" class="row-dark">
-            <div class="container">
+            <div class="container"><div class="row">
                 <div class="col-md-4">
                     <h3>View Itinerary & Flight Status</h3>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="col-sm-6 col-md-2">
                     <a class="btn btn-md btn-primary" href="#" id="viewItinerary" onclick="viewItinerarydetails()" runat="server">View Itinerary</a>
                 </div>
-            </div>
+            </div></div>
         </section>
         <section id="introduction" class="row-light">
             <div class="single-col-text text-center">

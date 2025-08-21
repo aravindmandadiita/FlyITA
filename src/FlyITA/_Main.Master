@@ -75,6 +75,24 @@
     <form id="form1" runat="server">
         <div id="wrapper">
             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+    <!---------ITINERARY MODAL---------->
+    <div class="modal fade" id="modalItinerary" tabindex="-1" role="dialog" aria-labelledby="itineraryLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>View Itinerary & Flight Status</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Enter Reservation Number" runat="server" id="ReservationNumber" />
+                    <input type="text" placeholder="Enter Traveler Last Name" runat="server" id="TravelerLastName" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="viewItinerary" onclick="viewItinerary()" runat="server">View Itinerary</button>
+                </div>
+            </div>
+        </div>
+    </div>
             <header class="header">
                 <div class="container">
                     <uc0:mainmenu runat="server" ID="mainmenu" />
@@ -170,23 +188,7 @@
         </a>
         <!-- End Scroll Top -->
 
-        <div class="modal fade" id="modalItinerary" tabindex="-1" role="dialog" aria-labelledby="itineraryLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4>View Itinerary & Flight Status</h4>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" placeholder="Enter Reservation Number" runat="server" id="ReservationNumber" />
-                        <input type="text" placeholder="Enter Traveler Last Name" runat="server" id="TravelerLastName" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="viewItinerary" onclick="viewItinerary()" runat="server">View Itinerary</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </form>
 
     <!-- JS -->    
