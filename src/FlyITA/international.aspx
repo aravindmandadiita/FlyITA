@@ -10,8 +10,8 @@
     <blockquote>
       <h3>Passports/Visas</h3>
       <ul>
-        <li>The  U.S. Department of State&rsquo;s website provides information and forms required for  new passport applications and passport renewals. Please visit <a target="_blank" href="http://www.travel.state.gov">www.travel.state.gov</a>. </li>
-        <li>For  visa requirements for your specific destination, visit the <a target="_blank" href="https://travel.state.gov/content/visas/en/general/americans-traveling-abroad.html">Americans Traveling  Abroad page</a> under U.S. Visa. </li>
+        <li>The  U.S. Department of State&rsquo;s website provides information and forms required for new passport applications and passport renewals. Please visit <a target="_blank" href="https://www.aaa.com/vacation/idpf.html">www.travel.state.gov</a>. </li>
+        <li>For  visa requirements for your specific destination, visit the <a target="_blank" href="https://travel.state.gov/content/travel/en/us-visas.html">Americans Traveling  Abroad page</a> under U.S. Visa. </li>
         <li>If  you need assistance obtaining a visa, we recommend using a visa service, such  as CIBT. Information can be obtained by calling (800) 929-2428 or by visiting <a target="_blank" href="http://www.CIBT.com">www.CIBT.com</a>. You may log in on the  website using our account number: 42198.</li>
       </ul>
       <h3>Baggage Limitations</h3>
@@ -27,7 +27,7 @@
       <p><a name="car"></a>Many major airlines do not require that you  reconfirm your <strong>trans-Pacific</strong> and <strong>trans-Atlantic </strong>flights. However, it is  a good idea to call our office or the airline 24 hours before your departure to  verify that there have not been any last minute schedule changes. It is  imperative that you do reconfirm your <strong>inner-continental</strong> flights. Please call the airline when you reach your international destination  to reconfirm your next flight. If you cannot find the airline&rsquo;s local telephone  number in the phonebook, please ask your hotel concierge staff for assistance.</p>
       <h3>Renting a  Car</h3>
       <p>Many major credit card companies offer  international auto insurance coverage if you use their card to reserve and pay  for your rental car. Please contact your credit card company to verify your  coverage. Also, some personal auto insurance policies provide international  coverage. Please call you insurance agent to verify your coverage. Otherwise,  insurance is available at the time you book your rental car. Due to local laws,  some countries require that you purchase auto insurance coverage through the  rental car companies. </p>
-      <p><a name="security"></a>Most countries allow you to drive using your  state-issued driver&rsquo;s license. However, there are a few countries that require  an international driver&rsquo;s license, which can be obtained through AAA. <br>
+      <p><a name="security"></a>Most countries allow you to drive using your  state-issued driver&rsquo;s license. However, there are a few countries that require  an international driver&rsquo;s license, which <a href="https://www.aaa.com/vacation/idpf.html" target="_blank">can be obtained through AAA</a>. <br>
         Rental requirements and driving information for  specific countries are available at <a target="_blank" href="http://www.autoeurope.com">www.autoeurope.com</a>. </p>
       <h3>Security Issues</h3>
       <p>Security is imperative when traveling overseas.  The U.S. Department of State gives the following guidelines:</p>
@@ -45,9 +45,9 @@
       <h3>Credit Cards and Currency</h3>
       <p>Before leaving the country, notify your credit  card company that you will be traveling and using your card overseas. Some  credit card companies will block usage if they detect a charge that is out of  the ordinary, which may prevent you from using your card during your trip.  Alternatively, they require you to make a long distance call to verify that you  are in fact the person using your card. </p>
       <p>Call your credit card and debit card companies  to verify the charges they impose for ATM withdraws and international  purchases. This will determine which card you will use for various  transactions. </p>
-      <p><a name="cell"></a>Currency exchange rates and easy reference  guides are available at <a target="_blank" href="http://www.oanda.com">www.oanda.com</a> and <a target="_blank" href="http://www.xe.com">www.xe.com</a>. As a general rule,  you will get a better exchange rate if you convert your money at a bank branch in  the city of your destination than if you convert your money at the airport when  you arrive.</p>
+      <p><a name="cell"></a>Currency exchange rates and easy reference  guides are available at <a target="_blank" href="https://www.oanda.com/currency-converter/en/?from=EUR&to=USD&amount=1">www.oanda.com</a> and <a target="_blank" href="http://www.xe.com">www.xe.com</a>. As a general rule,  you will get a better exchange rate if you convert your money at a bank branch in  the city of your destination than if you convert your money at the airport when  you arrive.</p>
       <h3>Cell Phones</h3>
-      <p>Domestic cell phones do not always work  overseas. You will have to contact your cell phone carrier to verify if  international service can be added to your phone and what the cost would be to  add it. If you are interested in renting an international cell phone, you can  visit <a target="_blank" href="http://www.autoeurope.com">www.autoeurope.com</a>.</p>
+      <p>Domestic cell phones do not always work  overseas. You will have to contact your cell phone carrier to verify if  international service can be added to your phone and what the cost would be to  add it.</p>
       <h3>Electricity</h3>
       <p>Due to different electric currents, American electrical  appliances do not work overseas without an adaptor. Adaptors can be purchased  at luggage and hardware stores.</p>
       <h3>Website References</h3>

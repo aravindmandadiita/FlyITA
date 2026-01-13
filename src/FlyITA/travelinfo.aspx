@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Travel Best Practices" Language="C#" MasterPageFile="~/_Main.Master" AutoEventWireup="true" CodeBehind="travelinfo.aspx.cs" Inherits="FlyITA.travelinfo" ValidateRequest="false" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="CustomHeaders" runat="server"></asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="Main" Runat="Server" >
-    <h1>Travel Best Proactices<br />
+    <h1>Travel Best Practices<br />
   <small>Be Prepared</small></h1>
 <div class="row-light">
   <div class="single-col-text">
