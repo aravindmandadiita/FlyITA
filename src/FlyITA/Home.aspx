@@ -81,7 +81,7 @@
                 <div class="col-md-4">
                     <h3 class="icon2">Travel Updates<br />& Alerts</h3>
                     <div class="icon-content">
-                        <p><a href="https://www.viewtrip.com/" target="_blank">ViewTrip</a> - ViewTrip  is monitored 24/7 to keep you current on what&rsquo;s happening in your destination  city as well as your home city.</p>
+                        <p><a href="https://viewtrip.travelport.com/" target="_blank">ViewTrip</a> - ViewTrip  is monitored 24/7 to keep you current on what&rsquo;s happening in your destination  city as well as your home city.</p>
                         <p><a href="https://weather.com/" target="_blank">Weather.com</a> - Visit weather.com to find weather information for anywhere in the world.</p>
                     </div>
                 </div>
