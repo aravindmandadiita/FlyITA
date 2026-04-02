@@ -1,17 +1,17 @@
-using System.Xml.Linq;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using FlyITA.Core.Interfaces;
+using FlyITA.Core.Options;
 
 namespace FlyITA.Core.Services;
 
 public class NavigationService : INavigationService
 {
-    private readonly IConfiguration _configuration;
+    private readonly NavigationOptions _options;
     private readonly IContextManager _context;
 
-    public NavigationService(IConfiguration configuration, IContextManager context)
+    public NavigationService(IOptions<NavigationOptions> navigationOptions, IContextManager context)
     {
-        _configuration = configuration;
+        _options = navigationOptions.Value;
         _context = context;
     }
 
@@ -43,93 +43,43 @@ public class NavigationService : INavigationService
 
     public string GetCurrentPage()
     {
-        // In legacy this reads from HttpContext.Current.Request.Path
-        // In Core, this will be set by the caller (Razor Page)
-        return _configuration["CurrentPage"] ?? string.Empty;
+        return _context.NextPage ?? string.Empty;
     }
 
     public Dictionary<string, string> ReadNavConfigValues(string section)
     {
         var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        var configPath = _configuration["NavigationConfigPath"];
 
-        if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
-            return result;
-
-        try
+        // Search registration flow steps by name
+        var step = _options.RegistrationFlow.FirstOrDefault(
+            s => s.Name.Equals(section, StringComparison.OrdinalIgnoreCase));
+        if (step != null)
         {
-            var doc = XDocument.Load(configPath);
-            var node = doc.Descendants(section).FirstOrDefault();
-            if (node == null) return result;
-
-            foreach (var attr in node.Attributes())
-            {
-                result[attr.Name.LocalName] = attr.Value;
-            }
-
-            foreach (var child in node.Elements())
-            {
-                var key = child.Name.LocalName;
-                var value = child.Attribute("value")?.Value ?? child.Value;
-                result[key] = value;
-            }
-        }
-        catch
-        {
-            // Config read failure — return empty
+            result["default"] = step.Url;
         }
 
-        return result;
-    }
-
-    public string ReadCustomConfigValue(string section, string key = "value", string notFound = "")
-    {
-        var config = ReadCustomConfig(section);
-        return config.TryGetValue(key, out var value) ? value : notFound;
-    }
-
-    public Dictionary<string, string> ReadCustomConfig(string section)
-    {
-        var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        var configPath = _configuration["WebRegistrationConfigPath"];
-
-        if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
-            return result;
-
-        try
+        // Search links by name
+        foreach (var link in _options.Links.Where(
+            l => l.Name.Equals(section, StringComparison.OrdinalIgnoreCase)))
         {
-            var doc = XDocument.Load(configPath);
-            var node = doc.Descendants(section).FirstOrDefault();
-            if (node == null) return result;
-
-            foreach (var attr in node.Attributes())
-            {
-                result[attr.Name.LocalName] = attr.Value;
-            }
+            result["url"] = link.Url;
+            if (link.ShowLeft) result["show_left"] = "true";
+            if (link.ShowFooter) result["show_footer"] = "true";
+            if (link.ShowTop) result["show_top"] = "true";
+            result["registered"] = link.Registered;
+            if (link.Role != null) result["role"] = link.Role;
+            if (link.Type != null) result["type"] = link.Type;
+            if (link.CssClass != null) result["class"] = link.CssClass;
         }
-        catch
+
+        // Search registration levels
+        var level = _options.RegistrationLevels.FirstOrDefault(
+            l => l.Level.ToString() == section);
+        if (level != null)
         {
-            // Config read failure
+            result["required_level"] = level.RequiredLevel.ToString();
         }
 
         return result;
-    }
-
-    public string GetEnvironment(string? role = null)
-    {
-        role ??= GetRole();
-        var envMappings = _configuration.GetSection("EnvironmentMappings");
-        return envMappings[role] ?? "Development";
-    }
-
-    public string GetRole()
-    {
-        return _configuration["Role"] ?? "CDT";
-    }
-
-    public bool IsClientFacingEnv()
-    {
-        var env = GetEnvironment();
-        return env == "CA" || env == "PR";
     }
 }
