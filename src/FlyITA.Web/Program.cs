@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Options;
+using FlyITA.Core;
+using FlyITA.Core.Interfaces;
 using FlyITA.Web.Middleware;
 using FlyITA.Web.Options;
+using FlyITA.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(EmailOptions.SectionName));
 builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection(SecurityOptions.SectionName));
 builder.Services.Configure<AppSessionOptions>(builder.Configuration.GetSection(AppSessionOptions.SectionName));
+
+// FlyITA Core services (business logic)
+builder.Services.AddFlyITACore();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IContextManager, ContextManager>();
 
 // Session (uses AppSessionOptions for timeout)
 var appSessionOptions = builder.Configuration
