@@ -28,6 +28,10 @@ public static class DependencyInjection
         services.TryAddScoped<IPCentralDataAccess, NullPCentralDataAccess>();
         services.TryAddScoped<IDatabaseAccess, NullDatabaseAccess>();
 
+        // Pluggable services — TryAdd so Web can override with real implementations
+        services.TryAddSingleton<IEnvironmentService, NullEnvironmentService>();
+        services.TryAddScoped<ISmtpClient, NullSmtpClient>();
+
         return services;
     }
 }
@@ -56,4 +60,17 @@ internal class NullDatabaseAccess : IDatabaseAccess
 {
     public Dictionary<string, object?>? ExecuteStoredProcedure(string spName, Dictionary<string, object?> parameters) => null;
     public int ExecuteNonQuery(string spName, Dictionary<string, object?> parameters) => 0;
+}
+
+internal class NullEnvironmentService : IEnvironmentService
+{
+    public string Role => "CDT";
+    public bool IsClientFacing => false;
+    public string GetConnectionStringName() => "Default";
+}
+
+internal class NullSmtpClient : ISmtpClient
+{
+    public Task SendAsync(System.Net.Mail.MailMessage message, CancellationToken cancellationToken = default)
+        => Task.CompletedTask;
 }

@@ -10,13 +10,14 @@ public class EmailServiceTests
 {
     private readonly Mock<IContextManager> _contextMock = new();
     private readonly Mock<IPCentralDataAccess> _dataMock = new();
+    private readonly Mock<ISmtpClient> _smtpMock = new();
 
     private EmailService CreateService(Dictionary<string, string?>? configPairs = null)
     {
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(configPairs ?? new())
             .Build();
-        return new EmailService(_contextMock.Object, _dataMock.Object, config);
+        return new EmailService(_contextMock.Object, _dataMock.Object, config, _smtpMock.Object);
     }
 
     [Fact]
