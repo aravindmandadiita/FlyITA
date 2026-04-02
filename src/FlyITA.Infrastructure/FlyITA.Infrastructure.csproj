@@ -1,15 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FlyITA.Core\FlyITA.Core.csproj" />
-    <ProjectReference Include="..\FlyITA.Infrastructure\FlyITA.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
