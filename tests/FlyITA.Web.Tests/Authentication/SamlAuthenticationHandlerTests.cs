@@ -95,22 +95,35 @@ public class SamlAuthenticationHandlerTests
     }
 
     [Fact]
-    public async Task HandleAuthenticate_ProcessesSeamlessLogin()
+    public async Task HandleAuthenticate_RejectsSamlResponse_WhenNoCertAndNotDebug()
     {
-        var options = new SamlOptions { Enabled = true };
+        var options = new SamlOptions
+        {
+            Enabled = true,
+            DebugMode = false,
+            IdpCertificateFile = "" // No certificate
+        };
         _contextMock.SetupGet(c => c.SAMLSessionID).Returns(string.Empty);
-        _contextMock.SetupProperty(c => c.SAMLSessionID);
-        _contextMock.SetupProperty(c => c.LoginType);
+
+        // Build a minimal SAML response (Base64-encoded)
+        var samlXml = @"<samlp:Response xmlns:samlp=""urn:oasis:names:tc:SAML:2.0:protocol"">
+            <saml:Assertion xmlns:saml=""urn:oasis:names:tc:SAML:2.0:assertion"">
+                <saml:NameID>user@test.com</saml:NameID>
+            </saml:Assertion>
+        </samlp:Response>";
+        var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(samlXml));
 
         var context = new DefaultHttpContext();
-        context.Request.QueryString = new QueryString("?seamless_token=user123");
+        context.Request.Method = "POST";
+        context.Request.ContentType = "application/x-www-form-urlencoded";
+        context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes($"SAMLResponse={Uri.EscapeDataString(base64)}"));
 
         var handler = await CreateHandlerAsync(options, context);
         var result = await handler.AuthenticateAsync();
 
-        Assert.True(result.Succeeded);
-        Assert.Equal("user123", result.Principal!.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-        Assert.Equal("Seamless", _contextMock.Object.LoginType);
+        Assert.False(result.Succeeded);
+        Assert.NotNull(result.Failure);
+        Assert.Contains("certificate", result.Failure!.Message);
     }
 
     [Fact]

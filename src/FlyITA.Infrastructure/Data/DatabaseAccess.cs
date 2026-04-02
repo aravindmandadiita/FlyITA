@@ -23,10 +23,7 @@ public class DatabaseAccess : IDatabaseAccess
             CommandType = CommandType.StoredProcedure
         };
 
-        foreach (var param in parameters)
-        {
-            command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
-        }
+        AddParameters(command, parameters);
 
         connection.Open();
         using var reader = command.ExecuteReader();
@@ -53,12 +50,50 @@ public class DatabaseAccess : IDatabaseAccess
             CommandType = CommandType.StoredProcedure
         };
 
-        foreach (var param in parameters)
-        {
-            command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
-        }
+        AddParameters(command, parameters);
 
         connection.Open();
         return command.ExecuteNonQuery();
+    }
+
+    private static void AddParameters(SqlCommand command, Dictionary<string, object?> parameters)
+    {
+        foreach (var param in parameters)
+        {
+            var sqlParam = new SqlParameter
+            {
+                ParameterName = param.Key,
+                Value = param.Value ?? DBNull.Value
+            };
+
+            // Set explicit SqlDbType for common types to avoid AddWithValue inference issues
+            if (param.Value is string s)
+            {
+                sqlParam.SqlDbType = SqlDbType.NVarChar;
+                sqlParam.Size = Math.Max(s.Length, 1);
+            }
+            else if (param.Value is int)
+            {
+                sqlParam.SqlDbType = SqlDbType.Int;
+            }
+            else if (param.Value is long)
+            {
+                sqlParam.SqlDbType = SqlDbType.BigInt;
+            }
+            else if (param.Value is bool)
+            {
+                sqlParam.SqlDbType = SqlDbType.Bit;
+            }
+            else if (param.Value is DateTime)
+            {
+                sqlParam.SqlDbType = SqlDbType.DateTime2;
+            }
+            else if (param.Value is decimal)
+            {
+                sqlParam.SqlDbType = SqlDbType.Decimal;
+            }
+
+            command.Parameters.Add(sqlParam);
+        }
     }
 }

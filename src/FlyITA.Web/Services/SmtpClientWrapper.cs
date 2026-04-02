@@ -19,8 +19,11 @@ public class SmtpClientWrapper : ISmtpClient
     {
         using var client = new SmtpClient();
 
-        if (_options.DeliveryMethod == "PickupDirectory")
+        if (string.Equals(_options.DeliveryMethod, "PickupDirectory", StringComparison.OrdinalIgnoreCase))
         {
+            if (string.IsNullOrEmpty(_options.PickupDirectoryLocation))
+                throw new InvalidOperationException("Smtp:PickupDirectoryLocation must be set when DeliveryMethod is PickupDirectory.");
+
             client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
             client.PickupDirectoryLocation = _options.PickupDirectoryLocation;
         }

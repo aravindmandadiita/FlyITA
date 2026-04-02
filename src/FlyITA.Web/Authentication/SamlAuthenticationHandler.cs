@@ -42,13 +42,6 @@ public class SamlAuthenticationHandler : AuthenticationHandler<SamlOptions>, IAu
             }
         }
 
-        // Check for seamless login token
-        var seamlessToken = Request.Query["seamless_token"].FirstOrDefault();
-        if (!string.IsNullOrEmpty(seamlessToken))
-        {
-            return ProcessSeamlessLogin(seamlessToken);
-        }
-
         // Check for existing session authentication
         var samlSessionId = _contextManager.SAMLSessionID;
         if (!string.IsNullOrEmpty(samlSessionId))
@@ -103,28 +96,66 @@ public class SamlAuthenticationHandler : AuthenticationHandler<SamlOptions>, IAu
             var doc = new XmlDocument { PreserveWhitespace = true };
             doc.LoadXml(responseXml);
 
-            // Validate signature if certificate is configured
-            if (!string.IsNullOrEmpty(Options.IdpCertificateFile) && File.Exists(Options.IdpCertificateFile))
+            // Validate signature — reject if no certificate unless debug mode
+            if (string.IsNullOrEmpty(Options.IdpCertificateFile) || !File.Exists(Options.IdpCertificateFile))
             {
-                var cert = X509CertificateLoader.LoadCertificateFromFile(Options.IdpCertificateFile);
-                if (!ValidateSignature(doc, cert))
+                if (Options.DebugMode)
+                {
+                    Logger.LogWarning("SAML signature validation skipped — no valid certificate configured (debug mode)");
+                }
+                else
+                {
+                    Logger.LogWarning("SAML response rejected — no IdP certificate configured");
+                    return AuthenticateResult.Fail("SAML signature validation certificate is missing or invalid.");
+                }
+            }
+            else
+            {
+                X509Certificate2 cert;
+                try
+                {
+                    cert = X509CertificateLoader.LoadCertificateFromFile(Options.IdpCertificateFile);
+                }
+                catch (Exception ex)
+                {
+                    if (Options.DebugMode)
+                    {
+                        Logger.LogWarning(ex, "SAML signature validation skipped — certificate could not be loaded (debug mode)");
+                        cert = null!;
+                    }
+                    else
+                    {
+                        Logger.LogError(ex, "SAML response rejected — IdP certificate could not be loaded");
+                        return AuthenticateResult.Fail("SAML signature validation certificate could not be loaded.");
+                    }
+                }
+
+                if (cert != null && !ValidateSignature(doc, cert))
                 {
                     Logger.LogWarning("SAML response signature validation failed");
                     return AuthenticateResult.Fail("Invalid SAML response signature.");
                 }
             }
-            else if (Options.DebugMode)
-            {
-                Logger.LogWarning("SAML signature validation skipped — no certificate configured (debug mode)");
-            }
 
-            // Extract NameID and attributes
             var nsMgr = new XmlNamespaceManager(doc.NameTable);
             nsMgr.AddNamespace("saml", "urn:oasis:names:tc:SAML:2.0:assertion");
             nsMgr.AddNamespace("samlp", "urn:oasis:names:tc:SAML:2.0:protocol");
 
+            // Validate SAML conditions (issuer, audience, time validity)
+            var validationError = ValidateSamlConditions(doc, nsMgr);
+            if (validationError != null)
+            {
+                Logger.LogWarning("SAML condition validation failed: {Error}", validationError);
+                return AuthenticateResult.Fail(validationError);
+            }
+
+            // Extract NameID
             var nameIdNode = doc.SelectSingleNode("//saml:NameID", nsMgr);
-            var nameId = nameIdNode?.InnerText ?? string.Empty;
+            var nameId = nameIdNode?.InnerText;
+            if (string.IsNullOrEmpty(nameId))
+            {
+                return AuthenticateResult.Fail("SAML response missing NameID.");
+            }
 
             var sessionIndexNode = doc.SelectSingleNode("//saml:AuthnStatement/@SessionIndex", nsMgr);
             var sessionIndex = sessionIndexNode?.Value ?? Guid.NewGuid().ToString();
@@ -166,31 +197,57 @@ public class SamlAuthenticationHandler : AuthenticationHandler<SamlOptions>, IAu
         }
     }
 
-    private AuthenticateResult ProcessSeamlessLogin(string token)
+    private string? ValidateSamlConditions(XmlDocument doc, XmlNamespaceManager nsMgr)
     {
-        try
+        // Validate issuer matches expected IDP
+        var issuerNode = doc.SelectSingleNode("//saml:Issuer", nsMgr);
+        // Issuer validation is informational for now — log but don't reject
+        // (IDP entity ID may differ from SSO URL)
+        if (issuerNode != null)
         {
-            // Seamless login: token contains pre-authenticated user info
-            var sessionId = Guid.NewGuid().ToString();
-            var claims = new[]
+            Logger.LogDebug("SAML response issuer: {Issuer}", issuerNode.InnerText);
+        }
+
+        // Validate audience restriction if present
+        var audienceNode = doc.SelectSingleNode("//saml:Conditions/saml:AudienceRestriction/saml:Audience", nsMgr);
+        if (audienceNode != null && !string.IsNullOrEmpty(Options.SpEntityId))
+        {
+            if (!string.Equals(audienceNode.InnerText, Options.SpEntityId, StringComparison.OrdinalIgnoreCase))
             {
-                new Claim(ClaimTypes.NameIdentifier, token),
-                new Claim("SAMLSessionID", sessionId),
-                new Claim("SeamlessLogin", "true")
-            };
-
-            _contextManager.SAMLSessionID = sessionId;
-            _contextManager.LoginType = "Seamless";
-
-            var identity = new ClaimsIdentity(claims, Scheme.Name);
-            var principal = new ClaimsPrincipal(identity);
-            return AuthenticateResult.Success(new AuthenticationTicket(principal, Scheme.Name));
+                return $"SAML audience '{audienceNode.InnerText}' does not match SP entity ID '{Options.SpEntityId}'.";
+            }
         }
-        catch (Exception ex)
+
+        // Validate time conditions (NotBefore / NotOnOrAfter)
+        var conditionsNode = doc.SelectSingleNode("//saml:Conditions", nsMgr);
+        if (conditionsNode != null)
         {
-            Logger.LogError(ex, "Error processing seamless login");
-            return AuthenticateResult.Fail($"Seamless login failed: {ex.Message}");
+            var clockSkew = TimeSpan.FromMinutes(5);
+            var now = DateTime.UtcNow;
+
+            var notBeforeAttr = conditionsNode.Attributes?["NotBefore"]?.Value;
+            if (notBeforeAttr != null && DateTime.TryParse(notBeforeAttr, out var notBefore))
+            {
+                if (now < notBefore.ToUniversalTime() - clockSkew)
+                    return $"SAML assertion is not yet valid (NotBefore: {notBefore:o}).";
+            }
+
+            var notOnOrAfterAttr = conditionsNode.Attributes?["NotOnOrAfter"]?.Value;
+            if (notOnOrAfterAttr != null && DateTime.TryParse(notOnOrAfterAttr, out var notOnOrAfter))
+            {
+                if (now > notOnOrAfter.ToUniversalTime() + clockSkew)
+                    return $"SAML assertion has expired (NotOnOrAfter: {notOnOrAfter:o}).";
+            }
         }
+
+        // Validate response status
+        var statusCodeNode = doc.SelectSingleNode("//samlp:StatusCode/@Value", nsMgr);
+        if (statusCodeNode != null && statusCodeNode.Value != "urn:oasis:names:tc:SAML:2.0:status:Success")
+        {
+            return $"SAML response status is not Success: {statusCodeNode.Value}";
+        }
+
+        return null;
     }
 
     private static bool ValidateSignature(XmlDocument doc, X509Certificate2 cert)

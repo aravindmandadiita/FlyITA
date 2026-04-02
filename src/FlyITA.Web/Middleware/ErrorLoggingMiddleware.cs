@@ -76,16 +76,24 @@ public class ErrorLoggingMiddleware
                 }
             }
 
-            // Write error response
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            context.Response.ContentType = "text/html";
+            // Write error response — only if headers haven't been sent yet
+            if (!context.Response.HasStarted)
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.ContentType = "text/html";
 
-            var isClientFacing = envOptions?.IsClientFacing ?? false;
-            var responseMessage = isClientFacing
-                ? errorOptions.ClientFacingErrorMessage
-                : $"{errorOptions.InternalErrorMessage}\n\n{exception}";
+                var isClientFacing = envOptions?.IsClientFacing ?? false;
+                var responseMessage = isClientFacing
+                    ? errorOptions.ClientFacingErrorMessage
+                    : $"{errorOptions.InternalErrorMessage}\n\n{exception}";
 
-            await context.Response.WriteAsync(responseMessage);
+                await context.Response.WriteAsync(responseMessage);
+            }
+            else
+            {
+                _logger.LogWarning("Response already started — cannot write error page. Aborting connection.");
+                context.Abort();
+            }
         }
         catch (Exception handlerEx)
         {
