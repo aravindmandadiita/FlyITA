@@ -9,6 +9,7 @@ public static class DependencyInjection
     public static IServiceCollection AddFlyITAInfrastructure(this IServiceCollection services)
     {
         services.AddScoped<IDatabaseAccess, DatabaseAccess>();
+        services.AddScoped<IPCentralDataAccess, PCentralDataAccess>();
         return services;
     }
 }
