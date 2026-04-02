@@ -32,6 +32,12 @@ public static class DependencyInjection
         services.TryAddSingleton<IEnvironmentService, NullEnvironmentService>();
         services.TryAddScoped<ISmtpClient, NullSmtpClient>();
 
+        // External service abstractions — TryAdd so Infrastructure can override
+        services.TryAddScoped<ICaptchaService, NullCaptchaService>();
+        services.TryAddScoped<ICardTokenService, NullCardTokenService>();
+        services.TryAddScoped<IPerformanceCentralClient, NullPerformanceCentralClient>();
+        services.TryAddScoped<ICardProcessService, NullCardProcessService>();
+
         return services;
     }
 }
@@ -60,6 +66,7 @@ internal class NullDatabaseAccess : IDatabaseAccess
 {
     public Dictionary<string, object?>? ExecuteStoredProcedure(string spName, Dictionary<string, object?> parameters) => null;
     public int ExecuteNonQuery(string spName, Dictionary<string, object?> parameters) => 0;
+    public List<Dictionary<string, object?>> ExecuteStoredProcedureList(string spName, Dictionary<string, object?> parameters) => new();
 }
 
 internal class NullEnvironmentService : IEnvironmentService
@@ -73,4 +80,34 @@ internal class NullSmtpClient : ISmtpClient
 {
     public Task SendAsync(System.Net.Mail.MailMessage message, CancellationToken cancellationToken = default)
         => Task.CompletedTask;
+}
+
+internal class NullCaptchaService : ICaptchaService
+{
+    public Task<Models.CaptchaValidationResult> ValidateAsync(string token, string? remoteIp = null, CancellationToken ct = default)
+        => Task.FromResult(new Models.CaptchaValidationResult { IsValid = true, Score = 1.0 });
+}
+
+internal class NullCardTokenService : ICardTokenService
+{
+    public Task<string?> TokenizeCardAsync(string cardNumber, string expiryDate, CancellationToken ct = default)
+        => Task.FromResult<string?>(null);
+    public Task<Models.CardInfo?> GetCardInfoByTokenAsync(string token, CancellationToken ct = default)
+        => Task.FromResult<Models.CardInfo?>(null);
+}
+
+internal class NullPerformanceCentralClient : IPerformanceCentralClient
+{
+    public Task<Dictionary<string, object?>?> GetBookingAsync(int participantId, CancellationToken ct = default)
+        => Task.FromResult<Dictionary<string, object?>?>(null);
+    public Task<bool> UpdateBookingAsync(int participantId, Dictionary<string, object?> data, CancellationToken ct = default)
+        => Task.FromResult(false);
+}
+
+internal class NullCardProcessService : ICardProcessService
+{
+    public Task<Models.PaymentResult> ProcessPaymentAsync(Models.PaymentRequest request, CancellationToken ct = default)
+        => Task.FromResult(new Models.PaymentResult { Success = false, ErrorMessage = "Not configured" });
+    public Task<Models.PaymentResult> RefundAsync(string transactionId, decimal amount, CancellationToken ct = default)
+        => Task.FromResult(new Models.PaymentResult { Success = false, ErrorMessage = "Not configured" });
 }
