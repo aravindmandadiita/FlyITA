@@ -11,12 +11,14 @@ public class EmailService : IEmailService
     private readonly IContextManager _context;
     private readonly IPCentralDataAccess _dataAccess;
     private readonly IConfiguration _configuration;
+    private readonly ISmtpClient _smtpClient;
 
-    public EmailService(IContextManager context, IPCentralDataAccess dataAccess, IConfiguration configuration)
+    public EmailService(IContextManager context, IPCentralDataAccess dataAccess, IConfiguration configuration, ISmtpClient smtpClient)
     {
         _context = context;
         _dataAccess = dataAccess;
         _configuration = configuration;
+        _smtpClient = smtpClient;
     }
 
     public async Task<ValidationResult> SendRegistrationConfirmationAsync(int participantId)
@@ -208,8 +210,7 @@ public class EmailService : IEmailService
         {
             var from = _configuration["Email:SmtpFrom"] ?? "noreply@itagroup.com";
             using var message = new MailMessage(from, to, subject, body) { IsBodyHtml = true };
-            using var client = new SmtpClient();
-            await client.SendMailAsync(message);
+            await _smtpClient.SendAsync(message);
         }
         catch (Exception ex)
         {
