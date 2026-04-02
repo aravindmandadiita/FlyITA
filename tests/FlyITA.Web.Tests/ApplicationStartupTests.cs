@@ -15,7 +15,7 @@ public class ApplicationStartupTests : IClassFixture<WebApplicationFactory<Progr
     public async Task Application_Starts_Without_Error()
     {
         var response = await _client.GetAsync("/");
-        Assert.NotNull(response);
+        Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]

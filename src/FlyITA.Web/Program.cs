@@ -9,12 +9,14 @@ builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(EmailO
 builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection(SecurityOptions.SectionName));
 builder.Services.Configure<AppSessionOptions>(builder.Configuration.GetSection(AppSessionOptions.SectionName));
 
-// Session
-var sessionTimeout = builder.Configuration.GetValue<int>("Session:TimeoutMinutes", 20);
+// Session (uses AppSessionOptions for timeout)
+var appSessionOptions = builder.Configuration
+    .GetSection(AppSessionOptions.SectionName)
+    .Get<AppSessionOptions>() ?? new AppSessionOptions();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(sessionTimeout);
+    options.IdleTimeout = TimeSpan.FromMinutes(appSessionOptions.TimeoutMinutes);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -23,6 +25,10 @@ builder.Services.AddSession(options =>
 
 // Health checks
 builder.Services.AddHealthChecks();
+
+// Auth (placeholder — no scheme configured yet, services registered for middleware)
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 // Razor Pages
 builder.Services.AddRazorPages();
@@ -40,11 +46,18 @@ var securityOptions = app.Services.GetRequiredService<IOptions<SecurityOptions>>
 if (securityOptions.RequireHttps)
     app.UseHttpsRedirection();
 
-// 4. Security headers
+// 4. Security headers (scoped to non-static responses)
 app.UseMiddleware<SecurityHeadersMiddleware>();
 
-// 5. Static files
-app.UseStaticFiles();
+// 5. Static files (with browser caching for assets)
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers["Cache-Control"] = "public,max-age=31536000";
+        ctx.Context.Response.Headers.Remove("Expires");
+    }
+});
 
 // 6. Session
 app.UseSession();

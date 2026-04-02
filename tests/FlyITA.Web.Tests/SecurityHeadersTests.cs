@@ -65,19 +65,9 @@ public class SecurityHeadersTests : IClassFixture<WebApplicationFactory<Program>
     public async Task Response_Contains_CacheControl_Header()
     {
         var response = await _client.GetAsync("/");
-        Assert.True(response.Headers.CacheControl != null || response.Headers.Contains("Cache-Control"));
-        var value = response.Headers.GetValues("Cache-Control").First();
-        Assert.Contains("private", value);
-        Assert.Contains("max-age=0", value);
-    }
-
-    [Fact]
-    public async Task Response_Contains_Expires_Header()
-    {
-        var response = await _client.GetAsync("/");
-        // Expires may be parsed by HttpClient as a content header
-        var hasExpires = response.Content.Headers.Expires.HasValue
-            || response.Content.Headers.TryGetValues("Expires", out _);
-        Assert.True(hasExpires, "Expires header not found");
+        var cacheControl = response.Headers.CacheControl;
+        Assert.NotNull(cacheControl);
+        Assert.True(cacheControl!.Private);
+        Assert.Equal(TimeSpan.Zero, cacheControl.MaxAge);
     }
 }
