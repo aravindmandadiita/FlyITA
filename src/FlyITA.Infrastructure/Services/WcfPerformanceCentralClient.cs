@@ -19,12 +19,24 @@ public class WcfPerformanceCentralClient : IPerformanceCentralClient
 
     public async Task<Dictionary<string, object?>?> GetBookingAsync(int participantId, CancellationToken ct = default)
     {
+        if (string.IsNullOrWhiteSpace(_endpointUrl))
+        {
+            _logger.LogDebug("GetBooking skipped — endpoint URL not configured");
+            return null;
+        }
+
         try
         {
-            // SOAP call placeholder — actual implementation depends on WCF contract from WSDL
-            _logger.LogDebug("GetBooking called for participant {ParticipantId}", participantId);
-            await Task.CompletedTask;
-            return null; // Real implementation will call SOAP endpoint
+            var binding = CreateBinding();
+            var endpoint = new EndpointAddress(_endpointUrl);
+
+            _logger.LogWarning("SOAP client contract not yet wired for endpoint {EndpointUrl}", _endpointUrl);
+            throw new NotSupportedException(
+                $"SOAP client contract implementation not yet added for endpoint '{_endpointUrl}'");
+        }
+        catch (NotSupportedException)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -35,12 +47,24 @@ public class WcfPerformanceCentralClient : IPerformanceCentralClient
 
     public async Task<bool> UpdateBookingAsync(int participantId, Dictionary<string, object?> data, CancellationToken ct = default)
     {
+        if (string.IsNullOrWhiteSpace(_endpointUrl))
+        {
+            _logger.LogDebug("UpdateBooking skipped — endpoint URL not configured");
+            return false;
+        }
+
         try
         {
-            // SOAP call placeholder — actual implementation depends on WCF contract from WSDL
-            _logger.LogDebug("UpdateBooking called for participant {ParticipantId}", participantId);
-            await Task.CompletedTask;
-            return false; // Real implementation will call SOAP endpoint
+            var binding = CreateBinding();
+            var endpoint = new EndpointAddress(_endpointUrl);
+
+            _logger.LogWarning("SOAP client contract not yet wired for endpoint {EndpointUrl}", _endpointUrl);
+            throw new NotSupportedException(
+                $"SOAP client contract implementation not yet added for endpoint '{_endpointUrl}'");
+        }
+        catch (NotSupportedException)
+        {
+            throw;
         }
         catch (Exception ex)
         {

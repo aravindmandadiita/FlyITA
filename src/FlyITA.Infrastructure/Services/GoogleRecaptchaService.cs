@@ -32,7 +32,7 @@ public class GoogleRecaptchaService : ICaptchaService
             if (remoteIp != null)
                 parameters["remoteip"] = remoteIp;
 
-            var response = await _httpClient.PostAsync(
+            using var response = await _httpClient.PostAsync(
                 "https://www.google.com/recaptcha/api/siteverify",
                 new FormUrlEncodedContent(parameters),
                 ct);

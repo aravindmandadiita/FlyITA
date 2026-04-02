@@ -27,18 +27,34 @@ public class WcfPerformanceCentralClientTests
     }
 
     [Fact]
-    public async Task GetBookingAsync_ReturnsNull_WhenNotConfigured()
+    public async Task GetBookingAsync_ReturnsNull_WhenEndpointUrlIsEmpty()
     {
-        var service = new WcfPerformanceCentralClient("https://test.example.com/PerformanceCentral.svc", 30, _loggerMock.Object);
+        var service = new WcfPerformanceCentralClient("", 30, _loggerMock.Object);
         var result = await service.GetBookingAsync(123);
         Assert.Null(result);
     }
 
     [Fact]
-    public async Task UpdateBookingAsync_ReturnsFalse_WhenNotConfigured()
+    public async Task GetBookingAsync_ThrowsNotSupportedException_WhenEndpointUrlIsConfigured()
     {
         var service = new WcfPerformanceCentralClient("https://test.example.com/PerformanceCentral.svc", 30, _loggerMock.Object);
+        await Assert.ThrowsAsync<NotSupportedException>(
+            () => service.GetBookingAsync(123));
+    }
+
+    [Fact]
+    public async Task UpdateBookingAsync_ReturnsFalse_WhenEndpointUrlIsEmpty()
+    {
+        var service = new WcfPerformanceCentralClient("", 30, _loggerMock.Object);
         var result = await service.UpdateBookingAsync(123, new Dictionary<string, object?> { ["key"] = "value" });
         Assert.False(result);
+    }
+
+    [Fact]
+    public async Task UpdateBookingAsync_ThrowsNotSupportedException_WhenEndpointUrlIsConfigured()
+    {
+        var service = new WcfPerformanceCentralClient("https://test.example.com/PerformanceCentral.svc", 30, _loggerMock.Object);
+        await Assert.ThrowsAsync<NotSupportedException>(
+            () => service.UpdateBookingAsync(123, new Dictionary<string, object?> { ["key"] = "value" }));
     }
 }

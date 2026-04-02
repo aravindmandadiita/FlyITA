@@ -20,12 +20,24 @@ public class WcfCardTokenService : ICardTokenService
 
     public async Task<string?> TokenizeCardAsync(string cardNumber, string expiryDate, CancellationToken ct = default)
     {
+        if (string.IsNullOrWhiteSpace(_endpointUrl))
+        {
+            _logger.LogDebug("TokenizeCard skipped — endpoint URL not configured");
+            return null;
+        }
+
         try
         {
-            // SOAP call placeholder — actual implementation depends on WCF contract from WSDL
-            _logger.LogDebug("TokenizeCard called for card ending {Last4}", cardNumber.Length >= 4 ? cardNumber[^4..] : "****");
-            await Task.CompletedTask;
-            return null; // Real implementation will call SOAP endpoint
+            var binding = CreateBinding();
+            var endpoint = new EndpointAddress(_endpointUrl);
+
+            _logger.LogWarning("SOAP client contract not yet wired for endpoint {EndpointUrl}", _endpointUrl);
+            throw new NotSupportedException(
+                $"SOAP client contract implementation not yet added for endpoint '{_endpointUrl}'");
+        }
+        catch (NotSupportedException)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -36,11 +48,24 @@ public class WcfCardTokenService : ICardTokenService
 
     public async Task<CardInfo?> GetCardInfoByTokenAsync(string token, CancellationToken ct = default)
     {
+        if (string.IsNullOrWhiteSpace(_endpointUrl))
+        {
+            _logger.LogDebug("GetCardInfoByToken skipped — endpoint URL not configured");
+            return null;
+        }
+
         try
         {
-            _logger.LogDebug("GetCardInfoByToken called for token {Token}", token);
-            await Task.CompletedTask;
-            return null;
+            var binding = CreateBinding();
+            var endpoint = new EndpointAddress(_endpointUrl);
+
+            _logger.LogWarning("SOAP client contract not yet wired for endpoint {EndpointUrl}", _endpointUrl);
+            throw new NotSupportedException(
+                $"SOAP client contract implementation not yet added for endpoint '{_endpointUrl}'");
+        }
+        catch (NotSupportedException)
+        {
+            throw;
         }
         catch (Exception ex)
         {

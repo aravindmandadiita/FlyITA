@@ -27,18 +27,34 @@ public class WcfCardTokenServiceTests
     }
 
     [Fact]
-    public async Task TokenizeCardAsync_ReturnsNull_WhenNotConfigured()
+    public async Task TokenizeCardAsync_ReturnsNull_WhenEndpointUrlIsEmpty()
     {
-        var service = new WcfCardTokenService("https://test.example.com/CardToken.svc", 30, _loggerMock.Object);
+        var service = new WcfCardTokenService("", 30, _loggerMock.Object);
         var result = await service.TokenizeCardAsync("4111111111111111", "12/25");
         Assert.Null(result);
     }
 
     [Fact]
-    public async Task GetCardInfoByTokenAsync_ReturnsNull_WhenNotConfigured()
+    public async Task TokenizeCardAsync_ThrowsNotSupportedException_WhenEndpointUrlIsConfigured()
     {
         var service = new WcfCardTokenService("https://test.example.com/CardToken.svc", 30, _loggerMock.Object);
+        await Assert.ThrowsAsync<NotSupportedException>(
+            () => service.TokenizeCardAsync("4111111111111111", "12/25"));
+    }
+
+    [Fact]
+    public async Task GetCardInfoByTokenAsync_ReturnsNull_WhenEndpointUrlIsEmpty()
+    {
+        var service = new WcfCardTokenService("", 30, _loggerMock.Object);
         var result = await service.GetCardInfoByTokenAsync("test-token");
         Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task GetCardInfoByTokenAsync_ThrowsNotSupportedException_WhenEndpointUrlIsConfigured()
+    {
+        var service = new WcfCardTokenService("https://test.example.com/CardToken.svc", 30, _loggerMock.Object);
+        await Assert.ThrowsAsync<NotSupportedException>(
+            () => service.GetCardInfoByTokenAsync("test-token"));
     }
 }

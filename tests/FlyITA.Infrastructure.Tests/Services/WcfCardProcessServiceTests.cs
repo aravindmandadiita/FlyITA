@@ -28,9 +28,9 @@ public class WcfCardProcessServiceTests
     }
 
     [Fact]
-    public async Task ProcessPaymentAsync_ReturnsFailure_WhenNotConfigured()
+    public async Task ProcessPaymentAsync_ReturnsFailure_WhenEndpointUrlIsEmpty()
     {
-        var service = new WcfCardProcessService("https://test.example.com/CardProcess.svc", 30, _loggerMock.Object);
+        var service = new WcfCardProcessService("", 30, _loggerMock.Object);
         var request = new PaymentRequest { Token = "test-token", Amount = 100.00m };
         var result = await service.ProcessPaymentAsync(request);
         Assert.False(result.Success);
@@ -38,11 +38,28 @@ public class WcfCardProcessServiceTests
     }
 
     [Fact]
-    public async Task RefundAsync_ReturnsFailure_WhenNotConfigured()
+    public async Task ProcessPaymentAsync_ThrowsNotSupportedException_WhenEndpointUrlIsConfigured()
     {
         var service = new WcfCardProcessService("https://test.example.com/CardProcess.svc", 30, _loggerMock.Object);
+        var request = new PaymentRequest { Token = "test-token", Amount = 100.00m };
+        await Assert.ThrowsAsync<NotSupportedException>(
+            () => service.ProcessPaymentAsync(request));
+    }
+
+    [Fact]
+    public async Task RefundAsync_ReturnsFailure_WhenEndpointUrlIsEmpty()
+    {
+        var service = new WcfCardProcessService("", 30, _loggerMock.Object);
         var result = await service.RefundAsync("txn-123", 50.00m);
         Assert.False(result.Success);
         Assert.NotNull(result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task RefundAsync_ThrowsNotSupportedException_WhenEndpointUrlIsConfigured()
+    {
+        var service = new WcfCardProcessService("https://test.example.com/CardProcess.svc", 30, _loggerMock.Object);
+        await Assert.ThrowsAsync<NotSupportedException>(
+            () => service.RefundAsync("txn-123", 50.00m));
     }
 }

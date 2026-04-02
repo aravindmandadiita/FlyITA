@@ -20,12 +20,24 @@ public class WcfCardProcessService : ICardProcessService
 
     public async Task<PaymentResult> ProcessPaymentAsync(PaymentRequest request, CancellationToken ct = default)
     {
+        if (string.IsNullOrWhiteSpace(_endpointUrl))
+        {
+            _logger.LogDebug("ProcessPayment skipped — endpoint URL not configured");
+            return new PaymentResult { Success = false, ErrorMessage = "Service endpoint not configured" };
+        }
+
         try
         {
-            // SOAP call placeholder — actual implementation depends on WCF contract from WSDL
-            _logger.LogDebug("ProcessPayment called for amount {Amount}", request.Amount);
-            await Task.CompletedTask;
-            return new PaymentResult { Success = false, ErrorMessage = "Service endpoint not configured" };
+            var binding = CreateBinding();
+            var endpoint = new EndpointAddress(_endpointUrl);
+
+            _logger.LogWarning("SOAP client contract not yet wired for endpoint {EndpointUrl}", _endpointUrl);
+            throw new NotSupportedException(
+                $"SOAP client contract implementation not yet added for endpoint '{_endpointUrl}'");
+        }
+        catch (NotSupportedException)
+        {
+            throw;
         }
         catch (Exception ex)
         {
@@ -36,12 +48,24 @@ public class WcfCardProcessService : ICardProcessService
 
     public async Task<PaymentResult> RefundAsync(string transactionId, decimal amount, CancellationToken ct = default)
     {
+        if (string.IsNullOrWhiteSpace(_endpointUrl))
+        {
+            _logger.LogDebug("Refund skipped — endpoint URL not configured");
+            return new PaymentResult { Success = false, ErrorMessage = "Service endpoint not configured" };
+        }
+
         try
         {
-            // SOAP call placeholder — actual implementation depends on WCF contract from WSDL
-            _logger.LogDebug("Refund called for transaction {TransactionId}, amount {Amount}", transactionId, amount);
-            await Task.CompletedTask;
-            return new PaymentResult { Success = false, ErrorMessage = "Service endpoint not configured" };
+            var binding = CreateBinding();
+            var endpoint = new EndpointAddress(_endpointUrl);
+
+            _logger.LogWarning("SOAP client contract not yet wired for endpoint {EndpointUrl}", _endpointUrl);
+            throw new NotSupportedException(
+                $"SOAP client contract implementation not yet added for endpoint '{_endpointUrl}'");
+        }
+        catch (NotSupportedException)
+        {
+            throw;
         }
         catch (Exception ex)
         {
