@@ -30,6 +30,10 @@ builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection(SmtpOpt
 builder.Services.Configure<SecureIframeOptions>(builder.Configuration.GetSection(SecureIframeOptions.SectionName));
 builder.Services.Configure<WeatherOptions>(builder.Configuration.GetSection(WeatherOptions.SectionName));
 
+// Strongly-typed options — Core (Phase 4)
+builder.Services.Configure<ExternalServicesOptions>(builder.Configuration.GetSection(ExternalServicesOptions.SectionName));
+builder.Services.Configure<RecaptchaOptions>(builder.Configuration.GetSection(RecaptchaOptions.SectionName));
+
 // 1. Core services (TryAdd null defaults for IDatabaseAccess, IEnvironmentService, ISmtpClient)
 builder.Services.AddFlyITACore();
 builder.Services.AddHttpContextAccessor();
