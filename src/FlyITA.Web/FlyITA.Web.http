@@ -1,0 +1,6 @@
+@FlyITA.Web_HostAddress = http://localhost:5027
+
+GET {{FlyITA.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
