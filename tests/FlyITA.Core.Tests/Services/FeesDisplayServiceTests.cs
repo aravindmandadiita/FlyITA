@@ -7,8 +7,7 @@ namespace FlyITA.Core.Tests.Services;
 public class FeesDisplayServiceTests
 {
     private readonly Mock<IContextManager> _contextMock = new();
-    private readonly Mock<IAccommodationsService> _accomMock = new();
-    private FeesDisplayService CreateService() => new(_contextMock.Object, _accomMock.Object);
+    private FeesDisplayService CreateService() => new(_contextMock.Object);
 
     [Fact]
     public void GetFeeDisplayTravelType_ITAAir_Returns_ITAAir()

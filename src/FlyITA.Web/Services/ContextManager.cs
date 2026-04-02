@@ -86,6 +86,9 @@ public class ContextManager : IContextManager
     public bool IsSelfEnroll { get => Session.GetBoolean("IsSelfEnroll"); set => Session.SetBoolean("IsSelfEnroll", value); }
     public bool PersonMatching { get => Session.GetBoolean("PersonMatching"); set => Session.SetBoolean("PersonMatching", value); }
 
+    // Navigation
+    public string NextPage { get => Session.GetString("NextPage") ?? string.Empty; set => Session.SetString("NextPage", value); }
+
     // Payment
     public string CardToken { get => Session.GetString("CardToken") ?? string.Empty; set => Session.SetString("CardToken", value); }
     public string CardWebCaptureRequestId { get => Session.GetString("CardWebCaptureRequestId") ?? string.Empty; set => Session.SetString("CardWebCaptureRequestId", value); }

@@ -73,6 +73,9 @@ public interface IContextManager
     bool IsSelfEnroll { get; set; }
     bool PersonMatching { get; set; }
 
+    // Navigation
+    string NextPage { get; set; }
+
     // Payment
     string CardToken { get; set; }
     string CardWebCaptureRequestId { get; set; }

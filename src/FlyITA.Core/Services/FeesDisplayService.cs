@@ -5,12 +5,10 @@ namespace FlyITA.Core.Services;
 public class FeesDisplayService : IFeesDisplayService
 {
     private readonly IContextManager _context;
-    private readonly IAccommodationsService _accommodations;
 
-    public FeesDisplayService(IContextManager context, IAccommodationsService accommodations)
+    public FeesDisplayService(IContextManager context)
     {
         _context = context;
-        _accommodations = accommodations;
     }
 
     public string GetFeeDisplayTravelType()

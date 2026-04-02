@@ -19,6 +19,12 @@ public class CustomFieldValidationService : ICustomFieldValidationService
     {
         var result = new ValidationResult();
 
+        // Step 0: Apply partyId to all controls if provided
+        if (partyId > 0)
+        {
+            SetCustomFieldParticipantId(controls, partyId);
+        }
+
         // Step 1: Check required-if conditions
         foreach (var control in controls)
         {

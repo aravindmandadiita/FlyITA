@@ -72,7 +72,13 @@ public class EmailService : IEmailService
         body = ReplacePlaceholders(body, participant);
         var to = GetParticipantEmail(participant);
 
-        await SendEmailAsync(to ?? "", "Your Login Credentials", body, result);
+        if (string.IsNullOrEmpty(to))
+        {
+            result.AddError("Participant email address not found.");
+            return result;
+        }
+
+        await SendEmailAsync(to, "Your Login Credentials", body, result);
         return result;
     }
 
@@ -114,7 +120,13 @@ public class EmailService : IEmailService
             body = body.Replace("[SEAMLESS_LOGIN_URL]", seamlessLoginUrl);
 
         var to = GetParticipantEmail(participant);
-        await SendEmailAsync(to ?? "", "Password Reset", body, result);
+        if (string.IsNullOrEmpty(to))
+        {
+            result.AddError("Participant email address not found.");
+            return result;
+        }
+
+        await SendEmailAsync(to, "Password Reset", body, result);
         return result;
     }
 
@@ -137,7 +149,13 @@ public class EmailService : IEmailService
         }
 
         body = ReplacePlaceholders(body, participant);
-        var to = _configuration["Email:ToEmail"] ?? "";
+        var to = _configuration["Email:ToEmail"];
+
+        if (string.IsNullOrEmpty(to))
+        {
+            result.AddError("Email:ToEmail configuration is not set.");
+            return result;
+        }
 
         await SendEmailAsync(to, "Traveler Profile Submission", body, result);
         return result;

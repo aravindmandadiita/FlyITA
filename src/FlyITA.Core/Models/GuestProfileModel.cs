@@ -1,5 +1,3 @@
-using FlyITA.Core.Enums;
-
 namespace FlyITA.Core.Models;
 
 public class GuestProfileModel

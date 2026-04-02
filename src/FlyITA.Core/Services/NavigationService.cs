@@ -33,7 +33,7 @@ public class NavigationService : INavigationService
 
     public void SetNextPage(string nextPage)
     {
-        _context.CardToken = nextPage; // Uses session to store next page target
+        _context.NextPage = nextPage;
     }
 
     public string Navigate(string nextPage)

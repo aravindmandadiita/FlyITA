@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using FlyITA.Core.Abstractions;
@@ -19,7 +20,8 @@ public static class DependencyInjection
         services.AddScoped<IClosedPageService, ClosedPageService>();
         services.AddScoped<ICustomFieldValidationService, CustomFieldValidationService>();
 
-        // Singleton
+        // Singleton (AddMemoryCache ensures IMemoryCache is available)
+        services.AddMemoryCache();
         services.AddSingleton<ICustomFieldsCache, CustomFieldsCache>();
 
         // Data access abstractions — TryAdd so Infrastructure can override with real implementations
