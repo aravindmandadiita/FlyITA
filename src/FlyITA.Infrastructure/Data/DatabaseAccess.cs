@@ -56,6 +56,33 @@ public class DatabaseAccess : IDatabaseAccess
         return command.ExecuteNonQuery();
     }
 
+    public List<Dictionary<string, object?>> ExecuteStoredProcedureList(string spName, Dictionary<string, object?> parameters)
+    {
+        using var connection = new SqlConnection(_connectionString);
+        using var command = new SqlCommand(spName, connection)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
+
+        AddParameters(command, parameters);
+
+        connection.Open();
+        using var reader = command.ExecuteReader();
+
+        var results = new List<Dictionary<string, object?>>();
+        while (reader.Read())
+        {
+            var row = new Dictionary<string, object?>();
+            for (var i = 0; i < reader.FieldCount; i++)
+            {
+                row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+            }
+            results.Add(row);
+        }
+
+        return results;
+    }
+
     private static void AddParameters(SqlCommand command, Dictionary<string, object?> parameters)
     {
         foreach (var param in parameters)
