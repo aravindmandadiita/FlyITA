@@ -1,21 +1,46 @@
 using Microsoft.Extensions.Options;
 using FlyITA.Core;
 using FlyITA.Core.Interfaces;
+using FlyITA.Core.Options;
+using FlyITA.Infrastructure;
+using FlyITA.Web.Authentication;
 using FlyITA.Web.Middleware;
 using FlyITA.Web.Options;
 using FlyITA.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Strongly-typed options
+// Strongly-typed options — existing
 builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(EmailOptions.SectionName));
 builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection(SecurityOptions.SectionName));
 builder.Services.Configure<AppSessionOptions>(builder.Configuration.GetSection(AppSessionOptions.SectionName));
 
-// FlyITA Core services (business logic)
+// Strongly-typed options — Core (Phase 3)
+builder.Services.Configure<EnvironmentOptions>(builder.Configuration.GetSection(EnvironmentOptions.SectionName));
+builder.Services.Configure<NavigationOptions>(builder.Configuration.GetSection(NavigationOptions.SectionName));
+builder.Services.Configure<ProgramOptions>(builder.Configuration.GetSection(ProgramOptions.SectionName));
+builder.Services.Configure<GuestOptions>(builder.Configuration.GetSection(GuestOptions.SectionName));
+builder.Services.Configure<DisplayOptions>(builder.Configuration.GetSection(DisplayOptions.SectionName));
+
+// Strongly-typed options — Web (Phase 3)
+builder.Services.Configure<LoginRedirectOptions>(builder.Configuration.GetSection(LoginRedirectOptions.SectionName));
+builder.Services.Configure<ErrorLoggingOptions>(builder.Configuration.GetSection(ErrorLoggingOptions.SectionName));
+builder.Services.Configure<PageOptions>(builder.Configuration.GetSection(PageOptions.SectionName));
+builder.Services.Configure<SmtpOptions>(builder.Configuration.GetSection(SmtpOptions.SectionName));
+builder.Services.Configure<SecureIframeOptions>(builder.Configuration.GetSection(SecureIframeOptions.SectionName));
+builder.Services.Configure<WeatherOptions>(builder.Configuration.GetSection(WeatherOptions.SectionName));
+
+// 1. Core services (TryAdd null defaults for IDatabaseAccess, IEnvironmentService, ISmtpClient)
 builder.Services.AddFlyITACore();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IContextManager, ContextManager>();
+
+// 2. Infrastructure (overrides Core's null IDatabaseAccess with real SqlClient impl)
+builder.Services.AddFlyITAInfrastructure();
+
+// 3. Web services (override Core's null defaults for environment and SMTP)
+builder.Services.AddSingleton<IEnvironmentService, EnvironmentService>();
+builder.Services.AddScoped<ISmtpClient, SmtpClientWrapper>();
 
 // Session (uses AppSessionOptions for timeout)
 var appSessionOptions = builder.Configuration
@@ -34,8 +59,12 @@ builder.Services.AddSession(options =>
 // Health checks
 builder.Services.AddHealthChecks();
 
-// Auth (placeholder — no scheme configured yet, services registered for middleware)
-builder.Services.AddAuthentication();
+// Authentication — SAML handler bound from config
+builder.Services.AddAuthentication("Saml")
+    .AddScheme<SamlOptions, SamlAuthenticationHandler>("Saml", options =>
+    {
+        builder.Configuration.GetSection(SamlOptions.SectionName).Bind(options);
+    });
 builder.Services.AddAuthorization();
 
 // Razor Pages
@@ -46,8 +75,8 @@ var app = builder.Build();
 // 1. Maintenance mode (first — short-circuits if down.html exists)
 app.UseMiddleware<MaintenanceModeMiddleware>();
 
-// 2. Exception handling
-app.UseExceptionHandler("/Error");
+// 2. Error logging (replaces UseExceptionHandler — logs to DB + returns appropriate response)
+app.UseMiddleware<ErrorLoggingMiddleware>();
 
 // 3. HTTPS redirection (driven by config)
 var securityOptions = app.Services.GetRequiredService<IOptions<SecurityOptions>>().Value;
@@ -70,13 +99,11 @@ app.UseStaticFiles(new StaticFileOptions
 // 6. Session
 app.UseSession();
 
-// 7. Cookie policy (configured via session cookie options above)
-
-// 8. Auth placeholder
+// 7. Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 9. Routing
+// 8. Routing
 app.MapRazorPages();
 app.MapHealthChecks("/health");
 
