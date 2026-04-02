@@ -35,3 +35,24 @@ _ReSharper*/
 $tf*/
 .vs/
 src/packages
+
+# .NET Core / ASP.NET Core
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+publish/
+*.pubxml
+*.publishproj
+
+# NuGet packages (restored at build time)
+**/packages/
+!**/packages/build/
+!**/packages/repositories.config
+
+# Test results and coverage
+TestResults/
+coverage/
+*.trx
+*.coveragexml

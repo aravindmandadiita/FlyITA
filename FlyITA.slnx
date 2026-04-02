@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FlyITA.Web/FlyITA.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FlyITA.Tests.E2E/FlyITA.Tests.E2E.csproj" />
+    <Project Path="tests/FlyITA.Tests.Integration/FlyITA.Tests.Integration.csproj" />
+    <Project Path="tests/FlyITA.Tests.Unit/FlyITA.Tests.Unit.csproj" />
+  </Folder>
+</Solution>
