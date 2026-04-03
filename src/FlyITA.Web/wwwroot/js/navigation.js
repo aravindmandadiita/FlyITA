@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create hamburger button
     const menuBtn = document.createElement('div');
     menuBtn.id = 'menu-button';
-    menuBtn.innerHTML = '<a class="mobile-menu-icon bar-icon" role="button" aria-expanded="false" aria-controls="globalmenu" aria-label="Toggle navigation"><span class="fa fa-bars" aria-hidden="true"></span></a>';
+    menuBtn.innerHTML = '<a class="mobile-menu-icon bar-icon" role="button" aria-expanded="false" aria-controls="globalmenu" aria-label="Toggle navigation"><span class="fa-solid fa-bars" aria-hidden="true"></span></a>';
     nav.insertBefore(menuBtn, nav.firstChild);
 
     const toggle = menuBtn.querySelector('a');

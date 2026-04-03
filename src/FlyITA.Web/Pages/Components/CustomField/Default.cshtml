@@ -5,9 +5,18 @@
     <div class="row">
         <div class="col-12 col-md-4">
             <div class="mb-3 @(Model.IsRequired ? "required" : "")">
-                <label for="@Model.FieldId" class="form-label">
-                    @Model.Label@Model.LabelTerminator
-                </label>
+                @if (Model.WriteOnce)
+                {
+                    <label class="form-label">
+                        @Model.Label@Model.LabelTerminator
+                    </label>
+                }
+                else
+                {
+                    <label for="@Model.FieldId" class="form-label">
+                        @Model.Label@Model.LabelTerminator
+                    </label>
+                }
                 @if (Model.WriteOnce)
                 {
                     <span id="@Model.FieldId">@Model.DisplayValue</span>
@@ -18,7 +27,7 @@
                             class="form-select"
                             @(Model.IsRequired ? "required" : "")
                             @(Model.IsRequired ? "aria-required=true" : "")
-                            @(Model.OnChange != null ? $"onchange={Model.OnChange}" : "")>
+                            @(Model.OnChange != null ? $"onchange=\"{Model.OnChange}\"" : "")>
                         @foreach (var item in Model.Items)
                         {
                             <option value="@item.Value" selected="@item.Selected">@item.Text</option>
@@ -32,7 +41,7 @@
                            @(Model.IsRequired ? "required" : "")
                            @(Model.IsRequired ? "aria-required=true" : "")
                            @(Model.MaxLength.HasValue ? $"maxlength={Model.MaxLength}" : "")
-                           @(Model.OnChange != null ? $"onchange={Model.OnChange}" : "") />
+                           @(Model.OnChange != null ? $"onchange=\"{Model.OnChange}\"" : "") />
                 }
             </div>
         </div>

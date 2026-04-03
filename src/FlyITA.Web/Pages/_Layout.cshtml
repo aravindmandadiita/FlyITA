@@ -20,9 +20,9 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css">
 
     <!-- Site CSS (minified via WebOptimizer in production) -->
-    <link rel="stylesheet" href="~/css/theme.css">
-    <link rel="stylesheet" href="~/css/main.css">
-    <link rel="stylesheet" href="~/css/print.css" media="print">
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/print.css" media="print" asp-append-version="true">
     @if (ViewData["RegistrationStyles"] is string regStyles && !string.IsNullOrEmpty(regStyles))
     {
         <link rel="stylesheet" href="@regStyles">
@@ -120,15 +120,15 @@
     </footer>
 
     <a class="scroll-top" href="#" role="button" aria-label="Scroll to top">
-        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+        <i class="fa-solid fa-angles-up" aria-hidden="true"></i>
     </a>
 
     <!-- Bootstrap 5.3 JS bundle (local via LibMan, includes Popper) -->
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Site JS (minified via WebOptimizer in production) -->
-    <script src="~/js/navigation.js"></script>
-    <script src="~/js/theme.js"></script>
-    <script src="~/js/site.js"></script>
+    <script src="~/js/navigation.js" asp-append-version="true"></script>
+    <script src="~/js/theme.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

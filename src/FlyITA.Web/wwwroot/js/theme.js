@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (el.classList.contains('parallax-opacity')) {
                     const parallaxHeight = el.offsetHeight;
-                    el.style.opacity = 1 - (scrollTop / parallaxHeight);
+                    el.style.opacity = Math.max(0, Math.min(1, 1 - (scrollTop / parallaxHeight)));
                 }
                 if (el.classList.contains('parallax-background1')) {
                     el.style.backgroundPosition = 'left ' + yPos + 'px';

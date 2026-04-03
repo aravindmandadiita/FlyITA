@@ -312,8 +312,8 @@
     background: #323232;
     z-index: 99;
   }
-  .header .navigation ul li .submenu-button .submenu-button.submenu-opened:after,
-  .header.sticky .navigation ul li .submenu-button .submenu-button.submenu-opened:after {
+  .header .navigation ul li .submenu-button.submenu-opened::after,
+  .header.sticky .navigation ul li .submenu-button.submenu-opened::after {
     display: none;
   }
   .header .navigation ul li a,
@@ -335,8 +335,8 @@
   .header.sticky .navigation ul li.nav-has-sub > a::after {
     display: none;
   }
-  .header .navigation ul lili:hover > ul > li,
-  .header.sticky .navigation ul lili:hover > ul > li {
+  .header .navigation ul li:hover > ul > li,
+  .header.sticky .navigation ul li:hover > ul > li {
     width: 100%;
     height: auto;
     border-top: 1px solid #eee;

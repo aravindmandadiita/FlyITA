@@ -49,7 +49,7 @@ function viewItinerary() {
     const reservationNumber = document.getElementById('ReservationNumber')?.value?.trim() || '';
     const travelerLastName = document.getElementById('TravelerLastName')?.value?.trim() || '';
     const url = `https://viewtrip.travelport.com/#!/itinerary?loc=${encodeURIComponent(reservationNumber)}&lName=${encodeURIComponent(travelerLastName)}`;
-    window.open(url);
+    window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 /**
@@ -125,7 +125,7 @@ class TimeoutTimer {
         if (timerEl) timerEl.textContent = this.remainingSeconds;
 
         if (this.remainingSeconds < 1) {
-            window.location.href = 'logout.aspx?msg=timeout';
+            window.location.href = '/logout?msg=timeout';
         }
     }
 

@@ -47,6 +47,7 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
     public async Task IndexPage_ShowsHomeBanner()
     {
         var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
 
         Assert.Contains("id=\"banner-home\"", content);
@@ -57,6 +58,7 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
     public async Task IndexPage_NoJQueryReferences()
     {
         var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
 
         Assert.DoesNotContain("jquery.min.js", content, StringComparison.OrdinalIgnoreCase);
@@ -69,6 +71,7 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
     public async Task IndexPage_NoCdnReferences()
     {
         var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
 
         Assert.DoesNotContain("cdn.jsdelivr.net", content);
@@ -80,6 +83,7 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
     public async Task IndexPage_ContainsItineraryModal()
     {
         var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
 
         Assert.Contains("id=\"modalItinerary\"", content);
@@ -92,6 +96,7 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
     public async Task IndexPage_ContainsMainMenu()
     {
         var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
 
         Assert.Contains("aria-label=\"Main navigation\"", content);
