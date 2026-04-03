@@ -74,6 +74,13 @@ builder.Services.AddAuthorization();
 // Razor Pages
 builder.Services.AddRazorPages();
 
+// WebOptimizer — CSS/JS bundling & minification (passthrough in dev, minified in prod)
+builder.Services.AddWebOptimizer(pipeline =>
+{
+    pipeline.MinifyCssFiles("css/**/*.css");
+    pipeline.MinifyJsFiles("js/**/*.js");
+});
+
 var app = builder.Build();
 
 // 1. Maintenance mode (first — short-circuits if down.html exists)
@@ -90,7 +97,10 @@ if (securityOptions.RequireHttps)
 // 4. Security headers (scoped to non-static responses)
 app.UseMiddleware<SecurityHeadersMiddleware>();
 
-// 5. Static files (with browser caching for assets)
+// 5. WebOptimizer (must precede UseStaticFiles)
+app.UseWebOptimizer();
+
+// 6. Static files (with browser caching for assets)
 app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>
@@ -100,14 +110,14 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 
-// 6. Session
+// 7. Session
 app.UseSession();
 
-// 7. Auth
+// 8. Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 8. Routing
+// 9. Routing
 app.MapRazorPages();
 app.MapHealthChecks("/health");
 
