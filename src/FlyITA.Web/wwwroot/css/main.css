@@ -1,0 +1,120 @@
+/* ============================================================================================================================*/
+/* Banner ---------------------*/
+/* ============================================================================================================================*/
+.hero {
+    overflow: hidden;
+    position: relative;
+    background-color: #555;
+    width: 100%;
+    height: 100%;
+}
+
+.page-banner,
+.home-hero {
+    overflow: hidden;
+    position: relative;
+    background-image: url(../images/banner-bkg.jpg);
+    background-size: cover;
+    text-align: center;
+    width: 100%;
+    height: 60vh;
+    padding-top: 28%;
+}
+.home-hero {
+    background-image: url(../images/gallery/01.jpg);
+    background-size: cover;
+    height: 86vh;
+}
+
+.caption-hero h1 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+@media (max-width: 991px) {
+
+.caption-hero h1 {
+        font-size: 25px;
+    }
+
+}
+
+@media (max-width: 767px) {
+
+ .caption-hero h1 {
+        font-size: 20px;
+        margin: 0;
+    }
+
+.caption-hero h2 {
+        margin: 0;
+        font-size: 12px;
+    }
+
+ .hero {
+        padding-top: 64px;
+    }
+
+}
+
+@media (max-width: 480px) {
+ .caption-hero {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/*-------------------------------------------------------------------------------------------*/
+/*  Accordion Tab    ||---------------------------- */
+/*-------------------------------------------------------------------------------------------*/
+.accordion-section {
+    border-top: 1px solid #f1f1f1;
+    border-left: 1px solid #f1f1f1;
+    border-right: 1px solid #f1f1f1;
+}
+
+    .accordion-section:last-child {
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+.accordion-title {
+    cursor: pointer;
+    display: block;
+    position: relative;
+    padding: 20px 20px;
+    margin: 0px;
+}
+
+    .accordion-title.active {
+        color: #b0df01;
+    }
+
+    .accordion-title:before {
+        content: "\f105";
+        display: block;
+        font-family: "Font Awesome 6 Free", sans-serif;
+        font-weight: 900;
+        position: absolute;
+        right: 18px;
+    }
+
+    .accordion-title.active:before {
+        content: "\f107";
+    }
+
+.accordion-content.default-hidden {
+    display: none;
+    margin: 0;
+}
+
+.accordion-content {
+    padding: 0 20px 10px;
+}
+
+/* =============================================================================================================================*/
+/* Parallax ------------------- */
+/* =============================================================================================================================*/
+.parallax {
+    position: relative;
+}

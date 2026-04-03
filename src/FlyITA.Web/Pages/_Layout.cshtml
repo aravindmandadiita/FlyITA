@@ -1,0 +1,134 @@
+@inject IOptions<DisplayOptions> displayOptions
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>@(ViewData["Title"] ?? "Fly ITA")</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico">
+    <link rel="icon" type="image/png" href="~/images/favicon.png">
+    <link rel="apple-touch-icon" href="~/images/favicon.png">
+
+    <!-- Bootstrap 5.3 CSS (local via LibMan) -->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+
+    <!-- FontAwesome 6 (local via LibMan) -->
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css">
+
+    <!-- Site CSS (minified via WebOptimizer in production) -->
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/print.css" media="print" asp-append-version="true">
+    @if (ViewData["RegistrationStyles"] is string regStyles && !string.IsNullOrEmpty(regStyles))
+    {
+        <link rel="stylesheet" href="@regStyles">
+    }
+
+    @await Component.InvokeAsync("SslSealHeader")
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body class="full-intro"
+      data-disable-forward-nav="@(displayOptions.Value.DisableForwardScript.ToString().ToLower())"
+      data-scroll-to-top="@(displayOptions.Value.ScrollToWindowTop.ToString().ToLower())">
+
+    <!-- Skip navigation link (accessibility) -->
+    <a href="#begin-content" class="visually-hidden-focusable skip-nav">Skip to main content</a>
+
+    @await Component.InvokeAsync("ItineraryModal")
+
+    <header class="header" role="banner">
+        <div class="container">
+            @await Component.InvokeAsync("MainMenu")
+        </div>
+    </header>
+
+    @await Component.InvokeAsync("Banner", new { isHomePage = (bool)(ViewData["IsHomePage"] ?? false) })
+
+    <main id="begin-content" class="main-content" role="main">
+        @await RenderSectionAsync("TopNav", required: false)
+        @await RenderSectionAsync("RegistrationNav", required: false)
+        @RenderBody()
+        @if (displayOptions.Value.DisplaySSLSeal)
+        {
+            <div id="sslSeal">
+                @await Component.InvokeAsync("SslSeal")
+            </div>
+        }
+    </main>
+
+    <footer class="main-footer" role="contentinfo">
+        <div class="container">
+            <div class="row">
+            <div class="col-sm-3">
+                <h4>Contact Us</h4>
+                <p>8 a.m.- 5 p.m. CT<br>Monday - Friday</p>
+                <p>
+                    <strong>Corporate:</strong><br>
+                    <a class="email" href="mailto:travelrequest@@itagroup.com">travelrequest@@itagroup.com</a><br>
+                    Toll-free: (800) 732-9402<br>
+                    Reservations: (515) 326-3851
+                </p>
+                <p>
+                    <strong>Leisure:</strong><br>
+                    <a class="email" href="mailto:leisuretravel@@itagroup.com">leisuretravel@@itagroup.com</a><br>
+                    Toll-free: (800) 622-4099<br>
+                    Direct Dial: (515) 326-3852
+                </p>
+                <p>
+                    <strong>General Assistance:</strong><br>
+                    Call: (515) 326-3852
+                </p>
+            </div>
+            <div class="col-sm-3">
+                <ul>
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/about">About ITA</a></li>
+                    <li><a href="/reservations">Booking Information</a></li>
+                    <li><a href="/traveler-profile">Traveler Profile</a></li>
+                    <li><a href="/vacation">Vacation Travel</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <ul>
+                    <li><a href="/resources">Travel Updates</a></li>
+                    <li><a href="/international">International Travel</a></li>
+                    <li><a href="/travel-info">Travel Best Practices</a></li>
+                    <li><a href="/programs">Airline Programs</a></li>
+                    <li><a href="/privacy">Privacy and Security Policies</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <img class="img-fluid" src="~/images/logo-footer.png" alt="ITA Group logo" loading="lazy">
+            </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="d-none" aria-hidden="true">
+        @await Component.InvokeAsync("RegistrationFooter")
+    </div>
+
+    <footer id="footer-copyright">
+        <div class="container">
+            <p>Powered by &copy; ITA Group, Inc. @DateTime.Now.Year</p>
+        </div>
+    </footer>
+
+    <a class="scroll-top" href="#" role="button" aria-label="Scroll to top">
+        <i class="fa-solid fa-angles-up" aria-hidden="true"></i>
+    </a>
+
+    <!-- Bootstrap 5.3 JS bundle (local via LibMan, includes Popper) -->
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Site JS (minified via WebOptimizer in production) -->
+    <script src="~/js/navigation.js" asp-append-version="true"></script>
+    <script src="~/js/theme.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

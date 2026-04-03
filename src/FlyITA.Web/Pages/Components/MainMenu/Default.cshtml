@@ -1,0 +1,43 @@
+@model FlyITA.Web.Components.MainMenuModel
+
+@if (Model.ShowLogo)
+{
+    <div class="logo" id="globallogo">
+        <img class="l-white" src="~/images/logo-white.png" alt="ITA Group logo">
+        <img class="l-color" src="~/images/logo-color.png" alt="ITA Group logo">
+    </div>
+}
+
+@if (Model.ShowMenu)
+{
+    <nav id="globalmenu" class="navigation" aria-label="Main navigation">
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/about">About ITA</a></li>
+            <li class="nav-has-sub">
+                <button type="button" aria-haspopup="true" aria-expanded="false">Travel Reservations</button>
+                <ul class="nav-dropdown">
+                    <li><a href="/reservations">Booking Information</a></li>
+                    <li><a href="/traveler-profile">Traveler Profile</a></li>
+                    <li>
+                        <button type="button" class="btn-menu"
+                                data-bs-toggle="modal" data-bs-target="#modalItinerary">
+                            View Itinerary and Flight Status
+                        </button>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-has-sub">
+                <button type="button" aria-haspopup="true" aria-expanded="false">Resources</button>
+                <ul class="nav-dropdown">
+                    <li><a href="/resources">Travel Updates</a></li>
+                    <li><a href="/international">International Travel</a></li>
+                    <li><a href="/travel-info">Travel Best Practices</a></li>
+                    <li><a href="/programs">Airline Programs</a></li>
+                </ul>
+            </li>
+            <li><a href="/vacation">Vacation Travel</a></li>
+            <li><a href="/contact"><span class="fa-solid fa-envelope" aria-hidden="true"></span><span class="visually-hidden">Contact Us</span></a></li>
+        </ul>
+    </nav>
+}

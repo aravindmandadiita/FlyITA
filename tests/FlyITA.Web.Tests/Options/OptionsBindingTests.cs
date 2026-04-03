@@ -31,6 +31,24 @@ public class OptionsBindingTests
         Assert.Equal(42, opts.ProgramID);
         Assert.Equal("ABC123", opts.ITAProgNbr);
         Assert.Equal("TRK", opts.TrackingCode);
+        Assert.Equal(string.Empty, opts.ContactName);
+        Assert.Equal(string.Empty, opts.ContactEmail);
+        Assert.Equal(string.Empty, opts.ContactPhone);
+    }
+
+    [Fact]
+    public void ProgramOptions_BindsContactProperties()
+    {
+        var opts = BindOptions<ProgramOptions>("Program", new()
+        {
+            ["Program:ContactName"] = "Travel HQ",
+            ["Program:ContactEmail"] = "travel@ita.com",
+            ["Program:ContactPhone"] = "800-555-1234"
+        });
+
+        Assert.Equal("Travel HQ", opts.ContactName);
+        Assert.Equal("travel@ita.com", opts.ContactEmail);
+        Assert.Equal("800-555-1234", opts.ContactPhone);
     }
 
     [Fact]

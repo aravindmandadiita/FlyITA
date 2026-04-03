@@ -1,0 +1,37 @@
+@model bool
+
+@if (!Model)
+{
+    <div id="banner-site">
+        <section class="hero d-none d-sm-block">
+            <div class="page-banner"></div>
+        </section>
+    </div>
+}
+else
+{
+    <div id="banner-home">
+        <section class="hero">
+            <div class="intro-scroll-down text-center d-none d-sm-block">
+                <a class="scroll-down" href="#begin-content">
+                    <span class="fa-solid fa-chevron-down" aria-hidden="true"></span>
+                </a>
+                <div style="height:70px;" class="d-none d-sm-block"></div>
+            </div>
+
+            <div class="home-hero parallax parallax-section1">
+                <div class="container caption-hero">
+                    <h1>You're Traveling<br class="d-none d-sm-inline" /> in Good Company</h1>
+                    <h2>With over 50 years of Full Service Travel Management</h2>
+                    <p>
+                        <button id="btnItinerary" type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#modalItinerary">
+                            View Itinerary and Flight Status
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <div id="scroll-to-point" class="d-none d-sm-block"></div>
+    </div>
+}

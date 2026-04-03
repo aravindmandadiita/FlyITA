@@ -1,0 +1,6 @@
+@model FlyITA.Core.Options.ProgramOptions
+
+@if (!string.IsNullOrEmpty(Model.ContactName) || !string.IsNullOrEmpty(Model.ContactEmail) || !string.IsNullOrEmpty(Model.ContactPhone))
+{
+    <span>Questions? Please contact @Model.ContactName at @Model.ContactEmail or @Model.ContactPhone</span>
+}
