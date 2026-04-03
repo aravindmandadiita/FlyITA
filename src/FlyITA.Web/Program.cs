@@ -121,6 +121,20 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapHealthChecks("/health");
 
+// Legacy .aspx redirects — 301 permanent
+app.MapGet("/default", () => Results.Redirect("/", permanent: true));
+app.MapGet("/default.aspx", () => Results.Redirect("/", permanent: true));
+app.MapGet("/home", () => Results.Redirect("/", permanent: true));
+app.MapGet("/home.aspx", () => Results.Redirect("/", permanent: true));
+app.MapGet("/aboutita.aspx", () => Results.Redirect("/about", permanent: true));
+app.MapGet("/international.aspx", () => Results.Redirect("/international", permanent: true));
+app.MapGet("/privacy.aspx", () => Results.Redirect("/privacy", permanent: true));
+app.MapGet("/helpsite.aspx", () => Results.Redirect("/contact", permanent: true));
+app.MapGet("/resources.aspx", () => Results.Redirect("/resources", permanent: true));
+app.MapGet("/travelinfo.aspx", () => Results.Redirect("/travel-info", permanent: true));
+app.MapGet("/programs.aspx", () => Results.Redirect("/programs", permanent: true));
+app.MapGet("/reservations.aspx", () => Results.Redirect("/reservations", permanent: true));
+
 app.Run();
 
 // Make Program accessible to WebApplicationFactory
