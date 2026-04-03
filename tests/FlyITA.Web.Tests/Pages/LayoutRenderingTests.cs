@@ -41,6 +41,9 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
         Assert.Contains("js/site.js", content);
         Assert.Contains("js/navigation.js", content);
         Assert.Contains("js/theme.js", content);
+
+        // No stale /home links
+        Assert.DoesNotContain("href=\"/home\"", content);
     }
 
     [Fact]
@@ -102,6 +105,22 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
         Assert.Contains("aria-label=\"Main navigation\"", content);
         Assert.Contains("Travel Reservations", content);
         Assert.Contains("Resources", content);
+    }
+
+    [Fact]
+    public async Task IndexPage_ContainsHomePageContent()
+    {
+        var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+
+        Assert.Contains("id=\"itinerary\"", content);
+        Assert.Contains("id=\"HomeReservationNumber\"", content);
+        Assert.Contains("Travel with Confidence", content);
+        Assert.Contains("id=\"vacation\"", content);
+        Assert.Contains("id=\"info-links\"", content);
+        Assert.Contains("id=\"giftcards\"", content);
+        Assert.Contains("href=\"/reservations\"", content);
     }
 
     [Fact]

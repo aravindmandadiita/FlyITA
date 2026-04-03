@@ -32,6 +32,6 @@ public class ApplicationStartupTests : IClassFixture<WebApplicationFactory<Progr
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
 
         var content = await response.Content.ReadAsStringAsync();
-        Assert.Contains("FlyITA", content);
+        Assert.Contains("Travel with Confidence", content);
     }
 }
