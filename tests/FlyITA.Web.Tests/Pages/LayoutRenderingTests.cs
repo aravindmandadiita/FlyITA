@@ -108,6 +108,22 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
     }
 
     [Fact]
+    public async Task IndexPage_ContainsHomePageContent()
+    {
+        var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+
+        Assert.Contains("id=\"itinerary\"", content);
+        Assert.Contains("id=\"HomeReservationNumber\"", content);
+        Assert.Contains("Travel with Confidence", content);
+        Assert.Contains("id=\"vacation\"", content);
+        Assert.Contains("id=\"info-links\"", content);
+        Assert.Contains("id=\"giftcards\"", content);
+        Assert.Contains("href=\"/reservations\"", content);
+    }
+
+    [Fact]
     public async Task ErrorPage_RendersWithLayout()
     {
         var response = await _client.GetAsync("/Error");
