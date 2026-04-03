@@ -1066,3 +1066,166 @@ body .cancel-button {
     font-size: 14px;
   }
 }
+
+/* ==========================================================================
+   Page-specific content styles (extracted from legacy theme.css)
+   ========================================================================== */
+body #wrapper .row-light,
+body #wrapper .row-dark {
+  margin: 20px 0;
+  padding: 12px 12px 20px 12px;
+  clear: both;
+  overflow: hidden;
+}
+body #wrapper .row-dark {
+  background-color: #eeeeee;
+  color: #555 !important;
+}
+body #wrapper .row-dark .table td {
+  border-color: #ccc;
+}
+body #wrapper .spacer {
+  display: block;
+  height: 40px;
+  width: 100%;
+}
+body #wrapper .subsection {
+  display: block;
+  background: #cccccc;
+  border-radius: 4px;
+  text-transform: capitalize;
+  padding: 6px 12px;
+  margin-bottom: 12px;
+}
+body #wrapper .main-content {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  min-height: 250px;
+}
+body #wrapper .main-content .row-light {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0 12px;
+  clear: both;
+  overflow: hidden;
+}
+body #wrapper .main-content .intro {
+  text-align: center;
+  font-size: 16px;
+  margin: 8px auto;
+  max-width: 800px;
+}
+body #wrapper .main-content .table th {
+  border-top: none !important;
+}
+body #wrapper .main-content #itinerary {
+  background-color: #252525;
+  margin: 0;
+  padding: 10px 0 30px 0;
+  clear: both;
+  overflow: hidden;
+}
+body #wrapper .main-content #itinerary h3 {
+  color: #fff !important;
+}
+body #wrapper .main-content #itinerary input {
+  background-color: #363636;
+  margin-top: 20px;
+  padding: 2px 12px;
+  height: 34px;
+  width: 100%;
+  border: 1px solid #363636;
+  color: #fff;
+}
+body #wrapper .main-content #introduction {
+  padding: 40px 20px 30px 20px;
+}
+body #wrapper .main-content #vacation {
+  background: #005d95 url(../images/gallery/vacation-bg.jpg) no-repeat center center;
+  background-size: cover;
+  padding: 40px 20px 30px 20px;
+  text-align: center;
+  color: #fff;
+}
+body #wrapper .main-content #vacation h2 {
+  color: #fff;
+}
+body #wrapper .main-content #info-links {
+  padding: 40px 20px 30px 20px;
+}
+body #wrapper .main-content #info-links h3 {
+  padding-top: 6px;
+  padding-left: 46px;
+  min-height: 120px;
+}
+body #wrapper .main-content #info-links h3.icon1 {
+  background: url(../images/gallery/icon-flight-sm.jpg) no-repeat;
+}
+body #wrapper .main-content #info-links h3.icon2 {
+  background: url(../images/gallery/icon-travel-sm.jpg) no-repeat;
+}
+body #wrapper .main-content #info-links h3.icon3 {
+  background: url(../images/gallery/icon-international-sm.jpg) no-repeat;
+}
+body #wrapper .main-content #info-links .icon-content {
+  margin-top: -80px;
+  padding-left: 50px;
+}
+body #wrapper .main-content #info-links ul {
+  padding-left: 16px;
+}
+body #wrapper .main-content #giftcards {
+  background: #f57f29 url(../images/gallery/giftcards-bg.jpg) no-repeat center center;
+  background-size: cover;
+  padding: 40px 20px 30px 20px;
+  margin-bottom: 0;
+  text-align: center;
+}
+body #wrapper .main-content #giftcards h2 {
+  margin: 20px 0;
+  color: #fff;
+  text-align: center;
+}
+body #wrapper .main-content #giftcards p {
+  color: #fff;
+  text-align: center;
+}
+body #wrapper .main-content #giftcards a {
+  color: #fff;
+}
+body #wrapper .main-content div#profile-information {
+  max-width: 1120px !important;
+  margin: 0 auto;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+body #wrapper .main-content .highlight {
+  font-weight: bold;
+  color: #ad132b;
+}
+body #wrapper .main-content .embed-responsive {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+body #wrapper .main-content .embed-responsive .embed-responsive-item,
+body #wrapper .main-content .embed-responsive iframe,
+body #wrapper .main-content .embed-responsive embed,
+body #wrapper .main-content .embed-responsive object {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  border: 0;
+}
+body #wrapper .main-content .embed-responsive.embed-responsive-16by9 {
+  padding-bottom: 56.25%;
+}
+body #wrapper .main-content .embed-responsive.embed-responsive-4by3 {
+  padding-bottom: 75%;
+}
