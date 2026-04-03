@@ -56,3 +56,6 @@ TestResults/
 coverage/
 *.trx
 *.coveragexml
+
+# LibMan vendor libraries (restored at build time)
+src/FlyITA.Web/wwwroot/lib/
