@@ -41,6 +41,9 @@ public class LayoutRenderingTests : IClassFixture<WebApplicationFactory<Program>
         Assert.Contains("js/site.js", content);
         Assert.Contains("js/navigation.js", content);
         Assert.Contains("js/theme.js", content);
+
+        // No stale /home links
+        Assert.DoesNotContain("href=\"/home\"", content);
     }
 
     [Fact]
