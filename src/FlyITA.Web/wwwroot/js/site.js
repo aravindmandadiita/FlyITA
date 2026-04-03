@@ -60,8 +60,7 @@ function formatPhone() {
     let value = input.value.trim();
     input.value = value;
 
-    const formGroup = input.closest('.form-group');
-    if (formGroup) formGroup.classList.remove('has-error');
+    input.classList.remove('is-invalid');
 
     if (value.length === 0) return;
 
@@ -77,7 +76,7 @@ function formatPhone() {
     input.value = formatted;
 
     if (formatted.length !== expectedLength || !/\d{3}-\d{3}-\d{4}/.test(formatted)) {
-        if (formGroup) formGroup.classList.add('has-error');
+        input.classList.add('is-invalid');
     }
 }
 
