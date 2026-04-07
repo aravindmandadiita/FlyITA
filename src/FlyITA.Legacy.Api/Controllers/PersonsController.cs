@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Web.Http;
+using PCentralLib;
 
 namespace FlyITA.Legacy.Api.Controllers
 {
@@ -10,23 +10,19 @@ namespace FlyITA.Legacy.Api.Controllers
         [Route("{id:int}")]
         public IHttpActionResult GetPerson(int id)
         {
-            // TODO: Wire to PCentralLib.dll — PCentralPerson.Get(id)
-            var placeholder = new Dictionary<string, object>
-            {
-                ["PersonID"] = id,
-                ["FirstName"] = "",
-                ["LastName"] = "",
-                ["Email"] = ""
-            };
-            return Ok(placeholder);
+            var person = PCentralLib.WebReg.PCentralWebRegFunctions.GetPersonByID(ConnectionHelper.PerformanceCentral, id);
+            if (person == null)
+                return NotFound();
+
+            return Ok(person);
         }
 
         [HttpGet]
         [Route("{id:int}/contacts")]
         public IHttpActionResult GetContacts(int id)
         {
-            // TODO: Wire to PCentralLib.dll — contact number lookup
-            return Ok(new List<Dictionary<string, object>>());
+            var contacts = PCentralPersonContactNumber.GetByPersonID(ConnectionHelper.PerformanceCentral, id);
+            return Ok(contacts ?? new PCentralEntityList<PCentralPersonContactNumber>());
         }
     }
 }

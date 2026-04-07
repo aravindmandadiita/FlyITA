@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Web.Http;
+using PCentralLib;
 
 namespace FlyITA.Legacy.Api.Controllers
 {
@@ -7,17 +7,14 @@ namespace FlyITA.Legacy.Api.Controllers
     public class ProgramsController : ApiController
     {
         [HttpGet]
-        [Route("{id:int}")]
-        public IHttpActionResult GetProgram(int id)
+        [Route("{id}")]
+        public IHttpActionResult GetProgram(string id)
         {
-            // TODO: Wire to PCentralLib.dll — PCentralProgram.Get(id)
-            var placeholder = new Dictionary<string, object>
-            {
-                ["ProgramID"] = id,
-                ["ProgramName"] = "",
-                ["ITAProgNbr"] = ""
-            };
-            return Ok(placeholder);
+            var program = PCentralLib.WebReg.PCentralWebRegFunctions.GetProgram(ConnectionHelper.PerformanceCentral, id);
+            if (program == null)
+                return NotFound();
+
+            return Ok(program);
         }
     }
 }

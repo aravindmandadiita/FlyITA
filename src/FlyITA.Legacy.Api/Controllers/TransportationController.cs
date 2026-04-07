@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Web.Http;
+using PCentralLib.WebReg;
 
 namespace FlyITA.Legacy.Api.Controllers
 {
@@ -10,12 +10,11 @@ namespace FlyITA.Legacy.Api.Controllers
         [Route("{participantId:int}")]
         public IHttpActionResult GetTransportation(int participantId)
         {
-            // TODO: Wire to PCentralLib.dll — transportation details lookup
-            var placeholder = new Dictionary<string, object>
-            {
-                ["ParticipantID"] = participantId
-            };
-            return Ok(placeholder);
+            var result = WebRegAccommodationFacade.ReadAccommodation(ConnectionHelper.PerformanceCentral, participantId);
+            if (result?.AirPreference == null)
+                return NotFound();
+
+            return Ok(result.AirPreference);
         }
     }
 }

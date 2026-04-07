@@ -71,6 +71,7 @@
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\PageConfigController.cs" />
     <Compile Include="Controllers\TransportationController.cs" />
+    <Compile Include="ConnectionHelper.cs" />
     <Compile Include="Global.asax.cs" />
   </ItemGroup>
   <ItemGroup>
