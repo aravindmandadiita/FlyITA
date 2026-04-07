@@ -17,12 +17,12 @@ public class PCentralDataAccessTests
     // Participant / Person — single-row methods
 
     [Fact]
-    public void GetParticipantById_CallsCorrectUrlAndReturnsData()
+    public async Task GetParticipantByIdAsync_CallsCorrectUrlAndReturnsData()
     {
         var json = """{"ParticipantID":42,"FirstName":"Jane","LastName":"Doe"}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetParticipantById(42);
+        var result = await svc.GetParticipantByIdAsync(42);
 
         Assert.Equal(HttpMethod.Get, handler.LastRequest!.Method);
         Assert.Contains("api/participants/42", handler.LastRequest.RequestUri!.ToString());
@@ -32,26 +32,26 @@ public class PCentralDataAccessTests
     }
 
     [Fact]
-    public void GetParticipantById_ReturnsNull_OnNotFound()
+    public async Task GetParticipantByIdAsync_ReturnsNull_OnNotFound()
     {
         var (svc, _) = CreateServiceWithHandler(HttpStatusCode.NotFound, "");
-        Assert.Null(svc.GetParticipantById(999));
+        Assert.Null(await svc.GetParticipantByIdAsync(999));
     }
 
     [Fact]
-    public void GetParticipantById_ThrowsOnServerError()
+    public async Task GetParticipantByIdAsync_ThrowsOnServerError()
     {
         var (svc, _) = CreateServiceWithHandler(HttpStatusCode.InternalServerError, "");
-        Assert.Throws<HttpRequestException>(() => svc.GetParticipantById(1));
+        await Assert.ThrowsAsync<HttpRequestException>(() => svc.GetParticipantByIdAsync(1));
     }
 
     [Fact]
-    public void GetPersonById_CallsCorrectUrlAndReturnsData()
+    public async Task GetPersonByIdAsync_CallsCorrectUrlAndReturnsData()
     {
         var json = """{"PersonID":10,"FirstName":"John"}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetPersonById(10);
+        var result = await svc.GetPersonByIdAsync(10);
 
         Assert.Equal(HttpMethod.Get, handler.LastRequest!.Method);
         Assert.Contains("api/persons/10", handler.LastRequest.RequestUri!.ToString());
@@ -59,24 +59,24 @@ public class PCentralDataAccessTests
     }
 
     [Fact]
-    public void GetPartyByParticipantId_CallsCorrectUrl()
+    public async Task GetPartyByParticipantIdAsync_CallsCorrectUrl()
     {
         var json = """{"PartyID":5,"ParticipantID":7}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetPartyByParticipantId(7);
+        var result = await svc.GetPartyByParticipantIdAsync(7);
 
         Assert.Contains("api/participants/7/party", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal(5, Convert.ToInt32(result!["PartyID"]));
     }
 
     [Fact]
-    public void GetProgramById_CallsCorrectUrl()
+    public async Task GetProgramByIdAsync_CallsCorrectUrl()
     {
         var json = """{"ProgramID":100,"ProgramName":"Event"}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetProgramById(100);
+        var result = await svc.GetProgramByIdAsync(100);
 
         Assert.Contains("api/programs/100", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("Event", result!["ProgramName"]?.ToString());
@@ -85,12 +85,12 @@ public class PCentralDataAccessTests
     // Custom Fields — multi-row + void
 
     [Fact]
-    public void GetCustomFieldValues_CallsCorrectUrlAndReturnsList()
+    public async Task GetCustomFieldValuesAsync_CallsCorrectUrlAndReturnsList()
     {
         var json = """[{"FieldName":"Dietary","Value":"Vegetarian"}]""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetCustomFieldValues(42);
+        var result = await svc.GetCustomFieldValuesAsync(42);
 
         Assert.Contains("api/participants/42/custom-fields", handler.LastRequest!.RequestUri!.ToString());
         Assert.Single(result);
@@ -98,18 +98,18 @@ public class PCentralDataAccessTests
     }
 
     [Fact]
-    public void GetCustomFieldValues_ReturnsEmptyList_OnNotFound()
+    public async Task GetCustomFieldValuesAsync_ReturnsEmptyList_OnNotFound()
     {
         var (svc, _) = CreateServiceWithHandler(HttpStatusCode.NotFound, "");
-        Assert.Empty(svc.GetCustomFieldValues(999));
+        Assert.Empty(await svc.GetCustomFieldValuesAsync(999));
     }
 
     [Fact]
-    public void SaveCustomFieldValue_SendsPutToCorrectUrl()
+    public async Task SaveCustomFieldValueAsync_SendsPutToCorrectUrl()
     {
         var (svc, handler) = CreateServiceWithHandler(HttpStatusCode.NoContent, "");
 
-        svc.SaveCustomFieldValue(1, 2, "value", 3);
+        await svc.SaveCustomFieldValueAsync(1, 2, "value", 3);
 
         Assert.Equal(HttpMethod.Put, handler.LastRequest!.Method);
         Assert.Contains("api/participants/1/custom-fields", handler.LastRequest.RequestUri!.ToString());
@@ -118,46 +118,46 @@ public class PCentralDataAccessTests
     // Accommodations
 
     [Fact]
-    public void GetAccommodationDetails_CallsCorrectUrl()
+    public async Task GetAccommodationDetailsAsync_CallsCorrectUrl()
     {
         var json = """{"HotelName":"Hilton","ParticipantID":5}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetAccommodationDetails(5);
+        var result = await svc.GetAccommodationDetailsAsync(5);
 
         Assert.Contains("api/participants/5/accommodations", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("Hilton", result!["HotelName"]?.ToString());
     }
 
     [Fact]
-    public void GetAccommodationList_CallsCorrectUrl()
+    public async Task GetAccommodationListAsync_CallsCorrectUrl()
     {
         var json = """[{"Type":"Hotel"},{"Type":"Flight"}]""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetAccommodationList(5);
+        var result = await svc.GetAccommodationListAsync(5);
 
         Assert.Contains("api/participants/5/accommodations/list", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal(2, result.Count);
     }
 
     [Fact]
-    public void SaveAccommodationRecord_SendsPutToCorrectUrl()
+    public async Task SaveAccommodationRecordAsync_SendsPutToCorrectUrl()
     {
         var (svc, handler) = CreateServiceWithHandler(HttpStatusCode.NoContent, "");
 
-        svc.SaveAccommodationRecord(5, new Dictionary<string, object?> { ["HotelName"] = "Marriott" });
+        await svc.SaveAccommodationRecordAsync(5, new Dictionary<string, object?> { ["HotelName"] = "Marriott" });
 
         Assert.Equal(HttpMethod.Put, handler.LastRequest!.Method);
         Assert.Contains("api/participants/5/accommodations", handler.LastRequest.RequestUri!.ToString());
     }
 
     [Fact]
-    public void DeleteAccommodationRecord_SendsDeleteToCorrectUrl()
+    public async Task DeleteAccommodationRecordAsync_SendsDeleteToCorrectUrl()
     {
         var (svc, handler) = CreateServiceWithHandler(HttpStatusCode.NoContent, "");
 
-        svc.DeleteAccommodationRecord(5, "Hotel");
+        await svc.DeleteAccommodationRecordAsync(5, "Hotel");
 
         Assert.Equal(HttpMethod.Delete, handler.LastRequest!.Method);
         Assert.Contains("api/participants/5/accommodations/Hotel", handler.LastRequest.RequestUri!.ToString());
@@ -166,52 +166,52 @@ public class PCentralDataAccessTests
     // Email Templates — string return
 
     [Fact]
-    public void GetEmailTemplate_CallsCorrectUrlAndExtractsValue()
+    public async Task GetEmailTemplateAsync_CallsCorrectUrlAndExtractsValue()
     {
         var json = """{"value":"<html>Hello</html>"}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetEmailTemplate("RegConfirm", 1);
+        var result = await svc.GetEmailTemplateAsync("RegConfirm", 1);
 
         Assert.Contains("api/email-templates/RegConfirm?programId=1", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("<html>Hello</html>", result);
     }
 
     [Fact]
-    public void GetEmailBody_CallsCorrectUrlAndExtractsValue()
+    public async Task GetEmailBodyAsync_CallsCorrectUrlAndExtractsValue()
     {
         var json = """{"value":"Your login is..."}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetEmailBody("LogonCreds", 2);
+        var result = await svc.GetEmailBodyAsync("LogonCreds", 2);
 
         Assert.Contains("api/email-body/LogonCreds?programId=2", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("Your login is...", result);
     }
 
     [Fact]
-    public void GetEmailTemplate_ReturnsNull_OnNotFound()
+    public async Task GetEmailTemplateAsync_ReturnsNull_OnNotFound()
     {
         var (svc, _) = CreateServiceWithHandler(HttpStatusCode.NotFound, "");
-        Assert.Null(svc.GetEmailTemplate("Missing", 1));
+        Assert.Null(await svc.GetEmailTemplateAsync("Missing", 1));
     }
 
     [Fact]
-    public void GetEmailTemplate_ThrowsOnServerError()
+    public async Task GetEmailTemplateAsync_ThrowsOnServerError()
     {
         var (svc, _) = CreateServiceWithHandler(HttpStatusCode.InternalServerError, "");
-        Assert.Throws<HttpRequestException>(() => svc.GetEmailTemplate("Fail", 1));
+        await Assert.ThrowsAsync<HttpRequestException>(() => svc.GetEmailTemplateAsync("Fail", 1));
     }
 
     // Contact Numbers — multi-row
 
     [Fact]
-    public void GetContactNumbers_CallsCorrectUrl()
+    public async Task GetContactNumbersAsync_CallsCorrectUrl()
     {
         var json = """[{"Phone":"555-1234"}]""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetContactNumbers(10);
+        var result = await svc.GetContactNumbersAsync(10);
 
         Assert.Contains("api/persons/10/contacts", handler.LastRequest!.RequestUri!.ToString());
         Assert.Single(result);
@@ -220,12 +220,12 @@ public class PCentralDataAccessTests
     // Page Configuration
 
     [Fact]
-    public void GetPageConfiguration_CallsCorrectUrlWithEscapedParams()
+    public async Task GetPageConfigurationAsync_CallsCorrectUrlWithEscapedParams()
     {
         var json = """{"RequiresAuth":true,"PageName":"profile"}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetPageConfiguration("profile", "ABC");
+        var result = await svc.GetPageConfigurationAsync("profile", "ABC");
 
         Assert.Contains("api/page-config/profile?programNumber=ABC", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal(true, result!["RequiresAuth"]);
@@ -234,12 +234,12 @@ public class PCentralDataAccessTests
     // Transportation
 
     [Fact]
-    public void GetTransportationDetails_CallsCorrectUrl()
+    public async Task GetTransportationDetailsAsync_CallsCorrectUrl()
     {
         var json = """{"Type":"Air","ParticipantID":3}""";
         var (svc, handler) = CreateServiceWithHandler(json: json);
 
-        var result = svc.GetTransportationDetails(3);
+        var result = await svc.GetTransportationDetailsAsync(3);
 
         Assert.Contains("api/participants/3/transportation", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("Air", result!["Type"]?.ToString());
@@ -248,11 +248,11 @@ public class PCentralDataAccessTests
     // URL escaping
 
     [Fact]
-    public void GetPageConfiguration_IncludesParamsInUrl()
+    public async Task GetPageConfigurationAsync_IncludesParamsInUrl()
     {
         var (svc, handler) = CreateServiceWithHandler(json: """{"PageName":"test"}""");
 
-        svc.GetPageConfiguration("profile", "ABC123");
+        await svc.GetPageConfigurationAsync("profile", "ABC123");
 
         var url = handler.LastRequest!.RequestUri!.ToString();
         Assert.Contains("api/page-config/profile", url);

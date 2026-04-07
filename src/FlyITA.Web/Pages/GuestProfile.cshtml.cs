@@ -39,18 +39,18 @@ public class GuestProfileModel : PageModel
     public string? ErrorMessage { get; set; }
     public string? SuccessMessage { get; set; }
 
-    public IActionResult OnGet(int? participantId)
+    public async Task<IActionResult> OnGetAsync(int? participantId)
     {
         if (participantId == null)
             return Page();
 
-        LoadParticipantData(participantId.Value);
+        await LoadParticipantDataAsync(participantId.Value);
         return Page();
     }
 
-    public IActionResult OnPost(int participantId)
+    public async Task<IActionResult> OnPostAsync(int participantId)
     {
-        LoadParticipantData(participantId);
+        await LoadParticipantDataAsync(participantId);
 
         if (!ModelState.IsValid)
             return Page();
@@ -62,19 +62,19 @@ public class GuestProfileModel : PageModel
             var formValue = Request.Form[$"custom_{fieldId}"].ToString();
             if (fieldId > 0)
             {
-                _dataAccess.SaveCustomFieldValue(participantId, fieldId, formValue, 0);
+                await _dataAccess.SaveCustomFieldValueAsync(participantId, fieldId, formValue, 0);
             }
         }
 
         SuccessMessage = "Profile saved successfully.";
-        LoadParticipantData(participantId);
+        await LoadParticipantDataAsync(participantId);
         return Page();
     }
 
-    private void LoadParticipantData(int participantId)
+    private async Task LoadParticipantDataAsync(int participantId)
     {
-        Participant = _dataAccess.GetParticipantById(participantId);
-        CustomFields = _dataAccess.GetCustomFieldValues(participantId);
+        Participant = await _dataAccess.GetParticipantByIdAsync(participantId);
+        CustomFields = await _dataAccess.GetCustomFieldValuesAsync(participantId);
 
         if (Participant != null)
         {

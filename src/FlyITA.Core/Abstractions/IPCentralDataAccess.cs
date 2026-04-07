@@ -1,37 +1,35 @@
-using FlyITA.Core.Models;
-
 namespace FlyITA.Core.Abstractions;
 
 public interface IPCentralDataAccess
 {
     // Participant / Person
-    Dictionary<string, object?>? GetParticipantById(int participantId);
-    Dictionary<string, object?>? GetPersonById(int personId);
-    Dictionary<string, object?>? GetPartyByParticipantId(int participantId);
+    Task<Dictionary<string, object?>?> GetParticipantByIdAsync(int participantId);
+    Task<Dictionary<string, object?>?> GetPersonByIdAsync(int personId);
+    Task<Dictionary<string, object?>?> GetPartyByParticipantIdAsync(int participantId);
 
     // Program
-    Dictionary<string, object?>? GetProgramById(int programId);
+    Task<Dictionary<string, object?>?> GetProgramByIdAsync(int programId);
 
     // Custom Fields
-    List<Dictionary<string, object?>> GetCustomFieldValues(int participantId);
-    void SaveCustomFieldValue(int participantId, int customFieldId, string value, int possibleValueId);
+    Task<List<Dictionary<string, object?>>> GetCustomFieldValuesAsync(int participantId);
+    Task SaveCustomFieldValueAsync(int participantId, int customFieldId, string value, int possibleValueId);
 
     // Accommodations
-    Dictionary<string, object?>? GetAccommodationDetails(int participantId);
-    List<Dictionary<string, object?>> GetAccommodationList(int participantId);
-    void SaveAccommodationRecord(int participantId, Dictionary<string, object?> data);
-    void DeleteAccommodationRecord(int participantId, string recordType);
+    Task<Dictionary<string, object?>?> GetAccommodationDetailsAsync(int participantId);
+    Task<List<Dictionary<string, object?>>> GetAccommodationListAsync(int participantId);
+    Task SaveAccommodationRecordAsync(int participantId, Dictionary<string, object?> data);
+    Task DeleteAccommodationRecordAsync(int participantId, string recordType);
 
     // Email Templates
-    string? GetEmailTemplate(string templateName, int programId);
-    string? GetEmailBody(string templateKey, int programId);
+    Task<string?> GetEmailTemplateAsync(string templateName, int programId);
+    Task<string?> GetEmailBodyAsync(string templateKey, int programId);
 
     // Contact Numbers
-    List<Dictionary<string, object?>> GetContactNumbers(int personId);
+    Task<List<Dictionary<string, object?>>> GetContactNumbersAsync(int personId);
 
     // Page Configuration
-    Dictionary<string, object?>? GetPageConfiguration(string pageName, string programNumber);
+    Task<Dictionary<string, object?>?> GetPageConfigurationAsync(string pageName, string programNumber);
 
     // Transportation
-    Dictionary<string, object?>? GetTransportationDetails(int participantId);
+    Task<Dictionary<string, object?>?> GetTransportationDetailsAsync(int participantId);
 }

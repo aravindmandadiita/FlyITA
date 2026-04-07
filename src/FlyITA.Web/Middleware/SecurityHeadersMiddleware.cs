@@ -28,8 +28,11 @@ public class SecurityHeadersMiddleware
             headers["Referrer-Policy"] = "no-referrer-when-downgrade";
             headers["Permissions-Policy"] = "microphone=(),camera=(self),geolocation=(self)";
 
-            // Cache headers for dynamic responses (static files override in Program.cs)
-            headers["Cache-Control"] = "private,max-age=0";
+            // Cache headers for dynamic responses only — don't overwrite static file caching
+            if (!headers.ContainsKey("Cache-Control"))
+                headers["Cache-Control"] = "private,max-age=0";
+            if (!headers.ContainsKey("Expires"))
+                headers["Expires"] = "-1";
 
             return Task.CompletedTask;
         });

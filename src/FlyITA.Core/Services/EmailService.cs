@@ -24,7 +24,7 @@ public class EmailService : IEmailService
     public async Task<ValidationResult> SendRegistrationConfirmationAsync(int participantId)
     {
         var result = new ValidationResult();
-        var participant = _dataAccess.GetParticipantById(participantId);
+        var participant = await _dataAccess.GetParticipantByIdAsync(participantId);
         if (participant == null)
         {
             result.AddError("Participant not found.");
@@ -32,14 +32,14 @@ public class EmailService : IEmailService
         }
 
         var templateKey = _configuration["Email:RegistrationConfirmationTemplate"] ?? "RegistrationConfirmation";
-        var body = _dataAccess.GetEmailTemplate(templateKey, _context.ProgramID);
+        var body = await _dataAccess.GetEmailTemplateAsync(templateKey, _context.ProgramID);
         if (string.IsNullOrEmpty(body))
         {
             result.AddError("Email template not found.");
             return result;
         }
 
-        body = ReplacePlaceholders(body, participant);
+        body = await ReplacePlaceholdersAsync(body, participant);
         var subject = _configuration["Email:Subject"] ?? "Registration Confirmation";
         var to = GetParticipantEmail(participant);
 
@@ -56,7 +56,7 @@ public class EmailService : IEmailService
     public async Task<ValidationResult> SendLogonCredentialsAsync(int participantId)
     {
         var result = new ValidationResult();
-        var participant = _dataAccess.GetParticipantById(participantId);
+        var participant = await _dataAccess.GetParticipantByIdAsync(participantId);
         if (participant == null)
         {
             result.AddError("Participant not found.");
@@ -64,14 +64,14 @@ public class EmailService : IEmailService
         }
 
         var templateKey = _configuration["Email:LogonCredentialsTemplate"] ?? "LogonCredentials";
-        var body = _dataAccess.GetEmailTemplate(templateKey, _context.ProgramID);
+        var body = await _dataAccess.GetEmailTemplateAsync(templateKey, _context.ProgramID);
         if (string.IsNullOrEmpty(body))
         {
             result.AddError("Email template not found.");
             return result;
         }
 
-        body = ReplacePlaceholders(body, participant);
+        body = await ReplacePlaceholdersAsync(body, participant);
         var to = GetParticipantEmail(participant);
 
         if (string.IsNullOrEmpty(to))
@@ -84,22 +84,22 @@ public class EmailService : IEmailService
         return result;
     }
 
-    public string PreviewLogonCredentials(int participantId)
+    public async Task<string> PreviewLogonCredentialsAsync(int participantId)
     {
-        var participant = _dataAccess.GetParticipantById(participantId);
+        var participant = await _dataAccess.GetParticipantByIdAsync(participantId);
         if (participant == null) return "<p>Participant not found.</p>";
 
         var templateKey = _configuration["Email:LogonCredentialsTemplate"] ?? "LogonCredentials";
-        var body = _dataAccess.GetEmailTemplate(templateKey, _context.ProgramID);
+        var body = await _dataAccess.GetEmailTemplateAsync(templateKey, _context.ProgramID);
         if (string.IsNullOrEmpty(body)) return "<p>Template not found.</p>";
 
-        return ReplacePlaceholders(body, participant);
+        return await ReplacePlaceholdersAsync(body, participant);
     }
 
     public async Task<ValidationResult> SendForgotPasswordCredentialsAsync(int participantId, string? seamlessLoginUrl = null)
     {
         var result = new ValidationResult();
-        var participant = _dataAccess.GetParticipantById(participantId);
+        var participant = await _dataAccess.GetParticipantByIdAsync(participantId);
         if (participant == null)
         {
             result.AddError("Participant not found.");
@@ -110,14 +110,14 @@ public class EmailService : IEmailService
             ? (_configuration["Email:SeamlessLogonTemplate"] ?? "SeamlessLogon")
             : (_configuration["Email:ForgotPasswordTemplate"] ?? "ForgotPassword");
 
-        var body = _dataAccess.GetEmailTemplate(templateKey, _context.ProgramID);
+        var body = await _dataAccess.GetEmailTemplateAsync(templateKey, _context.ProgramID);
         if (string.IsNullOrEmpty(body))
         {
             result.AddError("Email template not found.");
             return result;
         }
 
-        body = ReplacePlaceholders(body, participant);
+        body = await ReplacePlaceholdersAsync(body, participant);
         if (seamlessLoginUrl != null)
             body = body.Replace("[SEAMLESS_LOGIN_URL]", seamlessLoginUrl);
 
@@ -135,7 +135,7 @@ public class EmailService : IEmailService
     public async Task<ValidationResult> SendTravelerProfileEmailAsync(int participantId)
     {
         var result = new ValidationResult();
-        var participant = _dataAccess.GetParticipantById(participantId);
+        var participant = await _dataAccess.GetParticipantByIdAsync(participantId);
         if (participant == null)
         {
             result.AddError("Participant not found.");
@@ -143,14 +143,14 @@ public class EmailService : IEmailService
         }
 
         var templateKey = _configuration["Email:TravelerProfileTemplate"] ?? "TravelerProfile";
-        var body = _dataAccess.GetEmailTemplate(templateKey, _context.ProgramID);
+        var body = await _dataAccess.GetEmailTemplateAsync(templateKey, _context.ProgramID);
         if (string.IsNullOrEmpty(body))
         {
             result.AddError("Email template not found.");
             return result;
         }
 
-        body = ReplacePlaceholders(body, participant);
+        body = await ReplacePlaceholdersAsync(body, participant);
         var to = _configuration["Email:ToEmail"];
 
         if (string.IsNullOrEmpty(to))
@@ -163,7 +163,7 @@ public class EmailService : IEmailService
         return result;
     }
 
-    public string ReplacePlaceholders(string body, Dictionary<string, object?> participant)
+    public async Task<string> ReplacePlaceholdersAsync(string body, Dictionary<string, object?> participant)
     {
         body = ReplaceIfPresent(body, "<<LegalFirstName>>", participant, "LegalFirstName");
         body = ReplaceIfPresent(body, "<<LegalLastName>>", participant, "LegalLastName");
@@ -178,7 +178,7 @@ public class EmailService : IEmailService
         body = body.Replace("[PARTICIPANT_NAME]",
             $"{GetValue(participant, "LegalFirstName")} {GetValue(participant, "LegalLastName")}");
 
-        var programData = _dataAccess.GetProgramById(_context.ProgramID);
+        var programData = await _dataAccess.GetProgramByIdAsync(_context.ProgramID);
         if (programData != null)
         {
             body = ReplaceIfPresent(body, "[PROGRAM_URL]", programData, "ProgramURL");

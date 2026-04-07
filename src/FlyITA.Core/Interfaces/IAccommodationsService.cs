@@ -4,14 +4,14 @@ namespace FlyITA.Core.Interfaces;
 
 public interface IAccommodationsService
 {
-    string GetNextPage(ValidationResult result);
-    void SetTransportationDates(ValidationResult result);
-    void SetCruiseDates();
+    Task<string> GetNextPageAsync(ValidationResult result);
+    Task SetTransportationDatesAsync(ValidationResult result);
+    Task SetCruiseDatesAsync();
     void SetGroupHotelDates(AccommodationResult result);
-    void SaveOverNightInFlight();
-    void RemoveOverNightInFlight();
-    AccommodationResult GetAccommodationDetails(ValidationResult result);
+    Task SaveOverNightInFlightAsync();
+    Task RemoveOverNightInFlightAsync();
+    Task<AccommodationResult> GetAccommodationDetailsAsync(ValidationResult result);
     bool IsMultiDestination(AccommodationResult result);
-    void SetNonGroupHotelCount();
-    int GetPrimaryHotelRoomBlockID();
+    Task SetNonGroupHotelCountAsync();
+    Task<int> GetPrimaryHotelRoomBlockIDAsync();
 }

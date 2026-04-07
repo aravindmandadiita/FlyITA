@@ -45,21 +45,21 @@ public static class DependencyInjection
 /// <summary>No-op implementation until Infrastructure provides a real one.</summary>
 internal class NullPCentralDataAccess : IPCentralDataAccess
 {
-    public Dictionary<string, object?>? GetParticipantById(int participantId) => null;
-    public Dictionary<string, object?>? GetPersonById(int personId) => null;
-    public Dictionary<string, object?>? GetPartyByParticipantId(int participantId) => null;
-    public Dictionary<string, object?>? GetProgramById(int programId) => null;
-    public List<Dictionary<string, object?>> GetCustomFieldValues(int participantId) => new();
-    public void SaveCustomFieldValue(int participantId, int customFieldId, string value, int possibleValueId) { }
-    public Dictionary<string, object?>? GetAccommodationDetails(int participantId) => null;
-    public List<Dictionary<string, object?>> GetAccommodationList(int participantId) => new();
-    public void SaveAccommodationRecord(int participantId, Dictionary<string, object?> data) { }
-    public void DeleteAccommodationRecord(int participantId, string recordType) { }
-    public string? GetEmailTemplate(string templateName, int programId) => null;
-    public string? GetEmailBody(string templateKey, int programId) => null;
-    public List<Dictionary<string, object?>> GetContactNumbers(int personId) => new();
-    public Dictionary<string, object?>? GetPageConfiguration(string pageName, string programNumber) => null;
-    public Dictionary<string, object?>? GetTransportationDetails(int participantId) => null;
+    public Task<Dictionary<string, object?>?> GetParticipantByIdAsync(int participantId) => Task.FromResult<Dictionary<string, object?>?>(null);
+    public Task<Dictionary<string, object?>?> GetPersonByIdAsync(int personId) => Task.FromResult<Dictionary<string, object?>?>(null);
+    public Task<Dictionary<string, object?>?> GetPartyByParticipantIdAsync(int participantId) => Task.FromResult<Dictionary<string, object?>?>(null);
+    public Task<Dictionary<string, object?>?> GetProgramByIdAsync(int programId) => Task.FromResult<Dictionary<string, object?>?>(null);
+    public Task<List<Dictionary<string, object?>>> GetCustomFieldValuesAsync(int participantId) => Task.FromResult(new List<Dictionary<string, object?>>());
+    public Task SaveCustomFieldValueAsync(int participantId, int customFieldId, string value, int possibleValueId) => Task.CompletedTask;
+    public Task<Dictionary<string, object?>?> GetAccommodationDetailsAsync(int participantId) => Task.FromResult<Dictionary<string, object?>?>(null);
+    public Task<List<Dictionary<string, object?>>> GetAccommodationListAsync(int participantId) => Task.FromResult(new List<Dictionary<string, object?>>());
+    public Task SaveAccommodationRecordAsync(int participantId, Dictionary<string, object?> data) => Task.CompletedTask;
+    public Task DeleteAccommodationRecordAsync(int participantId, string recordType) => Task.CompletedTask;
+    public Task<string?> GetEmailTemplateAsync(string templateName, int programId) => Task.FromResult<string?>(null);
+    public Task<string?> GetEmailBodyAsync(string templateKey, int programId) => Task.FromResult<string?>(null);
+    public Task<List<Dictionary<string, object?>>> GetContactNumbersAsync(int personId) => Task.FromResult(new List<Dictionary<string, object?>>());
+    public Task<Dictionary<string, object?>?> GetPageConfigurationAsync(string pageName, string programNumber) => Task.FromResult<Dictionary<string, object?>?>(null);
+    public Task<Dictionary<string, object?>?> GetTransportationDetailsAsync(int participantId) => Task.FromResult<Dictionary<string, object?>?>(null);
 }
 
 internal class NullDatabaseAccess : IDatabaseAccess

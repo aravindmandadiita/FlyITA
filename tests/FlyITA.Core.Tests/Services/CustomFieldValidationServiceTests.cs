@@ -14,15 +14,15 @@ public class CustomFieldValidationServiceTests
     private CustomFieldValidationService CreateService() => new(_cacheMock.Object, _dataMock.Object);
 
     [Fact]
-    public void ValidateAndSave_EmptyCollection_IsValid()
+    public async Task ValidateAndSaveAsync_EmptyCollection_IsValid()
     {
         var controls = new CustomFieldControlCollection();
-        var result = CreateService().ValidateAndSaveCustomFields(controls);
+        var result = await CreateService().ValidateAndSaveCustomFieldsAsync(controls);
         Assert.True(result.IsValid);
     }
 
     [Fact]
-    public void ValidateAndSave_RequiredField_Empty_Fails()
+    public async Task ValidateAndSaveAsync_RequiredField_Empty_Fails()
     {
         var controls = new CustomFieldControlCollection();
         controls.Add(new CustomFieldControlModel
@@ -34,13 +34,13 @@ public class CustomFieldValidationServiceTests
         });
         _cacheMock.Setup(c => c.GetCustomFieldAttribute("Diet", "required_if")).Returns((string?)null);
 
-        var result = CreateService().ValidateAndSaveCustomFields(controls);
+        var result = await CreateService().ValidateAndSaveCustomFieldsAsync(controls);
         Assert.False(result.IsValid);
         Assert.Contains("Diet is required", result.Errors[0]);
     }
 
     [Fact]
-    public void ValidateAndSave_RequiredField_Filled_Saves()
+    public async Task ValidateAndSaveAsync_RequiredField_Filled_Saves()
     {
         var controls = new CustomFieldControlCollection();
         controls.Add(new CustomFieldControlModel
@@ -53,13 +53,13 @@ public class CustomFieldValidationServiceTests
         });
         _cacheMock.Setup(c => c.GetCustomFieldAttribute("Diet", "required_if")).Returns((string?)null);
 
-        var result = CreateService().ValidateAndSaveCustomFields(controls);
+        var result = await CreateService().ValidateAndSaveCustomFieldsAsync(controls);
         Assert.True(result.IsValid);
-        _dataMock.Verify(d => d.SaveCustomFieldValue(42, 1, "Vegetarian", 0), Times.Once);
+        _dataMock.Verify(d => d.SaveCustomFieldValueAsync(42, 1, "Vegetarian", 0), Times.Once);
     }
 
     [Fact]
-    public void ValidateAndSave_RequiredIf_Triggers()
+    public async Task ValidateAndSaveAsync_RequiredIf_Triggers()
     {
         var controls = new CustomFieldControlCollection();
         controls.Add(new CustomFieldControlModel { CustomFieldID = 1, CustomFieldName = "HasAllergy", Value = "Yes" });
@@ -67,7 +67,7 @@ public class CustomFieldValidationServiceTests
         _cacheMock.Setup(c => c.GetCustomFieldAttribute("HasAllergy", "required_if")).Returns((string?)null);
         _cacheMock.Setup(c => c.GetCustomFieldAttribute("AllergyDetails", "required_if")).Returns("HasAllergy=Yes");
 
-        var result = CreateService().ValidateAndSaveCustomFields(controls);
+        var result = await CreateService().ValidateAndSaveCustomFieldsAsync(controls);
         Assert.False(result.IsValid);
         Assert.Contains("AllergyDetails is required", result.Errors[0]);
     }
