@@ -98,15 +98,15 @@ Check if viewport meta already exists. If so, just add description/robots.
 
 **Files:** Multiple pages and components
 
-Audit and fix:
+Audit results and actions:
 
-1. **Color contrast** — Ensure all text meets 4.5:1 ratio (normal text) or 3:1 (large text)
-2. **Focus indicators** — Visible focus rings on all interactive elements
-3. **Form labels** — All form inputs have associated `<label>` elements (check GuestProfile, TravelerProfile, VacationRequest, AchPayment)
-4. **Image alt text** — All `<img>` tags have descriptive `alt` attributes
-5. **Heading hierarchy** — Verify h1 → h2 → h3 progression on each page (no skipped levels)
-6. **Link purpose** — Ensure all links have descriptive text (no bare "click here")
-7. **Error identification** — Form validation errors are announced to screen readers (aria-live)
+1. **Focus indicators** — ADDED: `:focus-visible` styles for all interactive elements (`#005d95` blue, 2px solid)
+2. **Color contrast** — DEFERRED: Existing palette appears compliant but needs manual Lighthouse audit to verify 4.5:1
+3. **Form labels** — VERIFIED: All form inputs already have associated `<label>` via `asp-for` tag helpers (no changes needed)
+4. **Image alt text** — VERIFIED: All `<img>` tags have descriptive `alt` attributes (no changes needed)
+5. **Heading hierarchy** — VERIFIED: Pages use h1 → h2 → h3 correctly (no changes needed)
+6. **Link purpose** — VERIFIED: No bare "click here" links (no changes needed)
+7. **Error identification** — VERIFIED: Form validation uses `asp-validation-for` which renders accessible error spans (no changes needed)
 
 **File:** `src/FlyITA.Web/wwwroot/css/theme.css` (MODIFY)
 
@@ -129,8 +129,8 @@ Add focus styles:
 
 **File:** `src/FlyITA.Web/wwwroot/css/theme.css` (MODIFY)
 
-1. **Remove unused CSS rules** if any (dead selectors)
-2. **Ensure print.css is media="print"** — already done if using separate `<link media="print">`
+1. **Remove unused CSS rules** — DEFERRED: Needs tooling (PurgeCSS or similar) for safe removal
+2. **print.css media="print"** — VERIFIED: Already uses `<link media="print">` (no changes needed)
 
 ### 3.5 Component Rendering Tests
 

@@ -19,10 +19,10 @@ Add viewport (if missing), description, and robots meta tags.
 Add defer attribute to JS script tags in Layout.
 
 ## Task 5: CSS accessibility
-Add :focus-visible styles, verify color contrast on key colors.
+Add :focus-visible styles for all interactive elements. Color contrast deferred to manual Lighthouse audit.
 
-## Task 6: Form page accessibility
-Ensure all form inputs have labels, add aria-describedby for validation errors.
+## Task 6: Form page accessibility audit
+Verify all form inputs have labels and validation is accessible. Result: already correct from prior phases, no changes needed.
 
 ## Task 7: Frontend tests
 Test GA4 conditional loading, meta tag presence, defer attributes, accessibility elements.

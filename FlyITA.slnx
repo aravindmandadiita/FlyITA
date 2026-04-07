@@ -1,10 +1,13 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/FlyITA.Core/FlyITA.Core.csproj" />
+    <Project Path="src/FlyITA.Infrastructure/FlyITA.Infrastructure.csproj" />
     <Project Path="src/FlyITA.Web/FlyITA.Web.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/FlyITA.Tests.E2E/FlyITA.Tests.E2E.csproj" />
-    <Project Path="tests/FlyITA.Tests.Integration/FlyITA.Tests.Integration.csproj" />
-    <Project Path="tests/FlyITA.Tests.Unit/FlyITA.Tests.Unit.csproj" />
+    <Project Path="tests/FlyITA.Core.Tests/FlyITA.Core.Tests.csproj" />
+    <Project Path="tests/FlyITA.Infrastructure.Tests/FlyITA.Infrastructure.Tests.csproj" />
+    <Project Path="tests/FlyITA.Web.Tests/FlyITA.Web.Tests.csproj" />
+    <Project Path="tests/FlyITA.E2E.Tests/FlyITA.E2E.Tests.csproj" />
   </Folder>
 </Solution>
