@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace FlyITA.Web.Tests.Pages;
@@ -57,23 +58,30 @@ public class SystemPageTests : IClassFixture<WebApplicationFactory<Program>>
     // Error page differentiation
 
     [Fact]
-    public async Task Error_404Code_ShowsNotFoundMessage()
+    public async Task Error_404Code_ShowsNotFoundMessageAndStatus()
     {
-        var client = _factory.CreateClient();
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
 
-        var content = await (await client.GetAsync("/error?code=404")).Content.ReadAsStringAsync();
+        var response = await client.GetAsync("/error?code=404");
 
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        var content = await response.Content.ReadAsStringAsync();
         Assert.Contains("Page Not Found", content);
         Assert.Contains("does not exist", content);
     }
 
     [Fact]
-    public async Task Error_NoCode_ShowsGenericErrorMessage()
+    public async Task Error_NoCode_Returns200WithGenericMessage()
     {
         var client = _factory.CreateClient();
 
-        var content = await (await client.GetAsync("/error")).Content.ReadAsStringAsync();
+        var response = await client.GetAsync("/error");
 
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var content = await response.Content.ReadAsStringAsync();
         Assert.Contains("Error", content);
     }
 
@@ -91,6 +99,17 @@ public class SystemPageTests : IClassFixture<WebApplicationFactory<Program>>
         var content = await (await client.GetAsync(url)).Content.ReadAsStringAsync();
 
         Assert.Contains(expectedContent, content);
+    }
+
+    [Fact]
+    public async Task Logout_Locked_ShowsLockedAccountMessage()
+    {
+        var client = _factory.CreateClient();
+
+        var content = await (await client.GetAsync("/logout?msg=locked")).Content.ReadAsStringAsync();
+
+        Assert.Contains("locked", content);
+        Assert.Contains("contact", content);
     }
 
     // AccessDenied content
@@ -116,10 +135,12 @@ public class SystemPageTests : IClassFixture<WebApplicationFactory<Program>>
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
-        Assert.Equal("[]", content);
+        var json = JsonDocument.Parse(content);
+        Assert.Equal(JsonValueKind.Array, json.RootElement.ValueKind);
+        Assert.Equal(0, json.RootElement.GetArrayLength());
     }
 
-    // Legacy URL redirect tests
+    // Legacy URL redirect tests (preserve query string)
 
     [Theory]
     [InlineData("/ThankYou.aspx", "/thank-you")]
@@ -138,6 +159,34 @@ public class SystemPageTests : IClassFixture<WebApplicationFactory<Program>>
         var response = await client.GetAsync(legacyUrl);
 
         Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
-        Assert.Equal(expectedPath, response.Headers.Location?.OriginalString);
+        Assert.StartsWith(expectedPath, response.Headers.Location?.OriginalString ?? "");
+    }
+
+    [Fact]
+    public async Task LegacyLogout_PreservesQueryString()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
+
+        var response = await client.GetAsync("/logout.aspx?msg=timeout");
+
+        Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
+        Assert.Equal("/logout?msg=timeout", response.Headers.Location?.OriginalString);
+    }
+
+    [Fact]
+    public async Task LegacyThankYou_PreservesQueryString()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
+
+        var response = await client.GetAsync("/ThankYou.aspx?page=Vacation");
+
+        Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
+        Assert.Equal("/thank-you?page=Vacation", response.Headers.Location?.OriginalString);
     }
 }

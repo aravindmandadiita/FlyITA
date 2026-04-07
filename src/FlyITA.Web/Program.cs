@@ -147,13 +147,13 @@ app.MapGet("/Travelerprofileinformation.aspx", () => Results.Redirect("/traveler
 app.MapGet("/VacationTravelRequest.aspx", () => Results.Redirect("/vacation-request", permanent: true));
 app.MapGet("/AchPayment.aspx", () => Results.Redirect("/ach-payment", permanent: true));
 
-// Phase 8 — system page redirects
-app.MapGet("/ThankYou.aspx", () => Results.Redirect("/thank-you", permanent: true));
-app.MapGet("/closed.aspx", () => Results.Redirect("/closed", permanent: true));
-app.MapGet("/error.aspx", () => Results.Redirect("/error", permanent: true));
-app.MapGet("/logout.aspx", () => Results.Redirect("/logout", permanent: true));
-app.MapGet("/Accessdenied.aspx", () => Results.Redirect("/access-denied", permanent: true));
-app.MapGet("/ImageListing.aspx", () => Results.Redirect("/api/images", permanent: true));
+// Phase 8 — system page redirects (preserve query string)
+app.MapGet("/ThankYou.aspx", (HttpContext ctx) => Results.Redirect($"/thank-you{ctx.Request.QueryString}", permanent: true));
+app.MapGet("/closed.aspx", (HttpContext ctx) => Results.Redirect($"/closed{ctx.Request.QueryString}", permanent: true));
+app.MapGet("/error.aspx", (HttpContext ctx) => Results.Redirect($"/error{ctx.Request.QueryString}", permanent: true));
+app.MapGet("/logout.aspx", (HttpContext ctx) => Results.Redirect($"/logout{ctx.Request.QueryString}", permanent: true));
+app.MapGet("/Accessdenied.aspx", (HttpContext ctx) => Results.Redirect($"/access-denied{ctx.Request.QueryString}", permanent: true));
+app.MapGet("/ImageListing.aspx", (HttpContext ctx) => Results.Redirect($"/api/images{ctx.Request.QueryString}", permanent: true));
 
 app.Run();
 

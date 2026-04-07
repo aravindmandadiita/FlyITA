@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using FlyITA.Core.Interfaces;
@@ -23,9 +22,11 @@ public class ErrorModel : PageModel
 
     public void OnGet(string? code)
     {
-        var statusCode = code ?? Response.StatusCode.ToString();
+        // Parse status code from query string or current response
+        if (int.TryParse(code, out var parsedCode))
+            Response.StatusCode = parsedCode;
 
-        if (statusCode == "404")
+        if (Response.StatusCode == 404 || code == "404")
         {
             IsNotFound = true;
             ErrorTitle = "Page Not Found";
