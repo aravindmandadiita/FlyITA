@@ -42,20 +42,23 @@ public class FormTests : IClassFixture<PlaywrightFixture>
     }
 
     [Fact]
-    public async Task VacationRequest_SubmitShowsSuccessMessage()
+    public async Task Vacation_SubmitRedirectsToThankYou()
     {
         var page = await _fixture.Browser.NewPageAsync();
         try
         {
-            await page.GotoAsync($"{_fixture.BaseUrl}/vacation-request");
-            await page.FillAsync("input[name='TravelerName']", "John Doe");
-            await page.FillAsync("input[name='TravelerEmail']", "john@example.com");
-            await page.FillAsync("input[name='Destination']", "Paris");
-            await page.FillAsync("input[name='DepartureDate']", "2026-06-01");
-            await page.FillAsync("input[name='ReturnDate']", "2026-06-15");
+            await page.GotoAsync($"{_fixture.BaseUrl}/vacation");
+            await page.FillAsync("input[name='NameOfPersonRequesting']", "John Doe");
+            await page.FillAsync("input[name='GeneralAndPassengerEmail']", "john@example.com");
+            await page.FillAsync("input[name='Passengers[0].FirstName']", "John");
+            await page.FillAsync("input[name='Passengers[0].LastName']", "Doe");
+            await page.FillAsync("input[name='Passengers[0].DateOfBirth']", "1990-01-15");
+            await page.SelectOptionAsync("select[name='Passengers[0].Gender']", "Male");
+            await page.FillAsync("input[name='DepartureCity']", "Chicago");
+            await page.FillAsync("textarea[name='DestinationsInterestedIn']", "Hawaii");
             await page.ClickAsync("button[type='submit']");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-            await Assertions.Expect(page.Locator(".alert-success")).ToBeVisibleAsync();
+            Assert.Contains("/thank-you", page.Url);
         }
         finally { await page.CloseAsync(); }
     }

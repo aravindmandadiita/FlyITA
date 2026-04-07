@@ -17,7 +17,7 @@ public class FormPageTests : IClassFixture<WebApplicationFactory<Program>>
     [Theory]
     [InlineData("/guest-profile", "Guest Profile Information")]
     [InlineData("/traveler-profile", "Traveler Profile Information")]
-    [InlineData("/vacation-request", "Vacation Travel Request")]
+    [InlineData("/vacation", "Vacation Travel Request")]
     [InlineData("/ach-payment", "ACH Payment")]
     public async Task FormPage_Returns200_WithTitle(string url, string expectedTitle)
     {
@@ -35,8 +35,10 @@ public class FormPageTests : IClassFixture<WebApplicationFactory<Program>>
     [Theory]
     [InlineData("/GuestProfileInformation.aspx", "/guest-profile")]
     [InlineData("/Travelerprofileinformation.aspx", "/traveler-profile")]
-    [InlineData("/VacationTravelRequest.aspx", "/vacation-request")]
+    [InlineData("/VacationTravelRequest.aspx", "/vacation")]
+    [InlineData("/vacation.aspx", "/vacation")]
     [InlineData("/AchPayment.aspx", "/ach-payment")]
+    [InlineData("/vacation-request", "/vacation")]
     public async Task LegacyFormUrl_Returns301_ToModernPath(string legacyUrl, string expectedPath)
     {
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
@@ -80,16 +82,18 @@ public class FormPageTests : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Fact]
-    public async Task VacationRequest_ContainsRequiredFormFields()
+    public async Task Vacation_ContainsRequiredFormFields()
     {
         var client = _factory.CreateClient();
 
-        var content = await (await client.GetAsync("/vacation-request")).Content.ReadAsStringAsync();
+        var content = await (await client.GetAsync("/vacation")).Content.ReadAsStringAsync();
 
-        Assert.Contains("Destination", content);
-        Assert.Contains("DepartureDate", content);
-        Assert.Contains("ReturnDate", content);
-        Assert.Contains("Submit Travel Request", content);
+        Assert.Contains("NameOfPersonRequesting", content);
+        Assert.Contains("GeneralAndPassengerEmail", content);
+        Assert.Contains("Passengers", content);
+        Assert.Contains("DepartureCity", content);
+        Assert.Contains("DestinationsInterestedIn", content);
+        Assert.Contains("Submit Vacation Request", content);
     }
 
     [Fact]
