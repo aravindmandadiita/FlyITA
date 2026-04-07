@@ -1,4 +1,6 @@
 @inject IOptions<DisplayOptions> displayOptions
+@inject IOptions<AnalyticsOptions> analyticsOptions
+@inject IEnvironmentService environmentService
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -7,6 +9,24 @@
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Pragma" content="no-cache">
     <title>@(ViewData["Title"] ?? "Fly ITA")</title>
+    <meta name="description" content="@(ViewData["Description"] ?? "International Travel Associates — Corporate and leisure travel management")">
+    <meta name="robots" content="@(ViewData["Robots"] ?? "index, follow")">
+    @{
+        var analytics = analyticsOptions.Value;
+        var measurementId = analytics.MeasurementId?.Trim();
+        var gaEnabled = analytics.Enabled && environmentService.IsClientFacing && !string.IsNullOrWhiteSpace(measurementId);
+        var measurementIdJs = gaEnabled ? System.Text.Json.JsonSerializer.Serialize(measurementId) : "null";
+    }
+    @if (gaEnabled)
+    {
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@System.Net.WebUtility.UrlEncode(measurementId)"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', @Html.Raw(measurementIdJs));
+        </script>
+    }
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico">
@@ -126,9 +146,9 @@
     <!-- Bootstrap 5.3 JS bundle (local via LibMan, includes Popper) -->
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Site JS (minified via WebOptimizer in production) -->
-    <script src="~/js/navigation.js" asp-append-version="true"></script>
-    <script src="~/js/theme.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/navigation.js" asp-append-version="true" defer></script>
+    <script src="~/js/theme.js" asp-append-version="true" defer></script>
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
