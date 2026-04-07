@@ -13,10 +13,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddFlyITAInfrastructure(this IServiceCollection services)
     {
-        // Data access — DatabaseAccess for direct DB operations (error logging, etc.)
+        // DatabaseAccess — used only for error logging (spInsLogMessage) via ErrorLoggingMiddleware.
+        // NOT used for PCentral business data — that goes through the Legacy.Api sidecar.
         services.AddScoped<IDatabaseAccess, DatabaseAccess>();
 
-        // PCentralDataAccess — calls Legacy.Api sidecar via HttpClient
+        // PCentralDataAccess — calls Legacy.Api sidecar via HttpClient (all PCentral business data)
         services.AddHttpClient<IPCentralDataAccess, PCentralDataAccess>((sp, client) =>
         {
             var opts = sp.GetRequiredService<IOptions<LegacyApiOptions>>().Value;

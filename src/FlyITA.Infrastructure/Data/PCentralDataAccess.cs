@@ -48,7 +48,7 @@ public class PCentralDataAccess : IPCentralDataAccess
     public void SaveCustomFieldValue(int participantId, int customFieldId, string value, int possibleValueId)
     {
         var payload = new { customFieldId, value, possibleValueId };
-        var response = _http.PutAsJsonAsync($"api/participants/{participantId}/custom-fields", payload).GetAwaiter().GetResult();
+        var response = _http.PutAsJsonAsync($"api/participants/{participantId}/custom-fields", payload).ConfigureAwait(false).GetAwaiter().GetResult();
         response.EnsureSuccessStatusCode();
     }
 
@@ -66,13 +66,13 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     public void SaveAccommodationRecord(int participantId, Dictionary<string, object?> data)
     {
-        var response = _http.PutAsJsonAsync($"api/participants/{participantId}/accommodations", data).GetAwaiter().GetResult();
+        var response = _http.PutAsJsonAsync($"api/participants/{participantId}/accommodations", data).ConfigureAwait(false).GetAwaiter().GetResult();
         response.EnsureSuccessStatusCode();
     }
 
     public void DeleteAccommodationRecord(int participantId, string recordType)
     {
-        var response = _http.DeleteAsync($"api/participants/{participantId}/accommodations/{Uri.EscapeDataString(recordType)}").GetAwaiter().GetResult();
+        var response = _http.DeleteAsync($"api/participants/{participantId}/accommodations/{Uri.EscapeDataString(recordType)}").ConfigureAwait(false).GetAwaiter().GetResult();
         response.EnsureSuccessStatusCode();
     }
 
@@ -113,12 +113,12 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     private Dictionary<string, object?>? GetDictionary(string url)
     {
-        var response = _http.GetAsync(url).GetAwaiter().GetResult();
+        var response = _http.GetAsync(url).ConfigureAwait(false).GetAwaiter().GetResult();
         if (response.StatusCode == HttpStatusCode.NotFound)
             return null;
         response.EnsureSuccessStatusCode();
 
-        var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        var json = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         if (string.IsNullOrEmpty(json))
             return null;
 
@@ -127,12 +127,12 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     private List<Dictionary<string, object?>> GetDictionaryList(string url)
     {
-        var response = _http.GetAsync(url).GetAwaiter().GetResult();
+        var response = _http.GetAsync(url).ConfigureAwait(false).GetAwaiter().GetResult();
         if (response.StatusCode == HttpStatusCode.NotFound)
             return new List<Dictionary<string, object?>>();
         response.EnsureSuccessStatusCode();
 
-        var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        var json = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         if (string.IsNullOrEmpty(json))
             return new List<Dictionary<string, object?>>();
 
@@ -141,12 +141,12 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     private string? GetStringValue(string url)
     {
-        var response = _http.GetAsync(url).GetAwaiter().GetResult();
+        var response = _http.GetAsync(url).ConfigureAwait(false).GetAwaiter().GetResult();
         if (response.StatusCode == HttpStatusCode.NotFound)
             return null;
         response.EnsureSuccessStatusCode();
 
-        var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        var json = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         if (string.IsNullOrEmpty(json))
             return null;
 

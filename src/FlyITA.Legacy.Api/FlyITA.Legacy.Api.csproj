@@ -57,16 +57,17 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <!-- Third-party DLLs: conditional — project builds without them (controllers compile-guard with #if) -->
-    <Reference Include="PCentralLib" Condition="Exists('lib\PCentralLib.dll')">
+    <!-- Third-party DLLs from EIS team. Source: src/FlyITA/EISLibs/.
+         Copy to lib/ before building. Required for compilation — controllers reference PCentralLib types directly. -->
+    <Reference Include="PCentralLib">
       <HintPath>lib\PCentralLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ITALib" Condition="Exists('lib\ITALib.dll')">
+    <Reference Include="ITALib">
       <HintPath>lib\ITALib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ITAErrorLogging" Condition="Exists('lib\ITAErrorLogging.dll')">
+    <Reference Include="ITAErrorLogging">
       <HintPath>lib\ITAErrorLogging.dll</HintPath>
       <Private>True</Private>
     </Reference>

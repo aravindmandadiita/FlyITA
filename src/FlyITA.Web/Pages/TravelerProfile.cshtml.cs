@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FlyITA.Core.Abstractions;
@@ -21,9 +22,9 @@ public class TravelerProfileModel : PageModel
     public List<Dictionary<string, object?>> ContactNumbers { get; set; } = new();
 
     // Form fields bound on POST
-    [BindProperty] public string FirstName { get; set; } = "";
-    [BindProperty] public string LastName { get; set; } = "";
-    [BindProperty] public string Email { get; set; } = "";
+    [BindProperty, Required] public string FirstName { get; set; } = "";
+    [BindProperty, Required] public string LastName { get; set; } = "";
+    [BindProperty, Required, EmailAddress] public string Email { get; set; } = "";
     [BindProperty] public string Phone { get; set; } = "";
     [BindProperty] public string Company { get; set; } = "";
 

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FlyITA.Core.Abstractions;
@@ -19,9 +20,9 @@ public class GuestProfileModel : PageModel
     public Dictionary<string, object?>? PageConfig { get; set; }
 
     // Form fields bound on POST
-    [BindProperty] public string FirstName { get; set; } = "";
-    [BindProperty] public string LastName { get; set; } = "";
-    [BindProperty] public string Email { get; set; } = "";
+    [BindProperty, Required] public string FirstName { get; set; } = "";
+    [BindProperty, Required] public string LastName { get; set; } = "";
+    [BindProperty, Required, EmailAddress] public string Email { get; set; } = "";
     [BindProperty] public string Phone { get; set; } = "";
     [BindProperty] public string Address1 { get; set; } = "";
     [BindProperty] public string Address2 { get; set; } = "";

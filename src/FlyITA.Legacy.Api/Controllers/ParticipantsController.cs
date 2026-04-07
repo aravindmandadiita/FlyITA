@@ -17,7 +17,7 @@ namespace FlyITA.Legacy.Api.Controllers
             if (participant == null)
                 return NotFound();
 
-            return Ok(participant.DumpToHTML(false, false, true));
+            return Ok(participant);
         }
 
         [HttpGet]
@@ -40,7 +40,11 @@ namespace FlyITA.Legacy.Api.Controllers
         public IHttpActionResult GetCustomFields(int id)
         {
             var values = PCentralProgramCustomField.GetCustomFieldValuesByParticipantID(ConnectionHelper.PerformanceCentral, id);
-            return Ok(values ?? new Dictionary<string, string>());
+            if (values == null || values.Count == 0)
+                return Ok(new Dictionary<string, string>[0]);
+
+            // Client expects a JSON array — wrap the single dictionary in an array
+            return Ok(new[] { values });
         }
 
         [HttpPut]
@@ -77,7 +81,8 @@ namespace FlyITA.Legacy.Api.Controllers
             if (result == null)
                 return Ok(new object[0]);
 
-            return Ok(result);
+            // Client expects a JSON array
+            return Ok(new[] { result });
         }
 
         [HttpPut]
