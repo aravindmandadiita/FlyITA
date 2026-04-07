@@ -44,12 +44,12 @@ public class TravelerProfileModel : PageModel
     public string? ErrorMessage { get; set; }
     public string? SuccessMessage { get; set; }
 
-    public IActionResult OnGet(int? personId)
+    public async Task<IActionResult> OnGetAsync(int? personId)
     {
         if (personId == null)
             return Page();
 
-        LoadPersonData(personId.Value);
+        await LoadPersonDataAsync(personId.Value);
         return Page();
     }
 
@@ -57,7 +57,7 @@ public class TravelerProfileModel : PageModel
     {
         if (!ModelState.IsValid)
         {
-            if (personId.HasValue) LoadPersonData(personId.Value);
+            if (personId.HasValue) await LoadPersonDataAsync(personId.Value);
             return Page();
         }
 
@@ -68,20 +68,20 @@ public class TravelerProfileModel : PageModel
             if (!captchaResult.IsValid)
             {
                 ErrorMessage = "Captcha validation failed. Please try again.";
-                if (personId.HasValue) LoadPersonData(personId.Value);
+                if (personId.HasValue) await LoadPersonDataAsync(personId.Value);
                 return Page();
             }
         }
 
         SuccessMessage = "Traveler profile saved successfully.";
-        if (personId.HasValue) LoadPersonData(personId.Value);
+        if (personId.HasValue) await LoadPersonDataAsync(personId.Value);
         return Page();
     }
 
-    private void LoadPersonData(int personId)
+    private async Task LoadPersonDataAsync(int personId)
     {
-        Person = _dataAccess.GetPersonById(personId);
-        ContactNumbers = _dataAccess.GetContactNumbers(personId);
+        Person = await _dataAccess.GetPersonByIdAsync(personId);
+        ContactNumbers = await _dataAccess.GetContactNumbersAsync(personId);
 
         if (Person != null)
         {

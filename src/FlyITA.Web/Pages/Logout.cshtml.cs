@@ -17,14 +17,14 @@ public class LogoutModel : PageModel
 
     public string LogoutMessage { get; set; } = "You have been logged out successfully.";
 
-    public void OnGet(string? msg)
+    public async Task OnGetAsync(string? msg)
     {
         // Read program info before clearing session (need ProgramID while session is still active)
         string? programPhone = null;
         var programId = _context.ProgramID;
         if (programId > 0 && string.Equals(msg, "locked", StringComparison.OrdinalIgnoreCase))
         {
-            var program = _dataAccess.GetProgramById(programId);
+            var program = await _dataAccess.GetProgramByIdAsync(programId);
             if (program != null && program.TryGetValue("ContactPhone", out var phone))
                 programPhone = phone?.ToString();
         }

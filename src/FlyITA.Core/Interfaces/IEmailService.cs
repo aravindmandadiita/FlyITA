@@ -8,5 +8,5 @@ public interface IEmailService
     Task<ValidationResult> SendLogonCredentialsAsync(int participantId);
     Task<ValidationResult> SendForgotPasswordCredentialsAsync(int participantId, string? seamlessLoginUrl = null);
     Task<ValidationResult> SendTravelerProfileEmailAsync(int participantId);
-    string PreviewLogonCredentials(int participantId);
+    Task<string> PreviewLogonCredentialsAsync(int participantId);
 }

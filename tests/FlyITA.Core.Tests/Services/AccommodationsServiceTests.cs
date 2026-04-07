@@ -15,60 +15,60 @@ public class AccommodationsServiceTests
     private AccommodationsService CreateService() => new(_contextMock.Object, _dataMock.Object, _navMock.Object);
 
     [Fact]
-    public void GetNextPage_Standard_Returns_Default()
+    public async Task GetNextPageAsync_Standard_Returns_Default()
     {
         _contextMock.SetupGet(c => c.ParticipantID).Returns(1);
-        _dataMock.Setup(d => d.GetAccommodationDetails(1))
-            .Returns(new Dictionary<string, object?> { ["IsMultiDestination"] = false, ["CruiseCabinBlockID"] = 0 });
+        _dataMock.Setup(d => d.GetAccommodationDetailsAsync(1))
+            .ReturnsAsync(new Dictionary<string, object?> { ["IsMultiDestination"] = false, ["CruiseCabinBlockID"] = 0 });
         _navMock.Setup(n => n.GetNextPageByPage("accommodations", "default")).Returns("events.aspx");
 
         var result = new ValidationResult();
-        Assert.Equal("events.aspx", CreateService().GetNextPage(result));
+        Assert.Equal("events.aspx", await CreateService().GetNextPageAsync(result));
     }
 
     [Fact]
-    public void GetNextPage_Cruise_Returns_Cruise_Page()
+    public async Task GetNextPageAsync_Cruise_Returns_Cruise_Page()
     {
         _contextMock.SetupGet(c => c.ParticipantID).Returns(1);
-        _dataMock.Setup(d => d.GetAccommodationDetails(1))
-            .Returns(new Dictionary<string, object?> { ["IsMultiDestination"] = false, ["CruiseCabinBlockID"] = 5 });
+        _dataMock.Setup(d => d.GetAccommodationDetailsAsync(1))
+            .ReturnsAsync(new Dictionary<string, object?> { ["IsMultiDestination"] = false, ["CruiseCabinBlockID"] = 5 });
         _navMock.Setup(n => n.GetNextPageByPage("accommodations", "cruise")).Returns("cruise.aspx");
 
         var result = new ValidationResult();
-        Assert.Equal("cruise.aspx", CreateService().GetNextPage(result));
+        Assert.Equal("cruise.aspx", await CreateService().GetNextPageAsync(result));
     }
 
     [Fact]
-    public void GetNextPage_MultiDestination_Returns_MultiDest_Page()
+    public async Task GetNextPageAsync_MultiDestination_Returns_MultiDest_Page()
     {
         _contextMock.SetupGet(c => c.ParticipantID).Returns(1);
-        _dataMock.Setup(d => d.GetAccommodationDetails(1))
-            .Returns(new Dictionary<string, object?> { ["IsMultiDestination"] = true });
+        _dataMock.Setup(d => d.GetAccommodationDetailsAsync(1))
+            .ReturnsAsync(new Dictionary<string, object?> { ["IsMultiDestination"] = true });
         _navMock.Setup(n => n.GetNextPageByPage("accommodations", "multidestination")).Returns("multidest.aspx");
 
         var result = new ValidationResult();
-        Assert.Equal("multidest.aspx", CreateService().GetNextPage(result));
+        Assert.Equal("multidest.aspx", await CreateService().GetNextPageAsync(result));
     }
 
     [Fact]
-    public void SaveOverNightInFlight_Saves_And_Sets_Context()
+    public async Task SaveOverNightInFlightAsync_Saves_And_Sets_Context()
     {
         _contextMock.SetupGet(c => c.ParticipantID).Returns(42);
 
-        CreateService().SaveOverNightInFlight();
+        await CreateService().SaveOverNightInFlightAsync();
 
-        _dataMock.Verify(d => d.SaveAccommodationRecord(42, It.IsAny<Dictionary<string, object?>>()), Times.Once);
+        _dataMock.Verify(d => d.SaveAccommodationRecordAsync(42, It.IsAny<Dictionary<string, object?>>()), Times.Once);
         _contextMock.VerifySet(c => c.OvernightInFlight = true);
     }
 
     [Fact]
-    public void RemoveOverNightInFlight_Deletes_And_Clears_Context()
+    public async Task RemoveOverNightInFlightAsync_Deletes_And_Clears_Context()
     {
         _contextMock.SetupGet(c => c.ParticipantID).Returns(42);
 
-        CreateService().RemoveOverNightInFlight();
+        await CreateService().RemoveOverNightInFlightAsync();
 
-        _dataMock.Verify(d => d.DeleteAccommodationRecord(42, "OvernightInFlight"), Times.Once);
+        _dataMock.Verify(d => d.DeleteAccommodationRecordAsync(42, "OvernightInFlight"), Times.Once);
         _contextMock.VerifySet(c => c.OvernightInFlight = false);
     }
 

@@ -15,7 +15,7 @@ public class CustomFieldValidationService : ICustomFieldValidationService
         _dataAccess = dataAccess;
     }
 
-    public ValidationResult ValidateAndSaveCustomFields(CustomFieldControlCollection controls, int partyId = 0)
+    public async Task<ValidationResult> ValidateAndSaveCustomFieldsAsync(CustomFieldControlCollection controls, int partyId = 0)
     {
         var result = new ValidationResult();
 
@@ -59,7 +59,7 @@ public class CustomFieldValidationService : ICustomFieldValidationService
             {
                 if (!control.WriteOnce || control.CustomFieldID == 0)
                 {
-                    _dataAccess.SaveCustomFieldValue(
+                    await _dataAccess.SaveCustomFieldValueAsync(
                         control.ParticipantID,
                         control.GetCustomFieldID(),
                         control.Value,

@@ -30,6 +30,7 @@ public class SecurityHeadersMiddleware
 
             // Cache headers for dynamic responses (static files override in Program.cs)
             headers["Cache-Control"] = "private,max-age=0";
+            headers["Expires"] = "-1";
 
             return Task.CompletedTask;
         });

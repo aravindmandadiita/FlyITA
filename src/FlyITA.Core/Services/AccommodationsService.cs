@@ -17,9 +17,9 @@ public class AccommodationsService : IAccommodationsService
         _navigation = navigation;
     }
 
-    public string GetNextPage(ValidationResult result)
+    public async Task<string> GetNextPageAsync(ValidationResult result)
     {
-        var accomResult = GetAccommodationDetails(result);
+        var accomResult = await GetAccommodationDetailsAsync(result);
 
         if (accomResult.IsMultiDestination)
             return _navigation.GetNextPageByPage("accommodations", "multidestination");
@@ -30,9 +30,9 @@ public class AccommodationsService : IAccommodationsService
         return _navigation.GetNextPageByPage("accommodations", "default");
     }
 
-    public void SetTransportationDates(ValidationResult result)
+    public async Task SetTransportationDatesAsync(ValidationResult result)
     {
-        var transport = _dataAccess.GetTransportationDetails(_context.ParticipantID);
+        var transport = await _dataAccess.GetTransportationDetailsAsync(_context.ParticipantID);
         if (transport == null)
         {
             result.AddError("Unable to retrieve transportation details.");
@@ -46,9 +46,9 @@ public class AccommodationsService : IAccommodationsService
             _context.TravelDateEnd = ret.ToString(_context.DateFormat);
     }
 
-    public void SetCruiseDates()
+    public async Task SetCruiseDatesAsync()
     {
-        var accom = _dataAccess.GetAccommodationDetails(_context.ParticipantID);
+        var accom = await _dataAccess.GetAccommodationDetailsAsync(_context.ParticipantID);
         if (accom == null) return;
 
         if (accom.TryGetValue("CruiseDateBegin", out var begin) && begin is DateTime cruiseBegin)
@@ -69,9 +69,9 @@ public class AccommodationsService : IAccommodationsService
         _context.GroupHotelDateSet = true;
     }
 
-    public void SaveOverNightInFlight()
+    public async Task SaveOverNightInFlightAsync()
     {
-        _dataAccess.SaveAccommodationRecord(_context.ParticipantID, new Dictionary<string, object?>
+        await _dataAccess.SaveAccommodationRecordAsync(_context.ParticipantID, new Dictionary<string, object?>
         {
             ["RecordType"] = "OvernightInFlight",
             ["ParticipantID"] = _context.ParticipantID
@@ -79,16 +79,16 @@ public class AccommodationsService : IAccommodationsService
         _context.OvernightInFlight = true;
     }
 
-    public void RemoveOverNightInFlight()
+    public async Task RemoveOverNightInFlightAsync()
     {
-        _dataAccess.DeleteAccommodationRecord(_context.ParticipantID, "OvernightInFlight");
+        await _dataAccess.DeleteAccommodationRecordAsync(_context.ParticipantID, "OvernightInFlight");
         _context.OvernightInFlight = false;
     }
 
-    public AccommodationResult GetAccommodationDetails(ValidationResult result)
+    public async Task<AccommodationResult> GetAccommodationDetailsAsync(ValidationResult result)
     {
         var accomResult = new AccommodationResult();
-        var data = _dataAccess.GetAccommodationDetails(_context.ParticipantID);
+        var data = await _dataAccess.GetAccommodationDetailsAsync(_context.ParticipantID);
 
         if (data == null)
         {
@@ -121,16 +121,16 @@ public class AccommodationsService : IAccommodationsService
         return result.IsMultiDestination;
     }
 
-    public void SetNonGroupHotelCount()
+    public async Task SetNonGroupHotelCountAsync()
     {
-        var list = _dataAccess.GetAccommodationList(_context.ParticipantID);
+        var list = await _dataAccess.GetAccommodationListAsync(_context.ParticipantID);
         _context.NonGroupHotelCount = list.Count(a =>
             a.TryGetValue("IsGroupHotel", out var isGroup) && isGroup is false);
     }
 
-    public int GetPrimaryHotelRoomBlockID()
+    public async Task<int> GetPrimaryHotelRoomBlockIDAsync()
     {
-        var data = _dataAccess.GetAccommodationDetails(_context.ParticipantID);
+        var data = await _dataAccess.GetAccommodationDetailsAsync(_context.ParticipantID);
         if (data != null && data.TryGetValue("PrimaryHotelRoomBlockID", out var id) && id is int blockId)
             return blockId;
         return 0;
