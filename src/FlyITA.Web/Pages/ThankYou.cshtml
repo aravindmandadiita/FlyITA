@@ -1,0 +1,11 @@
+@page "/thank-you"
+@model FlyITA.Web.Pages.ThankYouModel
+@{
+    ViewData["Title"] = Model.HeaderText;
+}
+
+<div class="container py-4">
+    <h1>@Model.HeaderText</h1>
+    <p>@Model.MessageText</p>
+    <p><a href="/">Return to Home</a></p>
+</div>

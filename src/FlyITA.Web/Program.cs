@@ -120,7 +120,10 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 9. Routing
+// 9. Status code pages — routes 404 etc. to /error?code={0}
+app.UseStatusCodePagesWithReExecute("/error", "?code={0}");
+
+// 10. Routing
 app.MapRazorPages();
 app.MapHealthChecks("/health");
 
@@ -143,6 +146,14 @@ app.MapGet("/GuestProfileInformation.aspx", () => Results.Redirect("/guest-profi
 app.MapGet("/Travelerprofileinformation.aspx", () => Results.Redirect("/traveler-profile", permanent: true));
 app.MapGet("/VacationTravelRequest.aspx", () => Results.Redirect("/vacation-request", permanent: true));
 app.MapGet("/AchPayment.aspx", () => Results.Redirect("/ach-payment", permanent: true));
+
+// Phase 8 — system page redirects
+app.MapGet("/ThankYou.aspx", () => Results.Redirect("/thank-you", permanent: true));
+app.MapGet("/closed.aspx", () => Results.Redirect("/closed", permanent: true));
+app.MapGet("/error.aspx", () => Results.Redirect("/error", permanent: true));
+app.MapGet("/logout.aspx", () => Results.Redirect("/logout", permanent: true));
+app.MapGet("/Accessdenied.aspx", () => Results.Redirect("/access-denied", permanent: true));
+app.MapGet("/ImageListing.aspx", () => Results.Redirect("/api/images", permanent: true));
 
 app.Run();
 
