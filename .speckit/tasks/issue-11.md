@@ -7,7 +7,7 @@
 ---
 
 ## Task 1: Remove duplicate test projects
-Remove FlyITA.Tests.E2E, FlyITA.Tests.Integration, FlyITA.Tests.Unit from solution.
+Remove FlyITA.Tests.E2E, FlyITA.Tests.Integration, FlyITA.Tests.Unit from disk and update FlyITA.slnx to remove stale references.
 
 ## Task 2: Expand SmokeTests
 Add page reachability tests for all 20 pages.

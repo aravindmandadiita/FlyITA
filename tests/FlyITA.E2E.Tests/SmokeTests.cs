@@ -16,15 +16,20 @@ public class SmokeTests : IClassFixture<PlaywrightFixture>
     public async Task HomePage_Loads_Successfully()
     {
         var page = await _fixture.Browser.NewPageAsync();
-        var response = await page.GotoAsync(_fixture.BaseUrl);
+        try
+        {
+            var response = await page.GotoAsync(_fixture.BaseUrl);
 
-        Assert.NotNull(response);
-        Assert.True(response!.Ok);
+            Assert.NotNull(response);
+            Assert.True(response!.Ok);
 
-        var title = await page.TitleAsync();
-        Assert.Contains("Fly ITA", title);
-
-        await page.CloseAsync();
+            var title = await page.TitleAsync();
+            Assert.Contains("Fly ITA", title);
+        }
+        finally
+        {
+            await page.CloseAsync();
+        }
     }
 
     [Theory]
@@ -49,15 +54,20 @@ public class SmokeTests : IClassFixture<PlaywrightFixture>
     public async Task Page_LoadsWithCorrectTitle(string path, string expectedTitleFragment)
     {
         var page = await _fixture.Browser.NewPageAsync();
-        var response = await page.GotoAsync($"{_fixture.BaseUrl}{path}");
+        try
+        {
+            var response = await page.GotoAsync($"{_fixture.BaseUrl}{path}");
 
-        Assert.NotNull(response);
-        Assert.True(response!.Ok);
+            Assert.NotNull(response);
+            Assert.True(response!.Ok);
 
-        var title = await page.TitleAsync();
-        Assert.Contains(expectedTitleFragment, title);
-
-        await page.CloseAsync();
+            var title = await page.TitleAsync();
+            Assert.Contains(expectedTitleFragment, title);
+        }
+        finally
+        {
+            await page.CloseAsync();
+        }
     }
 
     [Fact]

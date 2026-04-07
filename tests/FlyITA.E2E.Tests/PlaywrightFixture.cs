@@ -16,6 +16,10 @@ public class PlaywrightFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
+        // WebApplicationFactory starts a TestServer. Playwright needs a real TCP listener.
+        // For now, use the TestServer base address — E2E tests that use Playwright browser
+        // require `pwsh playwright.ps1 install` AND a running server.
+        // HttpClient-based tests (SmokeTests.Health/ImageListing) work without Playwright.
         _factory = new WebApplicationFactory<Program>();
         HttpClient = _factory.CreateClient();
         BaseUrl = _factory.Server.BaseAddress.ToString().TrimEnd('/');
