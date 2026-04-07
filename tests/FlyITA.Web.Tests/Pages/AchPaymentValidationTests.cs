@@ -15,12 +15,7 @@ public class AchPaymentValidationTests
     [InlineData("", false)]           // Empty
     public void IsValidRoutingNumber_ValidatesCorrectly(string routingNumber, bool expected)
     {
-        // Use reflection to test the private static method
-        var method = typeof(AchPaymentModel).GetMethod("IsValidRoutingNumber",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-
-        var result = (bool)method!.Invoke(null, new object[] { routingNumber })!;
-
+        var result = AchPaymentModel.IsValidRoutingNumber(routingNumber);
         Assert.Equal(expected, result);
     }
 }

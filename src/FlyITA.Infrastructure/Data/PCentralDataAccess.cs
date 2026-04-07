@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using FlyITA.Core.Abstractions;
@@ -7,11 +8,6 @@ namespace FlyITA.Infrastructure.Data;
 public class PCentralDataAccess : IPCentralDataAccess
 {
     private readonly HttpClient _http;
-
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
 
     public PCentralDataAccess(HttpClient http)
     {
@@ -76,7 +72,7 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     public void DeleteAccommodationRecord(int participantId, string recordType)
     {
-        var response = _http.DeleteAsync($"api/participants/{participantId}/accommodations/{recordType}").GetAwaiter().GetResult();
+        var response = _http.DeleteAsync($"api/participants/{participantId}/accommodations/{Uri.EscapeDataString(recordType)}").GetAwaiter().GetResult();
         response.EnsureSuccessStatusCode();
     }
 
@@ -84,12 +80,12 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     public string? GetEmailTemplate(string templateName, int programId)
     {
-        return GetStringValue($"api/email-templates/{templateName}?programId={programId}");
+        return GetStringValue($"api/email-templates/{Uri.EscapeDataString(templateName)}?programId={programId}");
     }
 
     public string? GetEmailBody(string templateKey, int programId)
     {
-        return GetStringValue($"api/email-body/{templateKey}?programId={programId}");
+        return GetStringValue($"api/email-body/{Uri.EscapeDataString(templateKey)}?programId={programId}");
     }
 
     // Contact Numbers — multi-row
@@ -103,7 +99,7 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     public Dictionary<string, object?>? GetPageConfiguration(string pageName, string programNumber)
     {
-        return GetDictionary($"api/page-config/{pageName}?programNumber={programNumber}");
+        return GetDictionary($"api/page-config/{Uri.EscapeDataString(pageName)}?programNumber={Uri.EscapeDataString(programNumber)}");
     }
 
     // Transportation — single-row
@@ -118,8 +114,9 @@ public class PCentralDataAccess : IPCentralDataAccess
     private Dictionary<string, object?>? GetDictionary(string url)
     {
         var response = _http.GetAsync(url).GetAwaiter().GetResult();
-        if (!response.IsSuccessStatusCode)
+        if (response.StatusCode == HttpStatusCode.NotFound)
             return null;
+        response.EnsureSuccessStatusCode();
 
         var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         if (string.IsNullOrEmpty(json))
@@ -131,8 +128,9 @@ public class PCentralDataAccess : IPCentralDataAccess
     private List<Dictionary<string, object?>> GetDictionaryList(string url)
     {
         var response = _http.GetAsync(url).GetAwaiter().GetResult();
-        if (!response.IsSuccessStatusCode)
+        if (response.StatusCode == HttpStatusCode.NotFound)
             return new List<Dictionary<string, object?>>();
+        response.EnsureSuccessStatusCode();
 
         var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         if (string.IsNullOrEmpty(json))
@@ -144,8 +142,9 @@ public class PCentralDataAccess : IPCentralDataAccess
     private string? GetStringValue(string url)
     {
         var response = _http.GetAsync(url).GetAwaiter().GetResult();
-        if (!response.IsSuccessStatusCode)
+        if (response.StatusCode == HttpStatusCode.NotFound)
             return null;
+        response.EnsureSuccessStatusCode();
 
         var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         if (string.IsNullOrEmpty(json))

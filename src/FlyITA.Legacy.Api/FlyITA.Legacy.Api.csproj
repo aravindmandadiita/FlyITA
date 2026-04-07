@@ -45,19 +45,28 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http" />
-    <Reference Include="System.Web.Http.WebHost" />
-    <Reference Include="System.Net.Http.Formatting" />
-    <Reference Include="Newtonsoft.Json" />
-    <Reference Include="PCentralLib">
+    <Reference Include="System.Web.Http, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.3.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>packages\Microsoft.AspNet.WebApi.WebHost.5.3.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.3.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <!-- Third-party DLLs: conditional — project builds without them (controllers compile-guard with #if) -->
+    <Reference Include="PCentralLib" Condition="Exists('lib\PCentralLib.dll')">
       <HintPath>lib\PCentralLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ITALib">
+    <Reference Include="ITALib" Condition="Exists('lib\ITALib.dll')">
       <HintPath>lib\ITALib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ITAErrorLogging">
+    <Reference Include="ITAErrorLogging" Condition="Exists('lib\ITAErrorLogging.dll')">
       <HintPath>lib\ITAErrorLogging.dll</HintPath>
       <Private>True</Private>
     </Reference>

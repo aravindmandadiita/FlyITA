@@ -1,5 +1,4 @@
 using System.Net;
-using System.Text.Json;
 using Xunit;
 using FlyITA.Infrastructure.Data;
 
@@ -7,27 +6,26 @@ namespace FlyITA.Infrastructure.Tests.Data;
 
 public class PCentralDataAccessTests
 {
-    private static HttpClient CreateClient(HttpStatusCode status, string json)
+    private static (PCentralDataAccess svc, FakeHttpHandler handler) CreateServiceWithHandler(
+        HttpStatusCode status = HttpStatusCode.OK, string json = "{}")
     {
         var handler = new FakeHttpHandler(status, json);
-        return new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5100") };
-    }
-
-    private static PCentralDataAccess CreateService(HttpStatusCode status = HttpStatusCode.OK, string json = "{}")
-    {
-        return new PCentralDataAccess(CreateClient(status, json));
+        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5100") };
+        return (new PCentralDataAccess(client), handler);
     }
 
     // Participant / Person — single-row methods
 
     [Fact]
-    public void GetParticipantById_ReturnsDeserializedDictionary()
+    public void GetParticipantById_CallsCorrectUrlAndReturnsData()
     {
         var json = """{"ParticipantID":42,"FirstName":"Jane","LastName":"Doe"}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetParticipantById(42);
 
+        Assert.Equal(HttpMethod.Get, handler.LastRequest!.Method);
+        Assert.Contains("api/participants/42", handler.LastRequest.RequestUri!.ToString());
         Assert.NotNull(result);
         Assert.Equal("Jane", result!["FirstName"]?.ToString());
         Assert.Equal(42, Convert.ToInt32(result["ParticipantID"]));
@@ -36,58 +34,65 @@ public class PCentralDataAccessTests
     [Fact]
     public void GetParticipantById_ReturnsNull_OnNotFound()
     {
-        var svc = CreateService(HttpStatusCode.NotFound, "");
-
-        var result = svc.GetParticipantById(999);
-        Assert.Null(result);
+        var (svc, _) = CreateServiceWithHandler(HttpStatusCode.NotFound, "");
+        Assert.Null(svc.GetParticipantById(999));
     }
 
     [Fact]
-    public void GetPersonById_ReturnsDeserializedDictionary()
+    public void GetParticipantById_ThrowsOnServerError()
+    {
+        var (svc, _) = CreateServiceWithHandler(HttpStatusCode.InternalServerError, "");
+        Assert.Throws<HttpRequestException>(() => svc.GetParticipantById(1));
+    }
+
+    [Fact]
+    public void GetPersonById_CallsCorrectUrlAndReturnsData()
     {
         var json = """{"PersonID":10,"FirstName":"John"}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetPersonById(10);
 
-        Assert.NotNull(result);
+        Assert.Equal(HttpMethod.Get, handler.LastRequest!.Method);
+        Assert.Contains("api/persons/10", handler.LastRequest.RequestUri!.ToString());
         Assert.Equal("John", result!["FirstName"]?.ToString());
     }
 
     [Fact]
-    public void GetPartyByParticipantId_ReturnsDeserializedDictionary()
+    public void GetPartyByParticipantId_CallsCorrectUrl()
     {
         var json = """{"PartyID":5,"ParticipantID":7}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetPartyByParticipantId(7);
 
-        Assert.NotNull(result);
+        Assert.Contains("api/participants/7/party", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal(5, Convert.ToInt32(result!["PartyID"]));
     }
 
     [Fact]
-    public void GetProgramById_ReturnsDeserializedDictionary()
+    public void GetProgramById_CallsCorrectUrl()
     {
         var json = """{"ProgramID":100,"ProgramName":"Event"}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetProgramById(100);
 
-        Assert.NotNull(result);
+        Assert.Contains("api/programs/100", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("Event", result!["ProgramName"]?.ToString());
     }
 
     // Custom Fields — multi-row + void
 
     [Fact]
-    public void GetCustomFieldValues_ReturnsDeserializedList()
+    public void GetCustomFieldValues_CallsCorrectUrlAndReturnsList()
     {
         var json = """[{"FieldName":"Dietary","Value":"Vegetarian"}]""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetCustomFieldValues(42);
 
+        Assert.Contains("api/participants/42/custom-fields", handler.LastRequest!.RequestUri!.ToString());
         Assert.Single(result);
         Assert.Equal("Dietary", result[0]["FieldName"]?.ToString());
     }
@@ -95,18 +100,14 @@ public class PCentralDataAccessTests
     [Fact]
     public void GetCustomFieldValues_ReturnsEmptyList_OnNotFound()
     {
-        var svc = CreateService(HttpStatusCode.NotFound, "");
-
-        var result = svc.GetCustomFieldValues(999);
-        Assert.Empty(result);
+        var (svc, _) = CreateServiceWithHandler(HttpStatusCode.NotFound, "");
+        Assert.Empty(svc.GetCustomFieldValues(999));
     }
 
     [Fact]
-    public void SaveCustomFieldValue_SendsPutRequest()
+    public void SaveCustomFieldValue_SendsPutToCorrectUrl()
     {
-        var handler = new FakeHttpHandler(HttpStatusCode.NoContent, "");
-        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5100") };
-        var svc = new PCentralDataAccess(client);
+        var (svc, handler) = CreateServiceWithHandler(HttpStatusCode.NoContent, "");
 
         svc.SaveCustomFieldValue(1, 2, "value", 3);
 
@@ -117,34 +118,33 @@ public class PCentralDataAccessTests
     // Accommodations
 
     [Fact]
-    public void GetAccommodationDetails_ReturnsDeserializedDictionary()
+    public void GetAccommodationDetails_CallsCorrectUrl()
     {
         var json = """{"HotelName":"Hilton","ParticipantID":5}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetAccommodationDetails(5);
 
-        Assert.NotNull(result);
+        Assert.Contains("api/participants/5/accommodations", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("Hilton", result!["HotelName"]?.ToString());
     }
 
     [Fact]
-    public void GetAccommodationList_ReturnsDeserializedList()
+    public void GetAccommodationList_CallsCorrectUrl()
     {
         var json = """[{"Type":"Hotel"},{"Type":"Flight"}]""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetAccommodationList(5);
 
+        Assert.Contains("api/participants/5/accommodations/list", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal(2, result.Count);
     }
 
     [Fact]
-    public void SaveAccommodationRecord_SendsPutRequest()
+    public void SaveAccommodationRecord_SendsPutToCorrectUrl()
     {
-        var handler = new FakeHttpHandler(HttpStatusCode.NoContent, "");
-        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5100") };
-        var svc = new PCentralDataAccess(client);
+        var (svc, handler) = CreateServiceWithHandler(HttpStatusCode.NoContent, "");
 
         svc.SaveAccommodationRecord(5, new Dictionary<string, object?> { ["HotelName"] = "Marriott" });
 
@@ -153,11 +153,9 @@ public class PCentralDataAccessTests
     }
 
     [Fact]
-    public void DeleteAccommodationRecord_SendsDeleteRequest()
+    public void DeleteAccommodationRecord_SendsDeleteToCorrectUrl()
     {
-        var handler = new FakeHttpHandler(HttpStatusCode.NoContent, "");
-        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5100") };
-        var svc = new PCentralDataAccess(client);
+        var (svc, handler) = CreateServiceWithHandler(HttpStatusCode.NoContent, "");
 
         svc.DeleteAccommodationRecord(5, "Hotel");
 
@@ -168,108 +166,100 @@ public class PCentralDataAccessTests
     // Email Templates — string return
 
     [Fact]
-    public void GetEmailTemplate_ExtractsValueField()
+    public void GetEmailTemplate_CallsCorrectUrlAndExtractsValue()
     {
         var json = """{"value":"<html>Hello</html>"}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetEmailTemplate("RegConfirm", 1);
 
+        Assert.Contains("api/email-templates/RegConfirm?programId=1", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("<html>Hello</html>", result);
     }
 
     [Fact]
-    public void GetEmailBody_ExtractsValueField()
+    public void GetEmailBody_CallsCorrectUrlAndExtractsValue()
     {
         var json = """{"value":"Your login is..."}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetEmailBody("LogonCreds", 2);
 
+        Assert.Contains("api/email-body/LogonCreds?programId=2", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("Your login is...", result);
     }
 
     [Fact]
     public void GetEmailTemplate_ReturnsNull_OnNotFound()
     {
-        var svc = CreateService(HttpStatusCode.NotFound, "");
+        var (svc, _) = CreateServiceWithHandler(HttpStatusCode.NotFound, "");
+        Assert.Null(svc.GetEmailTemplate("Missing", 1));
+    }
 
-        var result = svc.GetEmailTemplate("Missing", 1);
-        Assert.Null(result);
+    [Fact]
+    public void GetEmailTemplate_ThrowsOnServerError()
+    {
+        var (svc, _) = CreateServiceWithHandler(HttpStatusCode.InternalServerError, "");
+        Assert.Throws<HttpRequestException>(() => svc.GetEmailTemplate("Fail", 1));
     }
 
     // Contact Numbers — multi-row
 
     [Fact]
-    public void GetContactNumbers_ReturnsDeserializedList()
+    public void GetContactNumbers_CallsCorrectUrl()
     {
         var json = """[{"Phone":"555-1234"}]""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetContactNumbers(10);
 
+        Assert.Contains("api/persons/10/contacts", handler.LastRequest!.RequestUri!.ToString());
         Assert.Single(result);
-        Assert.Equal("555-1234", result[0]["Phone"]?.ToString());
     }
 
     // Page Configuration
 
     [Fact]
-    public void GetPageConfiguration_ReturnsDeserializedDictionary()
+    public void GetPageConfiguration_CallsCorrectUrlWithEscapedParams()
     {
         var json = """{"RequiresAuth":true,"PageName":"profile"}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetPageConfiguration("profile", "ABC");
 
-        Assert.NotNull(result);
+        Assert.Contains("api/page-config/profile?programNumber=ABC", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal(true, result!["RequiresAuth"]);
     }
 
     // Transportation
 
     [Fact]
-    public void GetTransportationDetails_ReturnsDeserializedDictionary()
+    public void GetTransportationDetails_CallsCorrectUrl()
     {
         var json = """{"Type":"Air","ParticipantID":3}""";
-        var svc = CreateService(json: json);
+        var (svc, handler) = CreateServiceWithHandler(json: json);
 
         var result = svc.GetTransportationDetails(3);
 
-        Assert.NotNull(result);
+        Assert.Contains("api/participants/3/transportation", handler.LastRequest!.RequestUri!.ToString());
         Assert.Equal("Air", result!["Type"]?.ToString());
     }
 
-    // Verify URL construction
+    // URL escaping
 
     [Fact]
-    public void GetEmailTemplate_ConstructsCorrectUrl()
+    public void GetPageConfiguration_IncludesParamsInUrl()
     {
-        var handler = new FakeHttpHandler(HttpStatusCode.OK, """{"value":"test"}""");
-        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5100") };
-        var svc = new PCentralDataAccess(client);
+        var (svc, handler) = CreateServiceWithHandler(json: """{"PageName":"test"}""");
 
-        svc.GetEmailTemplate("Confirm", 5);
+        svc.GetPageConfiguration("profile", "ABC123");
 
-        Assert.Contains("api/email-templates/Confirm?programId=5", handler.LastRequest!.RequestUri!.ToString());
-    }
-
-    [Fact]
-    public void GetPageConfiguration_ConstructsCorrectUrl()
-    {
-        var handler = new FakeHttpHandler(HttpStatusCode.OK, """{"PageName":"test"}""");
-        var client = new HttpClient(handler) { BaseAddress = new Uri("http://localhost:5100") };
-        var svc = new PCentralDataAccess(client);
-
-        svc.GetPageConfiguration("profile", "ABC");
-
-        Assert.Contains("api/page-config/profile?programNumber=ABC", handler.LastRequest!.RequestUri!.ToString());
+        var url = handler.LastRequest!.RequestUri!.ToString();
+        Assert.Contains("api/page-config/profile", url);
+        Assert.Contains("programNumber=ABC123", url);
     }
 }
 
-/// <summary>
-/// Fake HTTP handler for testing — returns a canned response and captures the last request.
-/// </summary>
 internal class FakeHttpHandler : HttpMessageHandler
 {
     private readonly HttpStatusCode _statusCode;

@@ -49,11 +49,10 @@ public class GuestProfileModel : PageModel
 
     public IActionResult OnPost(int participantId)
     {
+        LoadParticipantData(participantId);
+
         if (!ModelState.IsValid)
-        {
-            LoadParticipantData(participantId);
             return Page();
-        }
 
         // Save custom field values
         foreach (var field in CustomFields)

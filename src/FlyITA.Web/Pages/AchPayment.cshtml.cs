@@ -46,7 +46,7 @@ public class AchPaymentModel : PageModel
         return Page();
     }
 
-    private static bool IsValidRoutingNumber(string routingNumber)
+    internal static bool IsValidRoutingNumber(string routingNumber)
     {
         if (string.IsNullOrWhiteSpace(routingNumber))
             return false;
