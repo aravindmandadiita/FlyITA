@@ -32,7 +32,7 @@ public class PCentralDataAccess : IPCentralDataAccess
     public async Task SaveCustomFieldValueAsync(int participantId, int customFieldId, string value, int possibleValueId)
     {
         var payload = new { customFieldId, value, possibleValueId };
-        var response = await _http.PutAsJsonAsync($"api/participants/{participantId}/custom-fields", payload);
+        using var response = await _http.PutAsJsonAsync($"api/participants/{participantId}/custom-fields", payload);
         response.EnsureSuccessStatusCode();
     }
 
@@ -44,13 +44,13 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     public async Task SaveAccommodationRecordAsync(int participantId, Dictionary<string, object?> data)
     {
-        var response = await _http.PutAsJsonAsync($"api/participants/{participantId}/accommodations", data);
+        using var response = await _http.PutAsJsonAsync($"api/participants/{participantId}/accommodations", data);
         response.EnsureSuccessStatusCode();
     }
 
     public async Task DeleteAccommodationRecordAsync(int participantId, string recordType)
     {
-        var response = await _http.DeleteAsync($"api/participants/{participantId}/accommodations/{Uri.EscapeDataString(recordType)}");
+        using var response = await _http.DeleteAsync($"api/participants/{participantId}/accommodations/{Uri.EscapeDataString(recordType)}");
         response.EnsureSuccessStatusCode();
     }
 
@@ -71,7 +71,7 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     private async Task<Dictionary<string, object?>?> GetDictionaryAsync(string url)
     {
-        var response = await _http.GetAsync(url);
+        using var response = await _http.GetAsync(url);
         if (response.StatusCode == HttpStatusCode.NotFound)
             return null;
         response.EnsureSuccessStatusCode();
@@ -82,7 +82,7 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     private async Task<List<Dictionary<string, object?>>> GetDictionaryListAsync(string url)
     {
-        var response = await _http.GetAsync(url);
+        using var response = await _http.GetAsync(url);
         if (response.StatusCode == HttpStatusCode.NotFound)
             return new List<Dictionary<string, object?>>();
         response.EnsureSuccessStatusCode();
@@ -93,7 +93,7 @@ public class PCentralDataAccess : IPCentralDataAccess
 
     private async Task<string?> GetStringValueAsync(string url)
     {
-        var response = await _http.GetAsync(url);
+        using var response = await _http.GetAsync(url);
         if (response.StatusCode == HttpStatusCode.NotFound)
             return null;
         response.EnsureSuccessStatusCode();
