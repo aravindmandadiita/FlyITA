@@ -13,7 +13,7 @@ Add AnalyticsOptions class, register in Program.cs, add to appsettings.
 Add conditional GA4 script to _Layout.cshtml head section.
 
 ## Task 3: Meta tags in Layout
-Add viewport (if missing), description, robots, canonical meta tags.
+Add viewport (if missing), description, and robots meta tags.
 
 ## Task 4: Defer JS scripts
 Add defer attribute to JS script tags in Layout.

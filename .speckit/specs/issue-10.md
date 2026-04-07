@@ -90,10 +90,9 @@ Add standard meta tags:
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="@(ViewData["Description"] ?? "International Travel Associates — Corporate and leisure travel management")">
 <meta name="robots" content="@(ViewData["Robots"] ?? "index, follow")">
-<link rel="canonical" href="@(ViewData["Canonical"] ?? Context.Request.Path)">
 ```
 
-Check if viewport meta already exists. If so, just add description/robots/canonical.
+Check if viewport meta already exists. If so, just add description/robots.
 
 ### 3.3 WCAG 2.1 AA Accessibility Hardening
 

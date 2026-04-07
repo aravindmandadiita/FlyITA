@@ -13,16 +13,18 @@
     <meta name="robots" content="@(ViewData["Robots"] ?? "index, follow")">
     @{
         var analytics = analyticsOptions.Value;
-        var gaEnabled = analytics.Enabled && environmentService.IsClientFacing && !string.IsNullOrEmpty(analytics.MeasurementId);
+        var measurementId = analytics.MeasurementId?.Trim();
+        var gaEnabled = analytics.Enabled && environmentService.IsClientFacing && !string.IsNullOrWhiteSpace(measurementId);
+        var measurementIdJs = gaEnabled ? System.Text.Json.JsonSerializer.Serialize(measurementId) : "null";
     }
     @if (gaEnabled)
     {
-        <script async src="https://www.googletagmanager.com/gtag/js?id=@analytics.MeasurementId"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@System.Net.WebUtility.UrlEncode(measurementId)"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '@analytics.MeasurementId');
+            gtag('config', @Html.Raw(measurementIdJs));
         </script>
     }
 
