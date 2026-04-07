@@ -13,9 +13,16 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddFlyITAInfrastructure(this IServiceCollection services)
     {
-        // Data access
+        // Data access — DatabaseAccess for direct DB operations (error logging, etc.)
         services.AddScoped<IDatabaseAccess, DatabaseAccess>();
-        services.AddScoped<IPCentralDataAccess, PCentralDataAccess>();
+
+        // PCentralDataAccess — calls Legacy.Api sidecar via HttpClient
+        services.AddHttpClient<IPCentralDataAccess, PCentralDataAccess>((sp, client) =>
+        {
+            var opts = sp.GetRequiredService<IOptions<LegacyApiOptions>>().Value;
+            client.BaseAddress = new Uri(opts.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(opts.TimeoutSeconds);
+        });
 
         // WCF SOAP service clients
         services.AddScoped<ICardTokenService>(sp =>

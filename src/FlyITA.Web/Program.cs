@@ -34,6 +34,9 @@ builder.Services.Configure<WeatherOptions>(builder.Configuration.GetSection(Weat
 builder.Services.Configure<ExternalServicesOptions>(builder.Configuration.GetSection(ExternalServicesOptions.SectionName));
 builder.Services.Configure<RecaptchaOptions>(builder.Configuration.GetSection(RecaptchaOptions.SectionName));
 
+// Strongly-typed options — Core (Phase 7)
+builder.Services.Configure<LegacyApiOptions>(builder.Configuration.GetSection(LegacyApiOptions.SectionName));
+
 // 1. Core services (TryAdd null defaults for IDatabaseAccess, IEnvironmentService, ISmtpClient)
 builder.Services.AddFlyITACore();
 builder.Services.AddHttpContextAccessor();
@@ -134,6 +137,12 @@ app.MapGet("/resources.aspx", () => Results.Redirect("/resources", permanent: tr
 app.MapGet("/travelinfo.aspx", () => Results.Redirect("/travel-info", permanent: true));
 app.MapGet("/programs.aspx", () => Results.Redirect("/programs", permanent: true));
 app.MapGet("/reservations.aspx", () => Results.Redirect("/reservations", permanent: true));
+
+// Phase 7 — form page redirects
+app.MapGet("/GuestProfileInformation.aspx", () => Results.Redirect("/guest-profile", permanent: true));
+app.MapGet("/Travelerprofileinformation.aspx", () => Results.Redirect("/traveler-profile", permanent: true));
+app.MapGet("/VacationTravelRequest.aspx", () => Results.Redirect("/vacation-request", permanent: true));
+app.MapGet("/AchPayment.aspx", () => Results.Redirect("/ach-payment", permanent: true));
 
 app.Run();
 

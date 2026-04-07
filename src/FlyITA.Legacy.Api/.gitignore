@@ -1,0 +1,3 @@
+# Third-party DLLs — not committed, deployed separately
+lib/*.dll
+lib/*.pdb

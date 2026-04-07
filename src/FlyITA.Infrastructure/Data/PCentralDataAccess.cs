@@ -1,168 +1,202 @@
+using System.Net.Http.Json;
+using System.Text.Json;
 using FlyITA.Core.Abstractions;
 
 namespace FlyITA.Infrastructure.Data;
 
 public class PCentralDataAccess : IPCentralDataAccess
 {
-    private readonly IDatabaseAccess _db;
+    private readonly HttpClient _http;
 
-    public PCentralDataAccess(IDatabaseAccess db)
+    private static readonly JsonSerializerOptions JsonOptions = new()
     {
-        _db = db;
+        PropertyNameCaseInsensitive = true
+    };
+
+    public PCentralDataAccess(HttpClient http)
+    {
+        _http = http;
     }
 
     // Participant / Person — single-row methods
 
     public Dictionary<string, object?>? GetParticipantById(int participantId)
     {
-        return _db.ExecuteStoredProcedure("spWRASelParticipant", new()
-        {
-            ["@ParticipantID"] = participantId
-        });
+        return GetDictionary($"api/participants/{participantId}");
     }
 
     public Dictionary<string, object?>? GetPersonById(int personId)
     {
-        return _db.ExecuteStoredProcedure("spWRASelPerson", new()
-        {
-            ["@PersonID"] = personId
-        });
+        return GetDictionary($"api/persons/{personId}");
     }
 
     public Dictionary<string, object?>? GetPartyByParticipantId(int participantId)
     {
-        return _db.ExecuteStoredProcedure("spWRASelPartyByParticipant", new()
-        {
-            ["@ParticipantID"] = participantId
-        });
+        return GetDictionary($"api/participants/{participantId}/party");
     }
 
     // Program — single-row
 
     public Dictionary<string, object?>? GetProgramById(int programId)
     {
-        return _db.ExecuteStoredProcedure("spWRASelProgram", new()
-        {
-            ["@ProgramID"] = programId
-        });
+        return GetDictionary($"api/programs/{programId}");
     }
 
     // Custom Fields — multi-row + void
 
     public List<Dictionary<string, object?>> GetCustomFieldValues(int participantId)
     {
-        return _db.ExecuteStoredProcedureList("spWRASelCustomFieldValues", new()
-        {
-            ["@ParticipantID"] = participantId
-        });
+        return GetDictionaryList($"api/participants/{participantId}/custom-fields");
     }
 
     public void SaveCustomFieldValue(int participantId, int customFieldId, string value, int possibleValueId)
     {
-        _db.ExecuteNonQuery("spWRAInsUpdCustomFieldValue", new()
-        {
-            ["@ParticipantID"] = participantId,
-            ["@CustomFieldID"] = customFieldId,
-            ["@Value"] = value,
-            ["@PossibleValueID"] = possibleValueId
-        });
+        var payload = new { customFieldId, value, possibleValueId };
+        var response = _http.PutAsJsonAsync($"api/participants/{participantId}/custom-fields", payload).GetAwaiter().GetResult();
+        response.EnsureSuccessStatusCode();
     }
 
     // Accommodations — single-row, multi-row, void
 
     public Dictionary<string, object?>? GetAccommodationDetails(int participantId)
     {
-        return _db.ExecuteStoredProcedure("spWRASelAccommodation", new()
-        {
-            ["@ParticipantID"] = participantId
-        });
+        return GetDictionary($"api/participants/{participantId}/accommodations");
     }
 
     public List<Dictionary<string, object?>> GetAccommodationList(int participantId)
     {
-        return _db.ExecuteStoredProcedureList("spWRASelAccommodationList", new()
-        {
-            ["@ParticipantID"] = participantId
-        });
+        return GetDictionaryList($"api/participants/{participantId}/accommodations/list");
     }
 
     public void SaveAccommodationRecord(int participantId, Dictionary<string, object?> data)
     {
-        var parameters = new Dictionary<string, object?>(data)
-        {
-            ["@ParticipantID"] = participantId
-        };
-        _db.ExecuteNonQuery("spWRAInsUpdAccommodation", parameters);
+        var response = _http.PutAsJsonAsync($"api/participants/{participantId}/accommodations", data).GetAwaiter().GetResult();
+        response.EnsureSuccessStatusCode();
     }
 
     public void DeleteAccommodationRecord(int participantId, string recordType)
     {
-        _db.ExecuteNonQuery("spWRADelAccommodation", new()
-        {
-            ["@ParticipantID"] = participantId,
-            ["@RecordType"] = recordType
-        });
+        var response = _http.DeleteAsync($"api/participants/{participantId}/accommodations/{recordType}").GetAwaiter().GetResult();
+        response.EnsureSuccessStatusCode();
     }
 
     // Email Templates — string return methods
 
     public string? GetEmailTemplate(string templateName, int programId)
     {
-        var result = _db.ExecuteStoredProcedure("spWRASelEmailTemplate", new()
-        {
-            ["@TemplateName"] = templateName,
-            ["@ProgramID"] = programId
-        });
-        return ExtractFirstColumnAsString(result);
+        return GetStringValue($"api/email-templates/{templateName}?programId={programId}");
     }
 
     public string? GetEmailBody(string templateKey, int programId)
     {
-        var result = _db.ExecuteStoredProcedure("spWRASelEmailBody", new()
-        {
-            ["@TemplateKey"] = templateKey,
-            ["@ProgramID"] = programId
-        });
-        return ExtractFirstColumnAsString(result);
+        return GetStringValue($"api/email-body/{templateKey}?programId={programId}");
     }
 
     // Contact Numbers — multi-row
 
     public List<Dictionary<string, object?>> GetContactNumbers(int personId)
     {
-        return _db.ExecuteStoredProcedureList("spWRASelContactNumbers", new()
-        {
-            ["@PersonID"] = personId
-        });
+        return GetDictionaryList($"api/persons/{personId}/contacts");
     }
 
     // Page Configuration — single-row
 
     public Dictionary<string, object?>? GetPageConfiguration(string pageName, string programNumber)
     {
-        return _db.ExecuteStoredProcedure("spWRASelPageConfiguration", new()
-        {
-            ["@PageName"] = pageName,
-            ["@ProgramNumber"] = programNumber
-        });
+        return GetDictionary($"api/page-config/{pageName}?programNumber={programNumber}");
     }
 
     // Transportation — single-row
 
     public Dictionary<string, object?>? GetTransportationDetails(int participantId)
     {
-        return _db.ExecuteStoredProcedure("spWRASelTransportation", new()
-        {
-            ["@ParticipantID"] = participantId
-        });
+        return GetDictionary($"api/participants/{participantId}/transportation");
     }
 
-    private static string? ExtractFirstColumnAsString(Dictionary<string, object?>? result)
+    // Private helpers
+
+    private Dictionary<string, object?>? GetDictionary(string url)
     {
-        if (result == null || result.Count == 0)
+        var response = _http.GetAsync(url).GetAwaiter().GetResult();
+        if (!response.IsSuccessStatusCode)
             return null;
 
-        var firstValue = result.Values.FirstOrDefault();
-        return firstValue?.ToString();
+        var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        if (string.IsNullOrEmpty(json))
+            return null;
+
+        return DeserializeDictionary(json);
+    }
+
+    private List<Dictionary<string, object?>> GetDictionaryList(string url)
+    {
+        var response = _http.GetAsync(url).GetAwaiter().GetResult();
+        if (!response.IsSuccessStatusCode)
+            return new List<Dictionary<string, object?>>();
+
+        var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        if (string.IsNullOrEmpty(json))
+            return new List<Dictionary<string, object?>>();
+
+        return DeserializeDictionaryList(json);
+    }
+
+    private string? GetStringValue(string url)
+    {
+        var response = _http.GetAsync(url).GetAwaiter().GetResult();
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        if (string.IsNullOrEmpty(json))
+            return null;
+
+        using var doc = JsonDocument.Parse(json);
+        if (doc.RootElement.TryGetProperty("value", out var valueProp))
+            return valueProp.GetString();
+
+        return null;
+    }
+
+    private static Dictionary<string, object?> DeserializeDictionary(string json)
+    {
+        using var doc = JsonDocument.Parse(json);
+        var dict = new Dictionary<string, object?>();
+        foreach (var prop in doc.RootElement.EnumerateObject())
+        {
+            dict[prop.Name] = GetJsonValue(prop.Value);
+        }
+        return dict;
+    }
+
+    private static List<Dictionary<string, object?>> DeserializeDictionaryList(string json)
+    {
+        using var doc = JsonDocument.Parse(json);
+        var list = new List<Dictionary<string, object?>>();
+        foreach (var element in doc.RootElement.EnumerateArray())
+        {
+            var dict = new Dictionary<string, object?>();
+            foreach (var prop in element.EnumerateObject())
+            {
+                dict[prop.Name] = GetJsonValue(prop.Value);
+            }
+            list.Add(dict);
+        }
+        return list;
+    }
+
+    private static object? GetJsonValue(JsonElement element)
+    {
+        return element.ValueKind switch
+        {
+            JsonValueKind.String => element.GetString(),
+            JsonValueKind.Number when element.TryGetInt32(out var i) => i,
+            JsonValueKind.Number when element.TryGetInt64(out var l) => l,
+            JsonValueKind.Number => element.GetDecimal(),
+            JsonValueKind.True => true,
+            JsonValueKind.False => false,
+            JsonValueKind.Null => null,
+            _ => element.GetRawText()
+        };
     }
 }

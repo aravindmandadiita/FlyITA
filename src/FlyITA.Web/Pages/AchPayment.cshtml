@@ -1,0 +1,85 @@
+@page "/ach-payment"
+@model FlyITA.Web.Pages.AchPaymentModel
+@{
+    ViewData["Title"] = "ACH Payment";
+}
+
+<div class="container py-4">
+    <h1>ACH Payment</h1>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success" role="alert">@Model.SuccessMessage</div>
+    }
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+    }
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <fieldset class="mb-4">
+            <legend>Bank Information</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="BankName" class="form-label">Bank Name <span class="text-danger">*</span></label>
+                    <input asp-for="BankName" class="form-control" required />
+                    <span asp-validation-for="BankName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="RoutingNumber" class="form-label">Routing Number <span class="text-danger">*</span></label>
+                    <input asp-for="RoutingNumber" class="form-control" maxlength="9" pattern="\d{9}" required autocomplete="off" />
+                    <span asp-validation-for="RoutingNumber" class="text-danger"></span>
+                    <div class="form-text">9-digit ABA routing number</div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend>Account Information</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="AccountHolderName" class="form-label">Account Holder Name <span class="text-danger">*</span></label>
+                    <input asp-for="AccountHolderName" class="form-control" required />
+                    <span asp-validation-for="AccountHolderName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="AccountType" class="form-label">Account Type <span class="text-danger">*</span></label>
+                    <select asp-for="AccountType" class="form-select" required>
+                        <option value="Checking">Checking</option>
+                        <option value="Savings">Savings</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="AccountNumber" class="form-label">Account Number <span class="text-danger">*</span></label>
+                    <input asp-for="AccountNumber" class="form-control" required autocomplete="off" />
+                    <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ConfirmAccountNumber" class="form-label">Confirm Account Number <span class="text-danger">*</span></label>
+                    <input asp-for="ConfirmAccountNumber" class="form-control" required autocomplete="off" />
+                    <span asp-validation-for="ConfirmAccountNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend>Payment Amount</legend>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Amount" class="form-label">Amount (USD) <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" required />
+                    </div>
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Submit Payment</button>
+        </div>
+    </form>
+</div>

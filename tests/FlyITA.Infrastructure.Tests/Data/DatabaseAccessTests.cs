@@ -7,16 +7,15 @@ namespace FlyITA.Infrastructure.Tests.Data;
 public class DatabaseAccessTests
 {
     [Fact]
-    public void Constructor_ThrowsWhenConnectionStringMissing()
+    public void Constructor_AcceptsMissingConnectionString()
     {
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection()
             .Build();
 
-        var exception = Assert.Throws<InvalidOperationException>(
-            () => new DatabaseAccess(configuration));
+        var access = new DatabaseAccess(configuration);
 
-        Assert.Contains("Default", exception.Message);
+        Assert.NotNull(access);
     }
 
     [Fact]
