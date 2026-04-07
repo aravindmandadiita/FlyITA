@@ -1,0 +1,11 @@
+@page "/logout"
+@model FlyITA.Web.Pages.LogoutModel
+@{
+    ViewData["Title"] = "Logged Out";
+}
+
+<div class="container py-4">
+    <h1>Logged Out</h1>
+    <p>@Model.LogoutMessage</p>
+    <p><a href="/">Return to Home</a></p>
+</div>

@@ -1,7 +1,14 @@
-@page
+@page "/error"
+@model FlyITA.Web.Pages.ErrorModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = Model.ErrorTitle;
 }
 
-<h1>Error</h1>
-<p>An unexpected error occurred. Please try again later.</p>
+<div class="container py-4">
+    <h1>@Model.ErrorTitle</h1>
+    <p>@Model.ErrorMessage</p>
+    @if (Model.IsNotFound)
+    {
+        <p><a href="/">Return to Home</a></p>
+    }
+</div>
