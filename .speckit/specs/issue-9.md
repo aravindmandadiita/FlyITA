@@ -64,9 +64,9 @@ Phase 7 delivered the Legacy.Api sidecar and 4 dynamic form pages. The modern pr
 ```
 
 - Reads registration closed message from configuration or context
-- Uses `IContextManager.RegistrationClosedType` to determine close reason (if available in session)
-- Displays appropriate message
-- No MVP pattern — simplified to PageModel with injected dependencies
+- Displays a static registration closed message (hardcoded default)
+- Future enhancement: read close reason from `IContextManager.RegistrationClosedType` or config
+- No MVP pattern — simplified to PageModel
 
 ### 3.3 Error Page Enhancement
 
@@ -122,6 +122,7 @@ Phase 7 delivered the Legacy.Api sidecar and 4 dynamic form pages. The modern pr
 
 - Legacy code was fully commented out — create minimal stub
 - Returns empty JSON array `[]`
+- Implemented as Razor Page with `@page "/api/images"` (stub — could migrate to minimal API later)
 - Placeholder for future CMS image integration
 
 ### 3.7 Legacy URL Redirects
@@ -222,3 +223,4 @@ tests/FlyITA.Web.Tests/
 | Closed page MVP pattern complex | Over-engineering | Simplify to PageModel, skip MVP |
 | Logout needs program data before session clear | Race condition | Read ProgramID from session before clearing |
 | UseStatusCodePagesWithReExecute conflicts with ErrorLoggingMiddleware | Double handling | Test interaction, ensure middleware doesn't intercept re-executed requests |
+| Legacy error.aspx used `?syserror=E404/E500`, modern uses `?code=404` | Legacy bookmarks show generic error instead of 404 | Low impact — new app never generates syserror URLs. Could add syserror→code mapping if needed |

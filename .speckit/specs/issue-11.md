@@ -51,17 +51,19 @@ API: /health (1)
 - AccessDenied: Shows denied message
 - Closed: Shows registration closed message
 
-#### Accessibility
-- axe-core accessibility scan on home page (no critical violations)
+#### Accessibility (manual checks — axe-core integration deferred)
+- ARIA landmark verification (banner, main, contentinfo)
+- Single H1 per page
+- Image alt text presence
+- No jQuery in runtime
+- Modal accessibility attributes
 
 ### 3.2 Cleanup Duplicate Test Projects
 
-Remove the duplicate/empty test projects:
+Remove the duplicate/empty test projects from disk (they were never in the .sln):
 - `tests/FlyITA.Tests.E2E/` — duplicate of FlyITA.E2E.Tests
 - `tests/FlyITA.Tests.Integration/` — empty
 - `tests/FlyITA.Tests.Unit/` — empty
-
-Remove from solution file.
 
 ### 3.3 Consolidate E2E Tests
 

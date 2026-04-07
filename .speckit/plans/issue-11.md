@@ -13,5 +13,5 @@
 3. Add NavigationTests — menu links, footer links
 4. Add FormTests — form fill and submit
 5. Add SystemPageTests — error, logout, thank-you variants
-6. Add AccessibilityTests — axe-core scan
+6. Add AccessibilityTests — ARIA landmarks, alt text, heading structure, no-jQuery
 7. Verify unit/integration tests still pass

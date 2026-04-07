@@ -22,6 +22,6 @@ Fill and submit each form page, verify success.
 Test all system page variants (error codes, logout reasons, thank-you types).
 
 ## Task 6: AccessibilityTests
-axe-core scan on home page for critical violations.
+ARIA landmark checks, single H1, image alt text, no jQuery in runtime, modal accessibility. axe-core integration deferred.
 
 ## Task 7: Verify all tests pass
