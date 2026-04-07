@@ -1,0 +1,333 @@
+@page "/vacation"
+@model FlyITA.Web.Pages.VacationModel
+@{
+    ViewData["Title"] = "Vacation Travel Request";
+}
+
+<div class="container py-4">
+    <h1>Vacation Travel Request</h1>
+    <p>Complete the form below to submit your leisure travel request. A travel advisor will contact you to finalize your booking.</p>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+    }
+
+    <form method="post" id="vacationForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        @* ── Contact Information ── *@
+        <fieldset class="mb-4">
+            <legend>Contact Information</legend>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="NameOfPersonRequesting" class="form-label">Name <span class="text-danger">*</span></label>
+                    <input asp-for="NameOfPersonRequesting" class="form-control" required />
+                    <span asp-validation-for="NameOfPersonRequesting" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="GeneralAndPassengerEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                    <input asp-for="GeneralAndPassengerEmail" class="form-control" type="email" required />
+                    <span asp-validation-for="GeneralAndPassengerEmail" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="PhoneNumber" class="form-label">Phone</label>
+                    <input asp-for="PhoneNumber" class="form-control" type="tel" />
+                </div>
+            </div>
+        </fieldset>
+
+        @* ── Passengers ── *@
+        <fieldset class="mb-4">
+            <legend>Passenger Information</legend>
+            <p class="text-muted">Add up to 6 passengers. First name, last name, date of birth, and gender are required for each passenger.</p>
+            <div id="passengerContainer">
+                @for (int i = 0; i < Model.Passengers.Count; i++)
+                {
+                    <div class="passenger-entry card mb-3" data-index="@i">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Passenger @(i + 1)</span>
+                            @if (i > 0)
+                            {
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-passenger" aria-label="Remove passenger @(i + 1)">Remove</button>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">First Name <span class="text-danger">*</span></label>
+                                    <input name="Passengers[@i].FirstName" value="@Model.Passengers[i].FirstName" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Middle Name</label>
+                                    <input name="Passengers[@i].MiddleName" value="@Model.Passengers[i].MiddleName" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                                    <input name="Passengers[@i].LastName" value="@Model.Passengers[i].LastName" class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                    <input name="Passengers[@i].DateOfBirth" value="@Model.Passengers[i].DateOfBirth" class="form-control" type="date" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                    <select name="Passengers[@i].Gender" class="form-select">
+                                        <option value="">Select...</option>
+                                        <option value="Male" selected="@(Model.Passengers[i].Gender == "Male")">Male</option>
+                                        <option value="Female" selected="@(Model.Passengers[i].Gender == "Female")">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Passport Number</label>
+                                    <input name="Passengers[@i].PassportNumber" value="@Model.Passengers[i].PassportNumber" class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Passport Expiration</label>
+                                    <input name="Passengers[@i].PassportExpiration" value="@Model.Passengers[i].PassportExpiration" class="form-control" type="date" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" id="btnAddPassenger" class="btn btn-outline-primary btn-sm" disabled="@(Model.Passengers.Count >= 6)">
+                <span class="fa-solid fa-plus" aria-hidden="true"></span> Add Passenger
+            </button>
+        </fieldset>
+
+        @* ── Frequent Flyer Programs ── *@
+        <fieldset class="mb-4">
+            <legend>Frequent Flyer Programs</legend>
+            <div id="frequentFlyerContainer">
+                @for (int i = 0; i < Math.Max(Model.FrequentFlyers.Count, 1); i++)
+                {
+                    var ff = i < Model.FrequentFlyers.Count ? Model.FrequentFlyers[i] : new VacationModel.FrequentFlyerEntry();
+                    <div class="row g-3 mb-2 ff-entry" data-index="@i">
+                        <div class="col-md-5">
+                            <label class="form-label">Airline</label>
+                            <select name="FrequentFlyers[@i].Airline" class="form-select">
+                                <option value="">Select airline...</option>
+                                @foreach (var airline in VacationModel.AirlineOptions.Where(a => !string.IsNullOrEmpty(a)))
+                                {
+                                    <option value="@airline" selected="@(ff.Airline == airline)">@airline</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">Frequent Flyer Number</label>
+                            <input name="FrequentFlyers[@i].Number" value="@ff.Number" class="form-control" />
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            @if (i > 0)
+                            {
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-ff" aria-label="Remove frequent flyer @(i + 1)">Remove</button>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" id="btnAddFF" class="btn btn-outline-primary btn-sm mt-2" disabled="@(Model.FrequentFlyers.Count >= 5)">
+                <span class="fa-solid fa-plus" aria-hidden="true"></span> Add Frequent Flyer
+            </button>
+        </fieldset>
+
+        @* ── Trip Information ── *@
+        <fieldset class="mb-4">
+            <legend>Trip Information</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="DepartureCity" class="form-label">Departure City <span class="text-danger">*</span></label>
+                    <input asp-for="DepartureCity" class="form-control" required />
+                    <span asp-validation-for="DepartureCity" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PreferredAirline" class="form-label">Preferred Airline</label>
+                    <select asp-for="PreferredAirline" class="form-select">
+                        @foreach (var airline in VacationModel.AirlineOptions)
+                        {
+                            <option value="@airline">@(string.IsNullOrEmpty(airline) ? "Select airline..." : airline)</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="DestinationsInterestedIn" class="form-label">Destinations Interested In <span class="text-danger">*</span></label>
+                    <textarea asp-for="DestinationsInterestedIn" class="form-control" rows="3" required></textarea>
+                    <span asp-validation-for="DestinationsInterestedIn" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="DestinationsNotInterestedIn" class="form-label">Destinations NOT Interested In</label>
+                    <textarea asp-for="DestinationsNotInterestedIn" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="PreferredDatesOfTravel" class="form-label">Preferred Dates of Travel</label>
+                    <input asp-for="PreferredDatesOfTravel" class="form-control" placeholder="e.g., June 15-22, 2026" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="RoomsNeeded" class="form-label">Rooms Needed</label>
+                    <input asp-for="RoomsNeeded" class="form-control" type="number" min="1" max="20" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="VacationDetails" class="form-label">Vacation Details</label>
+                    <textarea asp-for="VacationDetails" class="form-control" rows="4" placeholder="Tell us about your ideal vacation..."></textarea>
+                </div>
+                <div class="col-12">
+                    <label asp-for="ImportantAmenities" class="form-label">Important Amenities</label>
+                    <textarea asp-for="ImportantAmenities" class="form-control" rows="3" placeholder="Pool, gym, spa, all-inclusive, etc."></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <input type="hidden" asp-for="CaptchaToken" id="captchaToken" />
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Submit Vacation Request</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+<script defer>
+document.addEventListener('DOMContentLoaded', () => {
+    const maxPassengers = 6;
+    const maxFF = 5;
+    const passengerContainer = document.getElementById('passengerContainer');
+    const btnAddPassenger = document.getElementById('btnAddPassenger');
+    const ffContainer = document.getElementById('frequentFlyerContainer');
+    const btnAddFF = document.getElementById('btnAddFF');
+
+    // ── Add Passenger ──
+    btnAddPassenger.addEventListener('click', () => {
+        const entries = passengerContainer.querySelectorAll('.passenger-entry');
+        const idx = entries.length;
+        if (idx >= maxPassengers) return;
+
+        const card = document.createElement('div');
+        card.className = 'passenger-entry card mb-3';
+        card.dataset.index = idx;
+        card.innerHTML = `
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Passenger ${idx + 1}</span>
+                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-passenger" aria-label="Remove passenger ${idx + 1}">Remove</button>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">First Name <span class="text-danger">*</span></label>
+                        <input name="Passengers[${idx}].FirstName" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Middle Name</label>
+                        <input name="Passengers[${idx}].MiddleName" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                        <input name="Passengers[${idx}].LastName" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                        <input name="Passengers[${idx}].DateOfBirth" class="form-control" type="date" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Gender <span class="text-danger">*</span></label>
+                        <select name="Passengers[${idx}].Gender" class="form-select">
+                            <option value="">Select...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Passport Number</label>
+                        <input name="Passengers[${idx}].PassportNumber" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Passport Expiration</label>
+                        <input name="Passengers[${idx}].PassportExpiration" class="form-control" type="date" />
+                    </div>
+                </div>
+            </div>`;
+        passengerContainer.appendChild(card);
+        updatePassengerButton();
+    });
+
+    // ── Remove Passenger ──
+    passengerContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-remove-passenger');
+        if (!btn) return;
+        btn.closest('.passenger-entry').remove();
+        reindexPassengers();
+        updatePassengerButton();
+    });
+
+    function reindexPassengers() {
+        passengerContainer.querySelectorAll('.passenger-entry').forEach((card, idx) => {
+            card.dataset.index = idx;
+            card.querySelector('.card-header span').textContent = `Passenger ${idx + 1}`;
+            card.querySelectorAll('input, select').forEach(input => {
+                input.name = input.name.replace(/Passengers\[\d+\]/, `Passengers[${idx}]`);
+            });
+            const removeBtn = card.querySelector('.btn-remove-passenger');
+            if (idx === 0 && removeBtn) removeBtn.remove();
+        });
+    }
+
+    function updatePassengerButton() {
+        const count = passengerContainer.querySelectorAll('.passenger-entry').length;
+        btnAddPassenger.disabled = count >= maxPassengers;
+    }
+
+    // ── Add Frequent Flyer ──
+    btnAddFF.addEventListener('click', () => {
+        const entries = ffContainer.querySelectorAll('.ff-entry');
+        const idx = entries.length;
+        if (idx >= maxFF) return;
+
+        const row = document.createElement('div');
+        row.className = 'row g-3 mb-2 ff-entry';
+        row.dataset.index = idx;
+        row.innerHTML = `
+            <div class="col-md-5">
+                <label class="form-label">Airline</label>
+                <select name="FrequentFlyers[${idx}].Airline" class="form-select">
+                    <option value="">Select airline...</option>
+                    ${document.querySelector('.ff-entry select').innerHTML.split('<option').filter(o => o.includes('value="') && !o.includes('value=""')).map(o => '<option' + o).join('')}
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label class="form-label">Frequent Flyer Number</label>
+                <input name="FrequentFlyers[${idx}].Number" class="form-control" />
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-ff" aria-label="Remove frequent flyer ${idx + 1}">Remove</button>
+            </div>`;
+        ffContainer.appendChild(row);
+        updateFFButton();
+    });
+
+    // ── Remove Frequent Flyer ──
+    ffContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-remove-ff');
+        if (!btn) return;
+        btn.closest('.ff-entry').remove();
+        reindexFF();
+        updateFFButton();
+    });
+
+    function reindexFF() {
+        ffContainer.querySelectorAll('.ff-entry').forEach((row, idx) => {
+            row.dataset.index = idx;
+            row.querySelectorAll('input, select').forEach(input => {
+                input.name = input.name.replace(/FrequentFlyers\[\d+\]/, `FrequentFlyers[${idx}]`);
+            });
+            const removeBtn = row.querySelector('.btn-remove-ff');
+            if (idx === 0 && removeBtn) removeBtn.remove();
+        });
+    }
+
+    function updateFFButton() {
+        const count = ffContainer.querySelectorAll('.ff-entry').length;
+        btnAddFF.disabled = count >= maxFF;
+    }
+});
+</script>
+}

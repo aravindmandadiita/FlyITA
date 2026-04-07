@@ -147,7 +147,9 @@ app.MapGet("/reservations.aspx", () => Results.Redirect("/reservations", permane
 // Phase 7 — form page redirects
 app.MapGet("/GuestProfileInformation.aspx", () => Results.Redirect("/guest-profile", permanent: true));
 app.MapGet("/Travelerprofileinformation.aspx", () => Results.Redirect("/traveler-profile", permanent: true));
-app.MapGet("/VacationTravelRequest.aspx", () => Results.Redirect("/vacation-request", permanent: true));
+app.MapGet("/VacationTravelRequest.aspx", () => Results.Redirect("/vacation", permanent: true));
+app.MapGet("/vacation.aspx", () => Results.Redirect("/vacation", permanent: true));
+app.MapGet("/vacation-request", () => Results.Redirect("/vacation", permanent: true));
 app.MapGet("/AchPayment.aspx", () => Results.Redirect("/ach-payment", permanent: true));
 
 // Phase 8 — system page redirects (preserve query string)

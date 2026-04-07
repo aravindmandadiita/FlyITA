@@ -44,7 +44,7 @@ public class SmokeTests : IClassFixture<PlaywrightFixture>
     [InlineData("/travel-info", "Travel Best Practices")]
     [InlineData("/guest-profile", "Guest Profile")]
     [InlineData("/traveler-profile", "Traveler Profile")]
-    [InlineData("/vacation-request", "Vacation Travel Request")]
+    [InlineData("/vacation", "Vacation Travel Request")]
     [InlineData("/ach-payment", "ACH Payment")]
     [InlineData("/error", "Error")]
     [InlineData("/thank-you", "Thank You")]
