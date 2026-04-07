@@ -37,6 +37,9 @@ builder.Services.Configure<RecaptchaOptions>(builder.Configuration.GetSection(Re
 // Strongly-typed options — Core (Phase 7)
 builder.Services.Configure<LegacyApiOptions>(builder.Configuration.GetSection(LegacyApiOptions.SectionName));
 
+// Strongly-typed options — Core (Phase 9)
+builder.Services.Configure<AnalyticsOptions>(builder.Configuration.GetSection(AnalyticsOptions.SectionName));
+
 // 1. Core services (TryAdd null defaults for IDatabaseAccess, IEnvironmentService, ISmtpClient)
 builder.Services.AddFlyITACore();
 builder.Services.AddHttpContextAccessor();
