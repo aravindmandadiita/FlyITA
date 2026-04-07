@@ -1,0 +1,132 @@
+@page "/guest-profile"
+@model FlyITA.Web.Pages.GuestProfileModel
+@{
+    ViewData["Title"] = "Guest Profile Information";
+}
+
+<div class="container py-4">
+    <h1>Guest Profile Information</h1>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success" role="alert">@Model.SuccessMessage</div>
+    }
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+    }
+
+    <form method="post" asp-route-participantId="@(Model.Participant != null && Model.Participant.ContainsKey("ParticipantID") ? Model.Participant["ParticipantID"] : 0)">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <fieldset class="mb-4">
+            <legend>Personal Information</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="FirstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input asp-for="FirstName" class="form-control" required />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="LastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input asp-for="LastName" class="form-control" required />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email <span class="text-danger">*</span></label>
+                    <input asp-for="Email" class="form-control" type="email" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Phone" class="form-label">Phone</label>
+                    <input asp-for="Phone" class="form-control" type="tel" />
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend>Address</legend>
+            <div class="row g-3">
+                <div class="col-12">
+                    <label asp-for="Address1" class="form-label">Address Line 1</label>
+                    <input asp-for="Address1" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="Address2" class="form-label">Address Line 2</label>
+                    <input asp-for="Address2" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="City" class="form-label">City</label>
+                    <input asp-for="City" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="State" class="form-label">State/Province</label>
+                    <input asp-for="State" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="ZipCode" class="form-label">Zip/Postal Code</label>
+                    <input asp-for="ZipCode" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Country" class="form-label">Country</label>
+                    <input asp-for="Country" class="form-control" />
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend>Travel Documents</legend>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="PassportNumber" class="form-label">Passport Number</label>
+                    <input asp-for="PassportNumber" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="PassportCountry" class="form-label">Passport Country</label>
+                    <input asp-for="PassportCountry" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Citizenship" class="form-label">Citizenship</label>
+                    <input asp-for="Citizenship" class="form-control" />
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-4">
+            <legend>Special Requirements</legend>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="DietaryRestrictions" class="form-label">Dietary Restrictions</label>
+                    <textarea asp-for="DietaryRestrictions" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="AssistanceNeeds" class="form-label">Assistance Needs</label>
+                    <textarea asp-for="AssistanceNeeds" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        @if (Model.CustomFields.Any())
+        {
+            <fieldset class="mb-4">
+                <legend>Additional Information</legend>
+                <div class="row g-3">
+                    @foreach (var field in Model.CustomFields)
+                    {
+                        var fieldId = field.TryGetValue("CustomFieldID", out var fid) ? fid : 0;
+                        var fieldName = field.TryGetValue("FieldName", out var fname) ? fname?.ToString() : "Field";
+                        var fieldValue = field.TryGetValue("Value", out var fval) ? fval?.ToString() : "";
+                        <div class="col-md-6">
+                            <label class="form-label">@fieldName</label>
+                            <input name="custom_@fieldId" class="form-control" value="@fieldValue" />
+                        </div>
+                    }
+                </div>
+            </fieldset>
+        }
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+        </div>
+    </form>
+</div>

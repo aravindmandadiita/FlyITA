@@ -11,8 +11,7 @@ public class DatabaseAccess : IDatabaseAccess
 
     public DatabaseAccess(IConfiguration configuration)
     {
-        _connectionString = configuration.GetConnectionString("Default")
-            ?? throw new InvalidOperationException("Connection string 'Default' is not configured.");
+        _connectionString = configuration.GetConnectionString("Default") ?? string.Empty;
     }
 
     public Dictionary<string, object?>? ExecuteStoredProcedure(string spName, Dictionary<string, object?> parameters)
