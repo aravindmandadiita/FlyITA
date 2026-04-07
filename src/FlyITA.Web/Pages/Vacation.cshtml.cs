@@ -90,6 +90,12 @@ public class VacationModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
+        // Enforce server-side max limits
+        if (Passengers.Count > 6)
+            Passengers = Passengers.Take(6).ToList();
+        if (FrequentFlyers.Count > 5)
+            FrequentFlyers = FrequentFlyers.Take(5).ToList();
+
         // Validate at least one passenger has a first name
         var validPassengers = Passengers.Where(p => !string.IsNullOrWhiteSpace(p.FirstName)).ToList();
         if (validPassengers.Count == 0)
@@ -98,10 +104,12 @@ public class VacationModel : PageModel
             return Page();
         }
 
-        // Validate passenger required fields
-        for (int i = 0; i < validPassengers.Count; i++)
+        // Validate passenger required fields (use original index for UI alignment)
+        for (int i = 0; i < Passengers.Count; i++)
         {
-            var p = validPassengers[i];
+            var p = Passengers[i];
+            if (string.IsNullOrWhiteSpace(p.FirstName))
+                continue;
             if (string.IsNullOrWhiteSpace(p.LastName))
                 ModelState.AddModelError("", $"Passenger {i + 1} last name is required for {p.FirstName}.");
             if (string.IsNullOrWhiteSpace(p.DateOfBirth))
@@ -125,7 +133,15 @@ public class VacationModel : PageModel
         }
 
         // Build and send email
-        await SendVacationRequestEmailAsync(validPassengers);
+        try
+        {
+            await SendVacationRequestEmailAsync(validPassengers);
+        }
+        catch (Exception)
+        {
+            ModelState.AddModelError("", "We were unable to submit your request right now. Please try again later.");
+            return Page();
+        }
 
         return RedirectToPage("/ThankYou", new { page = "Vacation" });
     }
@@ -139,7 +155,7 @@ public class VacationModel : PageModel
 
         if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
         {
-            var message = new System.Net.Mail.MailMessage(from, to, subject ?? "Vacation Travel Request", body)
+            using var message = new System.Net.Mail.MailMessage(from, to, !string.IsNullOrWhiteSpace(subject) ? subject : "Vacation Travel Request", body)
             {
                 IsBodyHtml = true
             };

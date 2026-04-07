@@ -74,8 +74,8 @@
                                     <label class="form-label">Gender <span class="text-danger">*</span></label>
                                     <select name="Passengers[@i].Gender" class="form-select">
                                         <option value="">Select...</option>
-                                        <option value="Male" selected="@(Model.Passengers[i].Gender == "Male")">Male</option>
-                                        <option value="Female" selected="@(Model.Passengers[i].Gender == "Female")">Female</option>
+                                        <option value="Male" selected="@(Model.Passengers[i].Gender == "Male" ? "selected" : null)">Male</option>
+                                        <option value="Female" selected="@(Model.Passengers[i].Gender == "Female" ? "selected" : null)">Female</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3">
@@ -91,7 +91,7 @@
                     </div>
                 }
             </div>
-            <button type="button" id="btnAddPassenger" class="btn btn-outline-primary btn-sm" disabled="@(Model.Passengers.Count >= 6)">
+            <button type="button" id="btnAddPassenger" class="btn btn-outline-primary btn-sm" disabled="@(Model.Passengers.Count >= 6 ? "disabled" : null)">
                 <span class="fa-solid fa-plus" aria-hidden="true"></span> Add Passenger
             </button>
         </fieldset>
@@ -110,7 +110,7 @@
                                 <option value="">Select airline...</option>
                                 @foreach (var airline in VacationModel.AirlineOptions.Where(a => !string.IsNullOrEmpty(a)))
                                 {
-                                    <option value="@airline" selected="@(ff.Airline == airline)">@airline</option>
+                                    <option value="@airline" selected="@(ff.Airline == airline ? "selected" : null)">@airline</option>
                                 }
                             </select>
                         </div>
@@ -127,7 +127,7 @@
                     </div>
                 }
             </div>
-            <button type="button" id="btnAddFF" class="btn btn-outline-primary btn-sm mt-2" disabled="@(Model.FrequentFlyers.Count >= 5)">
+            <button type="button" id="btnAddFF" class="btn btn-outline-primary btn-sm mt-2" disabled="@(Model.FrequentFlyers.Count >= 5 ? "disabled" : null)">
                 <span class="fa-solid fa-plus" aria-hidden="true"></span> Add Frequent Flyer
             </button>
         </fieldset>
