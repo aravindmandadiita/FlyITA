@@ -74,6 +74,30 @@ stages:
             condition: succeededOrFailed()
 
           - task: DotNetCoreCLI@2
+            displayName: 'Build E2E Tests'
+            inputs:
+              command: 'build'
+              projects: 'tests/FlyITA.E2E.Tests/FlyITA.E2E.Tests.csproj'
+              arguments: '--configuration $(buildConfiguration) --no-restore'
+
+          - pwsh: |
+              $playwrightPs1 = Get-ChildItem -Path "tests/FlyITA.E2E.Tests/bin" -Recurse -Filter "playwright.ps1" | Select-Object -First 1
+              if ($playwrightPs1) {
+                & $playwrightPs1.FullName install chromium
+              } else {
+                Write-Warning "playwright.ps1 not found — skipping browser install"
+              }
+            displayName: 'Install Playwright Chromium'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'E2E Tests (Playwright)'
+            inputs:
+              command: 'test'
+              projects: 'tests/FlyITA.E2E.Tests/FlyITA.E2E.Tests.csproj'
+              arguments: '--configuration $(buildConfiguration) --no-build --logger trx --results-directory $(Agent.TempDirectory)/TestResults'
+            continueOnError: true
+
+          - task: DotNetCoreCLI@2
             displayName: 'Publish Web App'
             inputs:
               command: 'publish'
