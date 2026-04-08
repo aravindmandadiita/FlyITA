@@ -80,11 +80,11 @@ stages:
               projects: '$(publishProject)'
               arguments: '--configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/web'
 
-          - task: PublishBuildArtifacts@1
+          - task: PublishPipelineArtifact@1
             displayName: 'Upload Artifact'
             inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)/web'
-              ArtifactName: 'FlyITA.Web'
+              targetPath: '$(Build.ArtifactStagingDirectory)/web'
+              artifact: 'FlyITA.Web'
 
   # ─── Stage 2: Deploy to Dev ───
   - stage: Dev
@@ -101,6 +101,9 @@ stages:
           runOnce:
             deploy:
               steps:
+                - download: current
+                  artifact: 'FlyITA.Web'
+
                 - task: CopyFiles@2
                   displayName: 'Copy to IIS (Dev)'
                   inputs:
@@ -124,6 +127,9 @@ stages:
           runOnce:
             deploy:
               steps:
+                - download: current
+                  artifact: 'FlyITA.Web'
+
                 - task: CopyFiles@2
                   displayName: 'Copy to IIS (Test)'
                   inputs:
@@ -147,6 +153,9 @@ stages:
           runOnce:
             deploy:
               steps:
+                - download: current
+                  artifact: 'FlyITA.Web'
+
                 - task: CopyFiles@2
                   displayName: 'Copy to IIS (Prod)'
                   inputs:
