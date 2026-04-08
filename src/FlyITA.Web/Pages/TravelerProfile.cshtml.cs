@@ -112,7 +112,14 @@ public class TravelerProfileModel : PageModel
                 : new List<RentalCarMembershipData>()
         };
 
-        await _emailService.SendTravelerProfileFormEmailAsync(emailData);
+        try
+        {
+            await _emailService.SendTravelerProfileFormEmailAsync(emailData);
+        }
+        catch
+        {
+            // Best-effort — email failure should not prevent profile save
+        }
 
         SuccessMessage = "Traveler profile saved successfully.";
         if (personId.HasValue) await LoadPersonDataAsync(personId.Value);

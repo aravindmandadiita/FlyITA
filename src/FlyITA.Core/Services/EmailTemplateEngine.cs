@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 
 namespace FlyITA.Core.Services;
@@ -103,7 +104,7 @@ public static class EmailTemplateEngine
     {
         foreach (var (key, value) in formValues)
         {
-            body = body.Replace($"[{key}]", value ?? "");
+            body = body.Replace($"[{key}]", WebUtility.HtmlEncode(value ?? ""));
         }
         return body;
     }
@@ -111,9 +112,10 @@ public static class EmailTemplateEngine
     public static string ProcessRepeatingBlock(string body, string startTag, string endTag, List<Dictionary<string, string>> items)
     {
         int startsAt = body.IndexOf(startTag, StringComparison.OrdinalIgnoreCase);
-        int endsAt = body.IndexOf(endTag, StringComparison.OrdinalIgnoreCase);
+        if (startsAt < 0) return body;
+        int endsAt = body.IndexOf(endTag, startsAt + startTag.Length, StringComparison.OrdinalIgnoreCase);
 
-        if (startsAt < 0 || endsAt < 0 || endsAt <= startsAt)
+        if (endsAt < 0)
             return body;
 
         string template = body.Substring(startsAt + startTag.Length, endsAt - startsAt - startTag.Length);
@@ -128,7 +130,7 @@ public static class EmailTemplateEngine
             string block = template;
             foreach (var (token, value) in item)
             {
-                block = block.Replace(token, value ?? "");
+                block = block.Replace(token, WebUtility.HtmlEncode(value ?? ""));
             }
             expanded.Append(block);
         }
