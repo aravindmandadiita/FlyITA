@@ -33,16 +33,16 @@ namespace FlyITA.Legacy.Api.Controllers
                     // TODO (#29): Replace placeholder call with actual PCentralLib method once confirmed:
                     //   var wcfResult = client.ProcessPayment(...);
 
-                    Trace.TraceWarning("ACH payment WCF call is placeholder — verify in issue #29 with live DLLs");
+                    Trace.TraceWarning("ACH payment processing is not yet implemented — no WCF ACH operation was invoked.");
 
                     client.Close();
 
-                    return Ok(new PaymentApiResponse
+                    return Content(System.Net.HttpStatusCode.NotImplemented, new PaymentApiResponse
                     {
-                        Success = true,
-                        TransactionId = "PENDING-RUNTIME-VERIFICATION",
-                        ResponseCode = "OK",
-                        ErrorMessage = null
+                        Success = false,
+                        TransactionId = null,
+                        ResponseCode = "NOT_IMPLEMENTED",
+                        ErrorMessage = "ACH payment processing is not yet implemented."
                     });
                 }
             }
@@ -79,7 +79,12 @@ namespace FlyITA.Legacy.Api.Controllers
             catch (Exception ex)
             {
                 Trace.TraceError("Unexpected error during ACH payment: {0}", ex);
-                return InternalServerError(ex);
+                return Content(System.Net.HttpStatusCode.InternalServerError, new PaymentApiResponse
+                {
+                    Success = false,
+                    ErrorMessage = "An unexpected error occurred while processing the payment.",
+                    ResponseCode = "INTERNAL_ERROR"
+                });
             }
         }
 

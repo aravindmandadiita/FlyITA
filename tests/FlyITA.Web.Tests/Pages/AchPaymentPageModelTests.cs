@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
 using FlyITA.Core.Interfaces;
@@ -8,7 +6,7 @@ using FlyITA.Web.Pages;
 
 namespace FlyITA.Web.Tests.Pages;
 
-public class AchPaymentIntegrationTests
+public class AchPaymentPageModelTests
 {
     [Fact]
     public async Task OnPostAsync_ValidPayment_ReturnsSuccessMessage()

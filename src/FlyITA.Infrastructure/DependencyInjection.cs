@@ -45,7 +45,12 @@ public static class DependencyInjection
             client.BaseAddress = new Uri(opts.BaseUrl);
             client.Timeout = TimeSpan.FromSeconds(opts.TimeoutSeconds);
         })
-        .AddStandardResilienceHandler();
+        .AddStandardResilienceHandler(options =>
+        {
+            // Disable retries — payment POSTs are not idempotent, retrying risks duplicate charges.
+            // Circuit breaker and timeout remain active.
+            options.Retry.ShouldHandle = _ => ValueTask.FromResult(false);
+        });
 
         // reCAPTCHA service (HTTP client)
         services.AddHttpClient<ICaptchaService, GoogleRecaptchaService>();
