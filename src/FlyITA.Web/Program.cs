@@ -51,6 +51,7 @@ builder.Services.AddFlyITAInfrastructure();
 // 3. Web services (override Core's null defaults for environment and SMTP)
 builder.Services.AddSingleton<IEnvironmentService, EnvironmentService>();
 builder.Services.AddScoped<ISmtpClient, SmtpClientWrapper>();
+builder.Services.AddScoped<IEmailTemplateLoader, FileEmailTemplateLoader>();
 
 // Session (uses AppSessionOptions for timeout)
 var appSessionOptions = builder.Configuration

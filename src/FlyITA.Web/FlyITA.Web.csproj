@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Templates\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.*" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.*" />
   </ItemGroup>
