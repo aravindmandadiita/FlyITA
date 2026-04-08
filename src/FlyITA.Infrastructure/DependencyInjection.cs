@@ -6,6 +6,7 @@ using FlyITA.Core.Interfaces;
 using FlyITA.Core.Options;
 using FlyITA.Infrastructure.Data;
 using FlyITA.Infrastructure.Services;
+using Microsoft.Extensions.Http.Resilience;
 
 namespace FlyITA.Infrastructure;
 
@@ -38,11 +39,17 @@ public static class DependencyInjection
             var logger = sp.GetRequiredService<ILogger<WcfPerformanceCentralClient>>();
             return new WcfPerformanceCentralClient(opts.PerformanceCentralServiceUrl, opts.ServiceTimeoutSeconds, logger);
         });
-        services.AddScoped<ICardProcessService>(sp =>
+        services.AddHttpClient<ICardProcessService, LegacyApiCardProcessService>((sp, client) =>
         {
-            var opts = sp.GetRequiredService<IOptions<ExternalServicesOptions>>().Value;
-            var logger = sp.GetRequiredService<ILogger<WcfCardProcessService>>();
-            return new WcfCardProcessService(opts.CardProcessServiceUrl, opts.ServiceTimeoutSeconds, logger);
+            var opts = sp.GetRequiredService<IOptions<LegacyApiOptions>>().Value;
+            client.BaseAddress = new Uri(opts.BaseUrl);
+            client.Timeout = TimeSpan.FromSeconds(opts.TimeoutSeconds);
+        })
+        .AddStandardResilienceHandler(options =>
+        {
+            // Disable retries — payment POSTs are not idempotent, retrying risks duplicate charges.
+            // Circuit breaker and timeout remain active.
+            options.Retry.ShouldHandle = _ => ValueTask.FromResult(false);
         });
 
         // reCAPTCHA service (HTTP client)

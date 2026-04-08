@@ -2,11 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using FlyITA.Core.Interfaces;
+using FlyITA.Core.Models;
 
 namespace FlyITA.Web.Pages;
 
 public class AchPaymentModel : PageModel
 {
+    private readonly ICardProcessService _cardProcessService;
+
+    public AchPaymentModel(ICardProcessService cardProcessService)
+    {
+        _cardProcessService = cardProcessService;
+    }
+
     [BindProperty, Required] public string BankName { get; set; } = "";
     [BindProperty, Required] public string RoutingNumber { get; set; } = "";
     [BindProperty, Required] public string AccountNumber { get; set; } = "";
@@ -22,7 +31,7 @@ public class AchPaymentModel : PageModel
     {
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
             return Page();
@@ -41,8 +50,25 @@ public class AchPaymentModel : PageModel
             return Page();
         }
 
-        // TODO: Submit payment via CardProcessService WCF client
-        SuccessMessage = "Payment submitted successfully.";
+        var request = new PaymentRequest
+        {
+            BankName = BankName,
+            RoutingNumber = RoutingNumber,
+            AccountNumber = AccountNumber,
+            AccountHolderName = AccountHolderName,
+            AccountType = AccountType,
+            Amount = Amount,
+            Currency = "USD",
+            Description = "ACH Payment"
+        };
+
+        var result = await _cardProcessService.ProcessPaymentAsync(request);
+
+        if (result.Success)
+            SuccessMessage = $"Payment submitted successfully. Transaction ID: {result.TransactionId}";
+        else
+            ErrorMessage = result.ErrorMessage ?? "Payment failed. Please try again.";
+
         return Page();
     }
 
