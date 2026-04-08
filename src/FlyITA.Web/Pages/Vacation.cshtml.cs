@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using FlyITA.Core.Interfaces;
+using FlyITA.Core.Models;
 using FlyITA.Web.Options;
 
 namespace FlyITA.Web.Pages;
@@ -10,13 +11,13 @@ namespace FlyITA.Web.Pages;
 public class VacationModel : PageModel
 {
     private readonly ICaptchaService _captchaService;
-    private readonly ISmtpClient _smtpClient;
+    private readonly IEmailService _emailService;
     private readonly EmailOptions _emailOptions;
 
-    public VacationModel(ICaptchaService captchaService, ISmtpClient smtpClient, IOptions<EmailOptions> emailOptions)
+    public VacationModel(ICaptchaService captchaService, IEmailService emailService, IOptions<EmailOptions> emailOptions)
     {
         _captchaService = captchaService;
-        _smtpClient = smtpClient;
+        _emailService = emailService;
         _emailOptions = emailOptions.Value;
     }
 
@@ -132,10 +133,47 @@ public class VacationModel : PageModel
             }
         }
 
-        // Build and send email
+        // Build and send email via template
         try
         {
-            await SendVacationRequestEmailAsync(validPassengers);
+            var data = new VacationEmailData
+            {
+                ToEmail = _emailOptions.VacationToEmail,
+                FromEmail = _emailOptions.SmtpFrom,
+                Subject = !string.IsNullOrWhiteSpace(_emailOptions.VacationSubject) ? _emailOptions.VacationSubject : "Vacation Travel Request",
+                NameOfPersonRequesting = NameOfPersonRequesting,
+                GeneralAndPassengerEmail = GeneralAndPassengerEmail,
+                PhoneNumber = PhoneNumber,
+                DepartureCity = DepartureCity,
+                PreferredAirline = PreferredAirline,
+                DestinationsInterestedIn = DestinationsInterestedIn,
+                PreferredDatesOfTravel = PreferredDatesOfTravel,
+                DestinationsNotInterestedIn = DestinationsNotInterestedIn,
+                VacationDetails = VacationDetails,
+                ImportantAmenities = ImportantAmenities,
+                RoomsNeeded = RoomsNeeded,
+                Passengers = validPassengers.Select(p => new PassengerData
+                {
+                    FirstName = p.FirstName,
+                    MiddleName = p.MiddleName,
+                    LastName = p.LastName,
+                    DateOfBirth = p.DateOfBirth,
+                    Gender = p.Gender,
+                    PassportNumber = p.PassportNumber,
+                    PassportExpiration = p.PassportExpiration
+                }).ToList(),
+                FrequentFlyers = FrequentFlyers
+                    .Where(f => !string.IsNullOrWhiteSpace(f.Airline))
+                    .Select(f => new FrequentFlyerData { Airline = f.Airline, Number = f.Number })
+                    .ToList()
+            };
+
+            var emailResult = await _emailService.SendVacationRequestEmailAsync(data);
+            if (!emailResult.IsValid)
+            {
+                ModelState.AddModelError("", "We were unable to submit your request right now. Please try again later.");
+                return Page();
+            }
         }
         catch (Exception)
         {
@@ -144,68 +182,6 @@ public class VacationModel : PageModel
         }
 
         return RedirectToPage("/ThankYou", new { page = "Vacation" });
-    }
-
-    private async Task SendVacationRequestEmailAsync(List<PassengerEntry> passengers)
-    {
-        var body = BuildEmailBody(passengers);
-        var to = _emailOptions.VacationToEmail;
-        var from = _emailOptions.SmtpFrom;
-        var subject = _emailOptions.VacationSubject;
-
-        if (!string.IsNullOrEmpty(to) && !string.IsNullOrEmpty(from))
-        {
-            using var message = new System.Net.Mail.MailMessage(from, to, !string.IsNullOrWhiteSpace(subject) ? subject : "Vacation Travel Request", body)
-            {
-                IsBodyHtml = true
-            };
-            await _smtpClient.SendAsync(message);
-        }
-    }
-
-    private string BuildEmailBody(List<PassengerEntry> passengers)
-    {
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine("<html><body>");
-        sb.AppendLine("<h2>Vacation Travel Request</h2>");
-        sb.AppendLine($"<p><strong>Requested by:</strong> {System.Net.WebUtility.HtmlEncode(NameOfPersonRequesting)}</p>");
-        sb.AppendLine($"<p><strong>Email:</strong> {System.Net.WebUtility.HtmlEncode(GeneralAndPassengerEmail)}</p>");
-        sb.AppendLine($"<p><strong>Phone:</strong> {System.Net.WebUtility.HtmlEncode(PhoneNumber)}</p>");
-
-        sb.AppendLine("<h3>Passengers</h3>");
-        for (int i = 0; i < passengers.Count; i++)
-        {
-            var p = passengers[i];
-            sb.AppendLine($"<p><strong>Passenger {i + 1}:</strong> {System.Net.WebUtility.HtmlEncode(p.FirstName)} {System.Net.WebUtility.HtmlEncode(p.MiddleName)} {System.Net.WebUtility.HtmlEncode(p.LastName)}<br>");
-            sb.AppendLine($"DOB: {System.Net.WebUtility.HtmlEncode(p.DateOfBirth)} | Gender: {System.Net.WebUtility.HtmlEncode(p.Gender)}<br>");
-            if (!string.IsNullOrWhiteSpace(p.PassportNumber))
-                sb.AppendLine($"Passport: {System.Net.WebUtility.HtmlEncode(p.PassportNumber)} (Exp: {System.Net.WebUtility.HtmlEncode(p.PassportExpiration)})<br>");
-            sb.AppendLine("</p>");
-        }
-
-        var activeFlyers = FrequentFlyers.Where(f => !string.IsNullOrWhiteSpace(f.Airline)).ToList();
-        if (activeFlyers.Count > 0)
-        {
-            sb.AppendLine("<h3>Frequent Flyer Programs</h3>");
-            foreach (var ff in activeFlyers)
-                sb.AppendLine($"<p>{System.Net.WebUtility.HtmlEncode(ff.Airline)}: {System.Net.WebUtility.HtmlEncode(ff.Number)}</p>");
-        }
-
-        sb.AppendLine("<h3>Trip Information</h3>");
-        sb.AppendLine($"<p><strong>Departure City:</strong> {System.Net.WebUtility.HtmlEncode(DepartureCity)}</p>");
-        sb.AppendLine($"<p><strong>Preferred Airline:</strong> {System.Net.WebUtility.HtmlEncode(PreferredAirline)}</p>");
-        sb.AppendLine($"<p><strong>Destinations:</strong> {System.Net.WebUtility.HtmlEncode(DestinationsInterestedIn)}</p>");
-        sb.AppendLine($"<p><strong>Preferred Dates:</strong> {System.Net.WebUtility.HtmlEncode(PreferredDatesOfTravel)}</p>");
-        if (!string.IsNullOrWhiteSpace(DestinationsNotInterestedIn))
-            sb.AppendLine($"<p><strong>Not Interested In:</strong> {System.Net.WebUtility.HtmlEncode(DestinationsNotInterestedIn)}</p>");
-        if (!string.IsNullOrWhiteSpace(VacationDetails))
-            sb.AppendLine($"<p><strong>Details:</strong> {System.Net.WebUtility.HtmlEncode(VacationDetails)}</p>");
-        if (!string.IsNullOrWhiteSpace(ImportantAmenities))
-            sb.AppendLine($"<p><strong>Amenities:</strong> {System.Net.WebUtility.HtmlEncode(ImportantAmenities)}</p>");
-        sb.AppendLine($"<p><strong>Rooms Needed:</strong> {System.Net.WebUtility.HtmlEncode(RoomsNeeded)}</p>");
-
-        sb.AppendLine("</body></html>");
-        return sb.ToString();
     }
 
     public class PassengerEntry

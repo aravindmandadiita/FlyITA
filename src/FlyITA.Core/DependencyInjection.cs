@@ -31,6 +31,7 @@ public static class DependencyInjection
         // Pluggable services — TryAdd so Web can override with real implementations
         services.TryAddSingleton<IEnvironmentService, NullEnvironmentService>();
         services.TryAddScoped<ISmtpClient, NullSmtpClient>();
+        services.TryAddScoped<IEmailTemplateLoader, NullEmailTemplateLoader>();
 
         // External service abstractions — TryAdd so Infrastructure can override
         services.TryAddScoped<ICaptchaService, NullCaptchaService>();
@@ -74,6 +75,12 @@ internal class NullEnvironmentService : IEnvironmentService
     public string Role => "CDT";
     public bool IsClientFacing => false;
     public string GetConnectionStringName() => "Default";
+}
+
+internal class NullEmailTemplateLoader : IEmailTemplateLoader
+{
+    public Task<string?> LoadTemplateAsync(string templateName, CancellationToken ct = default)
+        => Task.FromResult<string?>(null);
 }
 
 internal class NullSmtpClient : ISmtpClient

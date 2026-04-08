@@ -1,8 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using FlyITA.Core.Abstractions;
 using FlyITA.Core.Interfaces;
+using FlyITA.Core.Models;
+using FlyITA.Web.Options;
 
 namespace FlyITA.Web.Pages;
 
@@ -10,11 +13,19 @@ public class TravelerProfileModel : PageModel
 {
     private readonly IPCentralDataAccess _dataAccess;
     private readonly ICaptchaService _captchaService;
+    private readonly IEmailService _emailService;
+    private readonly EmailOptions _emailOptions;
 
-    public TravelerProfileModel(IPCentralDataAccess dataAccess, ICaptchaService captchaService)
+    public TravelerProfileModel(
+        IPCentralDataAccess dataAccess,
+        ICaptchaService captchaService,
+        IEmailService emailService,
+        IOptions<EmailOptions> emailOptions)
     {
         _dataAccess = dataAccess;
         _captchaService = captchaService;
+        _emailService = emailService;
+        _emailOptions = emailOptions.Value;
     }
 
     // Person data loaded on GET
@@ -71,6 +82,43 @@ public class TravelerProfileModel : PageModel
                 if (personId.HasValue) await LoadPersonDataAsync(personId.Value);
                 return Page();
             }
+        }
+
+        // Send traveler profile email (best-effort — don't fail the page if email fails)
+        var emailData = new TravelerProfileEmailData
+        {
+            ToEmail = _emailOptions.ThirdPartyToEmail,
+            FromEmail = !string.IsNullOrEmpty(_emailOptions.ThirdPartyFromEmail)
+                ? _emailOptions.ThirdPartyFromEmail
+                : _emailOptions.SmtpFrom,
+            Subject = !string.IsNullOrEmpty(_emailOptions.ThirdPartySubject)
+                ? _emailOptions.ThirdPartySubject
+                : "Traveler Profile Submission",
+            TravelerFirstName = FirstName,
+            TravelerLastName = LastName,
+            EmailAddress = Email,
+            BusinessPhone = Phone,
+            CompanyName = Company,
+            FrequentFlyers = FrequentFlyers
+                .Where(f => !string.IsNullOrWhiteSpace(f.Airline))
+                .Select(f => new FrequentFlyerData { Airline = f.Airline, Number = f.MemberNumber })
+                .ToList(),
+            HotelMemberships = HotelMemberships
+                .Where(h => !string.IsNullOrWhiteSpace(h.HotelChain))
+                .Select(h => new HotelMembershipData { HotelChain = h.HotelChain, MemberNumber = h.MemberNumber })
+                .ToList(),
+            RentalCarMemberships = !string.IsNullOrWhiteSpace(RentalCarCompany)
+                ? new List<RentalCarMembershipData> { new() { Company = RentalCarCompany, MemberNumber = RentalCarMemberNumber } }
+                : new List<RentalCarMembershipData>()
+        };
+
+        try
+        {
+            await _emailService.SendTravelerProfileFormEmailAsync(emailData);
+        }
+        catch
+        {
+            // Best-effort — email failure should not prevent profile save
         }
 
         SuccessMessage = "Traveler profile saved successfully.";
