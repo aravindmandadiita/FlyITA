@@ -577,9 +577,6 @@ form {
   padding: 0;
   height: 100%;
 }
-.bootstrap-datetimepicker-widget {
-  background-color: #fff !important;
-}
 .pad-both {
   padding-top: 40px;
   padding-bottom: 40px;
@@ -856,31 +853,6 @@ body #wrapper .main-content div#profile-information {
 body #wrapper .main-content .highlight {
   font-weight: bold;
   color: #ad132b;
-}
-body #wrapper .main-content .embed-responsive {
-  position: relative;
-  display: block;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-}
-body #wrapper .main-content .embed-responsive .embed-responsive-item,
-body #wrapper .main-content .embed-responsive iframe,
-body #wrapper .main-content .embed-responsive embed,
-body #wrapper .main-content .embed-responsive object {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  height: 100%;
-  width: 100%;
-  border: 0;
-}
-body #wrapper .main-content .embed-responsive.embed-responsive-16by9 {
-  padding-bottom: 56.25%;
-}
-body #wrapper .main-content .embed-responsive.embed-responsive-4by3 {
-  padding-bottom: 75%;
 }
 body footer.main-footer {
   height: auto;

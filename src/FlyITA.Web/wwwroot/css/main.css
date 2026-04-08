@@ -65,52 +65,6 @@
     }
 }
 
-/*-------------------------------------------------------------------------------------------*/
-/*  Accordion Tab    ||---------------------------- */
-/*-------------------------------------------------------------------------------------------*/
-.accordion-section {
-    border-top: 1px solid #f1f1f1;
-    border-left: 1px solid #f1f1f1;
-    border-right: 1px solid #f1f1f1;
-}
-
-    .accordion-section:last-child {
-        border-bottom: 1px solid #f1f1f1;
-    }
-
-.accordion-title {
-    cursor: pointer;
-    display: block;
-    position: relative;
-    padding: 20px 20px;
-    margin: 0px;
-}
-
-    .accordion-title.active {
-        color: #b0df01;
-    }
-
-    .accordion-title:before {
-        content: "\f105";
-        display: block;
-        font-family: "Font Awesome 6 Free", sans-serif;
-        font-weight: 900;
-        position: absolute;
-        right: 18px;
-    }
-
-    .accordion-title.active:before {
-        content: "\f107";
-    }
-
-.accordion-content.default-hidden {
-    display: none;
-    margin: 0;
-}
-
-.accordion-content {
-    padding: 0 20px 10px;
-}
 
 /* =============================================================================================================================*/
 /* Parallax ------------------- */
