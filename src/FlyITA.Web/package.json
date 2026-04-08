@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "css:purge": "purgecss --css wwwroot/css/theme.css wwwroot/css/main.css --content Pages/**/*.cshtml wwwroot/js/**/*.js --output wwwroot/css/purged/",
+    "css:analyze": "purgecss --css wwwroot/css/theme.css wwwroot/css/main.css --content Pages/**/*.cshtml wwwroot/js/**/*.js --rejected --output wwwroot/css/purged/"
+  },
+  "devDependencies": {
+    "purgecss": "^6.0.0"
+  }
+}
